@@ -19,7 +19,7 @@ useEffect((state) => {
       ...prevState,
       data,
       currentData : {
-        email : data[0].email
+        email : data.length > 0 ?? data[0].email
        }
       }
    });

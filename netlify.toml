@@ -4,6 +4,6 @@
  Publish = "build"
 
 [[redirects]]
- from = "/api/"
+ from = "/api/*"
  to = "/.netlify/functions/api"
  status = 301
