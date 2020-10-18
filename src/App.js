@@ -4,13 +4,16 @@ import {
     Pagination
      } from './components';
 
+import { RegisterPage } from "./pages";
+
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <p>Hello from React </p>
+      <p>Login</p>
       <Timer />
+      <RegisterPage/>
       <p> ---------- </p>
       <Pagination />
     </div>

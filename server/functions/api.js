@@ -1,7 +1,6 @@
 const express = require('express');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
-const crypto = require('crypto');
 
 const db = require('../db');
 const { User } = require('../models');
@@ -46,6 +45,13 @@ db.once('open',() => {
 
       });
 
+    router.route('/api/users')
+        .get(authenticate,(req, res) => {
+            User.find({},(err,docs)=>{
+               if (err) return res.status(500).json();
+               res.status(200).json(docs);
+            });
+        });
 
     app.use(router);
 
@@ -53,6 +59,6 @@ db.once('open',() => {
 
 
 
-app.listen(3000,() => console.log("App is listening on port 3000"));
+//app.listen(3000,() => console.log("App is listening on port 3000"));
 
-//exports.handler =  serverless(app);
+exports.handler =  serverless(app);
