@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
 const UserSchema = new mongoose.Schema({
   email : {
    type : String,
@@ -39,14 +40,15 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save',function(next){
   let user = this;
-   bcrypt.genSalt(10,function(err, salt){
-     if(err)return next(err);
-    bcrypt.hash(user.password,salt,function(err, hash){
-     if(err)return next(err);
-      user.password = hash;
-      next();
-    });
+  if(user.isModified("password")){
+   bcrypt.hash(user.password, 10,function(err,hash){
+    if(err)return next(err);
+    user.password = hash;
+    next();
    });
+  }else{
+   next();
+  }
 });
 
 
@@ -59,25 +61,33 @@ UserSchema.methods.toJSON = function(){
 
 UserSchema.methods.generateAuthToken = function(){
     let user = this;
-    let token = jwt.sign({_id : user._id, password : user.password}, 'secret');
+    let access = "auth";
+    let token = jwt.sign({_id : user._id, password : user.password, access}, 'secret');
     user.tokens = [{ access : "auth", token }];
     return user.save().then(res => {
         return res.tokens[0].token;
     }).catch(err => Promise.reject(err));
+
 }
 
 UserSchema.statics.findByToken = function(token){
     let user = this;
     return user.findOne({ 'tokens.token' : token},(err, doc) => {
-        if(err) return Promise.reject(err);
+        if(err) Promise.reject(err);
         //verify jwt token before returning promise
-        return Promise.resolve(doc);
+        Promise.resolve(doc);
     });
 }
 
 UserSchema.statics.findByCredentials = function({ email, password}){
-   return this.findOne({ email }).then(user => {
-
+  let model = this;
+   return new Promise(function(resolve, reject){
+     model.findOne({ email }).then(user => {
+       bcrypt.compare(password, user.password, (err, res) => {
+       console.log(`res : ${res}`);
+        res ? resolve(user) : reject(err);
+     });
+    });
    });
 }
 
