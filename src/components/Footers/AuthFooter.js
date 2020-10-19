@@ -33,10 +33,10 @@ class Login extends React.Component {
                   © 2018{" "}
                   <a
                     className="font-weight-bold ml-1"
-                    href="https://www.creative-tim.com?ref=adr-auth-footer"
+                    href="https://official-nqt.web.app"
                     target="_blank"
                   >
-                    Creative Tim
+                    NQT Dev. Team
                   </a>
                 </div>
               </Col>

@@ -17,11 +17,11 @@
 */
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
+//import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
+//import Tables from "views/examples/Tables.js";
+//import Icons from "views/examples/Icons.js";
 
 var routes = [
   {
@@ -31,6 +31,7 @@ var routes = [
     component: Index,
     layout: "/admin"
   },
+/*
   {
     path: "/icons",
     name: "Icons",
@@ -45,6 +46,7 @@ var routes = [
     component: Maps,
     layout: "/admin"
   },
+*/
   {
     path: "/user-profile",
     name: "User Profile",
@@ -52,6 +54,7 @@ var routes = [
     component: Profile,
     layout: "/admin"
   },
+/*
   {
     path: "/tables",
     name: "Tables",
@@ -59,6 +62,7 @@ var routes = [
     component: Tables,
     layout: "/admin"
   },
+*/
   {
     path: "/login",
     name: "Login",

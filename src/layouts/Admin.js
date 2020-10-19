@@ -68,7 +68,7 @@ class Admin extends React.Component {
           logo={{
             innerLink: "/admin/index",
             imgSrc: require("assets/img/brand/argon-react.png"),
-            imgAlt: "..."
+            imgAlt: "Divine Increase Logo"
           }}
         />
         <div className="main-content" ref="mainContent">

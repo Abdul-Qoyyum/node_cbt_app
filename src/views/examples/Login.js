@@ -17,6 +17,9 @@
 */
 import React from "react";
 
+//react hook form
+import { useForm } from "react-hook-form";
+
 // reactstrap components
 import {
   Button,
@@ -25,6 +28,7 @@ import {
   CardBody,
   FormGroup,
   Form,
+  FormText,
   Input,
   InputGroupAddon,
   InputGroupText,
@@ -33,8 +37,11 @@ import {
   Col
 } from "reactstrap";
 
-class Login extends React.Component {
-  render() {
+function Login(){
+    const {handleSubmit,register,errors} = useForm();
+
+    const onSubmit = data => console.log(data);
+
     return (
       <>
         <Col lg="5" md="7">
@@ -78,7 +85,7 @@ class Login extends React.Component {
               <div className="text-center text-muted mb-4">
                 <small>Or sign in with credentials</small>
               </div>
-              <Form role="form">
+              <Form role="form" onSubmit={handleSubmit(onSubmit)}>
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
@@ -86,8 +93,9 @@ class Login extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email"/>
+                    <Input placeholder="Email" name="email" type="email" innerRef={register({required : true})}  autoComplete="new-email"/>
                   </InputGroup>
+                    {errors.email && <FormText color="danger"> Email is required</FormText>}
                 </FormGroup>
                 <FormGroup>
                   <InputGroup className="input-group-alternative">
@@ -96,26 +104,31 @@ class Login extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input placeholder="Password" name="password" type="password" innerRef={register({required : true, minLength : 6})} autoComplete="new-password"/>
                   </InputGroup>
+                    {errors.password && <FormText color="danger"> Password is required</FormText>}
                 </FormGroup>
                 <div className="custom-control custom-control-alternative custom-checkbox">
                   <input
                     className="custom-control-input"
-                    id=" customCheckLogin"
+                    id="remember_me"
                     type="checkbox"
+                    innerRef={register}
                   />
                   <label
                     className="custom-control-label"
-                    htmlFor=" customCheckLogin"
+                    htmlFor="remember_me"
                   >
                     <span className="text-muted">Remember me</span>
                   </label>
                 </div>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
+
+                  <Button className="my-4" color="primary" type="submit">
                     Sign in
                   </Button>
+
+{/*                  <input type="submit" /> */}
                 </div>
               </Form>
             </CardBody>
@@ -143,7 +156,6 @@ class Login extends React.Component {
         </Col>
       </>
     );
-  }
 }
 
 export default Login;

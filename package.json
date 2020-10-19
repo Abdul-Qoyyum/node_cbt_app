@@ -52,7 +52,6 @@
     "build:app": "react-scripts build",
     "start:lambda": "netlify-lambda serve server/functions",
     "build:lambda": "netlify-lambda build server/functions",
-    "test:server": "node server/functions/api",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
