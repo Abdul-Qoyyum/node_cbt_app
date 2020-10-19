@@ -60,20 +60,6 @@ function Login(){
                   <span className="btn-inner--icon">
                     <img
                       alt="..."
-                      src={require("assets/img/icons/common/github.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Github</span>
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
                       src={require("assets/img/icons/common/google.svg")}
                     />
                   </span>
@@ -93,9 +79,16 @@ function Login(){
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" name="email" type="email" innerRef={register({required : true})}  autoComplete="new-email"/>
+                    <Input placeholder="Email" name="email" type="email" innerRef={register({
+                      required : true,
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Invalid email address"
+                      }
+                    })}  autoComplete="new-email"/>
                   </InputGroup>
-                    {errors.email && <FormText color="danger"> Email is required</FormText>}
+                    {errors.email && errors.email.type === "required" && (<FormText color="danger"> Email is required</FormText>)}
+                    {errors.email && errors.email.type === "pattern" && (<FormText color={"danger"}>{errors.email.message}</FormText>)}
                 </FormGroup>
                 <FormGroup>
                   <InputGroup className="input-group-alternative">
@@ -106,7 +99,8 @@ function Login(){
                     </InputGroupAddon>
                     <Input placeholder="Password" name="password" type="password" innerRef={register({required : true, minLength : 6})} autoComplete="new-password"/>
                   </InputGroup>
-                    {errors.password && <FormText color="danger"> Password is required</FormText>}
+                    {errors.password && errors.password.type === "required" && (<FormText color="danger"> Password is required</FormText>)}
+                    {errors.password && errors.password.type === "minLength" && (<FormText color={"danger"}>Minimum of six (6) characters is required</FormText>)}
                 </FormGroup>
                 <div className="custom-control custom-control-alternative custom-checkbox">
                   <input
@@ -128,7 +122,6 @@ function Login(){
                     Sign in
                   </Button>
 
-{/*                  <input type="submit" /> */}
                 </div>
               </Form>
             </CardBody>
