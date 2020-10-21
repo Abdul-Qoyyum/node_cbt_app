@@ -32,7 +32,6 @@ db.once('open',() => {
     router.route('/api/login')
         .post(validate,(req,res) => {
           let { email, password } = req.body;
-
           User.findByCredentials({email, password}).then(user => {
             user.generateAuthToken().then( token => {
               res.header('x-auth',token).status(200).json(user);
@@ -40,7 +39,7 @@ db.once('open',() => {
               res.status(500).json(err);
             });
            }).catch(err => {
-            res.status(400).json(err);
+              res.status(400).json(err);
           });
 
       });

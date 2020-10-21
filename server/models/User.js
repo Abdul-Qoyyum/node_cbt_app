@@ -84,10 +84,11 @@ UserSchema.statics.findByCredentials = function({ email, password}){
    return new Promise(function(resolve, reject){
      model.findOne({ email }).then(user => {
        bcrypt.compare(password, user.password, (err, res) => {
-       console.log(`res : ${res}`);
         res ? resolve(user) : reject(err);
      });
-    });
+    }).catch(err => {
+        reject(err);
+     });
    });
 }
 

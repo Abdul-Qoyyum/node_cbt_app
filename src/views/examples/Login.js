@@ -15,7 +15,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useState} from "react";
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 //react hook form
 import { useForm } from "react-hook-form";
@@ -34,131 +36,165 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
+  Spinner
 } from "reactstrap";
 
 function Login(){
-    const {handleSubmit,register,errors} = useForm();
+    const {handleSubmit,register,setError,errors} = useForm();
+    const [ redirect, setRedirect ] = useState(false);
+    const [ loading, setLoading ] = useState(false);
 
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+      setLoading(true);
+      axios.post('/api/login',data).then(res => {
+        console.log(res);
+        setLoading(false);
+         setRedirect(true);
+      }).catch(err => {
+        setLoading(false);
+         setError("email",{
+           type : "manual",
+           message : "Invalid Credentials."
+         });
+      });
+    };
 
-    return (
-      <>
-        <Col lg="5" md="7">
-          <Card className="bg-secondary shadow border-0">
-            <CardHeader className="bg-transparent pb-5">
-              <div className="text-muted text-center mt-2 mb-3">
-                <small>Sign in with</small>
-              </div>
-              <div className="btn-wrapper text-center">
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
+    if(redirect){
+      return <Redirect to={"/admin/index"} />
+    }else {
+      return (
+          <>
+            <Col lg="5" md="7">
+              <Card className="bg-secondary shadow border-0">
+                <CardHeader className="bg-transparent pb-5">
+                  <div className="text-muted text-center mt-2 mb-3">
+                    <small>Sign in with</small>
+                  </div>
+                  <div className="btn-wrapper text-center">
+                    <Button
+                        className="btn-neutral btn-icon"
+                        color="default"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                    >
                   <span className="btn-inner--icon">
                     <img
-                      alt="..."
-                      src={require("assets/img/icons/common/google.svg")}
+                        alt="..."
+                        src={require("assets/img/icons/common/google.svg")}
                     />
                   </span>
-                  <span className="btn-inner--text">Google</span>
-                </Button>
-              </div>
-            </CardHeader>
-            <CardBody className="px-lg-5 py-lg-5">
-              <div className="text-center text-muted mb-4">
-                <small>Or sign in with credentials</small>
-              </div>
-              <Form role="form" onSubmit={handleSubmit(onSubmit)}>
-                <FormGroup className="mb-3">
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="ni ni-email-83" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Email" name="email" type="email" 
-                   innerRef={register({
-                      required : {
-                        value : true,
-                        message : "Email is required"
-                      },
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Invalid email address"
-                      }
-                    })}
-                       autoComplete="new-email"
-                       invalid={errors.email ?? true}
-                     />
-                      {errors.email && (<FormFeedback>{errors.email.message}</FormFeedback>)}
-                  </InputGroup>
-                </FormGroup>
-                <FormGroup invalid>
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="ni ni-lock-circle-open" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Password" name="password" type="password" 
-                      innerRef={register({required : true, minLength : 6})}
-                      autoComplete="new-password"
-                      invalid={errors.password ?? true}
+                      <span className="btn-inner--text">Google</span>
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardBody className="px-lg-5 py-lg-5">
+                  <div className="text-center text-muted mb-4">
+                    <small>Or sign in with credentials</small>
+                  </div>
+                  <Form role="form" onSubmit={handleSubmit(onSubmit)}>
+                    <FormGroup className="mb-3">
+                      <InputGroup className="input-group-alternative">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="ni ni-email-83"/>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input placeholder="Email" name="email" type="email"
+                               innerRef={register({
+                                 required: {
+                                   value: true,
+                                   message: "Email is required"
+                                 },
+                                 pattern: {
+                                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                   message: "Invalid email address"
+                                 }
+                               })}
+                               autoComplete="new-email"
+                               invalid={errors.email ?? true}
+                        />
+                        {errors.email && (<FormFeedback>{errors.email.message}</FormFeedback>)}
+                      </InputGroup>
+                    </FormGroup>
+                    <FormGroup invalid>
+                      <InputGroup className="input-group-alternative">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="ni ni-lock-circle-open"/>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input placeholder="Password" name="password" type="password"
+                               innerRef={register({
+                                 required: {
+                                   value: true,
+                                   message: "Password is required"
+                                 },
+                                 minLength: {
+                                   value: 6,
+                                   message: "Minimum of six (6) characters is required"
+                                 }
+                               })}
+                               autoComplete="new-password"
+                               invalid={errors.password ?? true}
+                        />
+                        {errors.password && (<FormFeedback invalid>{errors.password.message}</FormFeedback>)}
+                      </InputGroup>
+                    </FormGroup>
+                    <div className="custom-control custom-control-alternative custom-checkbox">
+                      <Input
+                          className="custom-control-input"
+                          id="remember_me"
+                          name={"remember_me"}
+                          type="checkbox"
+                          innerRef={register}
                       />
-                    {errors.password && errors.password.type === "required" && (<FormFeedback invalid> Password is required</FormFeedback>)}
-                    {errors.password && errors.password.type === "minLength" && (<FormFeedback invalid>Minimum of six (6) characters is required</FormFeedback>)}
-                  </InputGroup>
-                </FormGroup>
-                <div className="custom-control custom-control-alternative custom-checkbox">
-                  <input
-                    className="custom-control-input"
-                    id="remember_me"
-                    type="checkbox"
-                    innerRef={register}
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="remember_me"
+                      <label
+                          className="custom-control-label"
+                          htmlFor="remember_me"
+                      >
+                        <span className="text-muted">Remember me</span>
+                      </label>
+                    </div>
+                    <div className="text-center">
+                      { !loading ? (
+                        <Button className="my-4" color="primary" type="submit">
+                          Sign in
+                        </Button> ) : (
+
+                              <Spinner className="my-4" color="primary"  animation="border" variant="light" />
+
+                          )
+                      }
+                    </div>
+                  </Form>
+                </CardBody>
+              </Card>
+              <Row className="mt-3">
+                <Col xs="6">
+                  <a
+                      className="text-light"
+                      href="#pablo"
+                      onClick={e => e.preventDefault()}
                   >
-                    <span className="text-muted">Remember me</span>
-                  </label>
-                </div>
-                <div className="text-center">
-
-                  <Button className="my-4" color="primary" type="submit">
-                    Sign in
-                  </Button>
-
-                </div>
-              </Form>
-            </CardBody>
-          </Card>
-          <Row className="mt-3">
-            <Col xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                <small>Forgot password?</small>
-              </a>
+                    <small>Forgot password?</small>
+                  </a>
+                </Col>
+                <Col className="text-right" xs="6">
+                  <a
+                      className="text-light"
+                      href="#pablo"
+                      onClick={e => e.preventDefault()}
+                  >
+                    <small>Create new account</small>
+                  </a>
+                </Col>
+              </Row>
             </Col>
-            <Col className="text-right" xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                <small>Create new account</small>
-              </a>
-            </Col>
-          </Row>
-        </Col>
-      </>
-    );
+
+          </>
+      );
+    }
 }
 
 export default Login;
