@@ -28,7 +28,7 @@ import {
   CardBody,
   FormGroup,
   Form,
-  FormText,
+  FormFeedback,
   Input,
   InputGroupAddon,
   InputGroupText,
@@ -79,28 +79,38 @@ function Login(){
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" name="email" type="email" innerRef={register({
-                      required : true,
+                    <Input placeholder="Email" name="email" type="email" 
+                   innerRef={register({
+                      required : {
+                        value : true,
+                        message : "Email is required"
+                      },
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                         message: "Invalid email address"
                       }
-                    })}  autoComplete="new-email"/>
+                    })}
+                       autoComplete="new-email"
+                       invalid={errors.email ?? true}
+                     />
+                      {errors.email && (<FormFeedback>{errors.email.message}</FormFeedback>)}
                   </InputGroup>
-                    {errors.email && errors.email.type === "required" && (<FormText color="danger"> Email is required</FormText>)}
-                    {errors.email && errors.email.type === "pattern" && (<FormText color={"danger"}>{errors.email.message}</FormText>)}
                 </FormGroup>
-                <FormGroup>
+                <FormGroup invalid>
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" name="password" type="password" innerRef={register({required : true, minLength : 6})} autoComplete="new-password"/>
+                    <Input placeholder="Password" name="password" type="password" 
+                      innerRef={register({required : true, minLength : 6})}
+                      autoComplete="new-password"
+                      invalid={errors.password ?? true}
+                      />
+                    {errors.password && errors.password.type === "required" && (<FormFeedback invalid> Password is required</FormFeedback>)}
+                    {errors.password && errors.password.type === "minLength" && (<FormFeedback invalid>Minimum of six (6) characters is required</FormFeedback>)}
                   </InputGroup>
-                    {errors.password && errors.password.type === "required" && (<FormText color="danger"> Password is required</FormText>)}
-                    {errors.password && errors.password.type === "minLength" && (<FormText color={"danger"}>Minimum of six (6) characters is required</FormText>)}
                 </FormGroup>
                 <div className="custom-control custom-control-alternative custom-checkbox">
                   <input
