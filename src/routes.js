@@ -23,6 +23,8 @@ import Login from "views/examples/Login.js";
 //import Tables from "views/examples/Tables.js";
 //import Icons from "views/examples/Icons.js";
 
+import Exam from "./layouts/Exam";
+
 var routes = [
   {
     path: "/index",
@@ -30,6 +32,12 @@ var routes = [
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/admin"
+  },
+  {
+    path: "/session",
+    name: "Exam",
+    component: Exam,
+    layout: "/exam"
   },
 /*
   {

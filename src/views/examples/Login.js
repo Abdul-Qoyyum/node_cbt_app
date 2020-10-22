@@ -21,7 +21,7 @@ import { Redirect } from 'react-router-dom';
 
 //react hook form
 import { useForm } from "react-hook-form";
-
+import LoadingButton from "../../components/LoadingButton";
 // reactstrap components
 import {
   Button,
@@ -30,14 +30,13 @@ import {
   CardBody,
   FormGroup,
   Form,
-  FormFeedback,
+  FormText,
   Input,
   InputGroupAddon,
   InputGroupText,
   InputGroup,
   Row,
-  Col,
-  Spinner
+  Col
 } from "reactstrap";
 
 function Login(){
@@ -49,10 +48,13 @@ function Login(){
       setLoading(true);
       axios.post('/api/login',data).then(res => {
         console.log(res);
-        setLoading(false);
+        //grab user here for redux...
+          //localStorage.setItem('D-user',res.data);
+         localStorage.setItem('D-token', data.remember_me ? `${res.headers.token}` : '');
+         setLoading(false);
          setRedirect(true);
       }).catch(err => {
-        setLoading(false);
+         setLoading(false);
          setError("email",{
            type : "manual",
            message : "Invalid Credentials."
@@ -61,7 +63,7 @@ function Login(){
     };
 
     if(redirect){
-      return <Redirect to={"/admin/index"} />
+      return <Redirect to={"/exam"} />
     }else {
       return (
           <>
@@ -114,8 +116,8 @@ function Login(){
                                autoComplete="new-email"
                                invalid={errors.email ?? true}
                         />
-                        {errors.email && (<FormFeedback>{errors.email.message}</FormFeedback>)}
                       </InputGroup>
+                        <FormText color={"danger"}>{errors.email && errors.email.message}</FormText>
                     </FormGroup>
                     <FormGroup invalid>
                       <InputGroup className="input-group-alternative">
@@ -138,8 +140,8 @@ function Login(){
                                autoComplete="new-password"
                                invalid={errors.password ?? true}
                         />
-                        {errors.password && (<FormFeedback invalid>{errors.password.message}</FormFeedback>)}
                       </InputGroup>
+                        <FormText color={"danger"}> {errors.password && errors.password.message}</FormText>
                     </FormGroup>
                     <div className="custom-control custom-control-alternative custom-checkbox">
                       <Input
@@ -157,15 +159,16 @@ function Login(){
                       </label>
                     </div>
                     <div className="text-center">
-                      { !loading ? (
-                        <Button className="my-4" color="primary" type="submit">
-                          Sign in
-                        </Button> ) : (
-
-                              <Spinner className="my-4" color="primary"  animation="border" variant="light" />
-
-                          )
-                      }
+                      <LoadingButton
+                          className="mt-4"
+                          loading={false || loading}
+                          disabled={false}
+                          color={"primary"}
+                          block={true}
+                          outline={false}
+                      >
+                        Sign in
+                      </LoadingButton>
                     </div>
                   </Form>
                 </CardBody>

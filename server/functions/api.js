@@ -31,17 +31,16 @@ db.once('open',() => {
 
     router.route('/api/login')
         .post(validate,(req,res) => {
-          let { email, password } = req.body;
+          let { email, password, remember_me } = req.body;
           User.findByCredentials({email, password}).then(user => {
-            user.generateAuthToken().then( token => {
-              res.header('x-auth',token).status(200).json(user);
+            user.generateAuthToken(remember_me).then( token => {
+              res.header('token',token).status(200).json(user);
             }).catch(err => {
               res.status(500).json(err);
             });
            }).catch(err => {
               res.status(400).json(err);
           });
-
       });
 
     router.route('/api/users')
@@ -50,6 +49,12 @@ db.once('open',() => {
                if (err) return res.status(500).json();
                res.status(200).json(docs);
             });
+        });
+
+    router.route('/api/user/:token')
+        .get((req,res) => {
+            console.log(`token : ${req.params.token}`);
+            res.status(200).send("Successfull");
         });
 
     app.use(router);

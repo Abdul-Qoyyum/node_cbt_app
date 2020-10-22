@@ -59,15 +59,20 @@ UserSchema.methods.toJSON = function(){
 }
 
 
-UserSchema.methods.generateAuthToken = function(){
+UserSchema.methods.generateAuthToken = function(remember_me){
     let user = this;
     let access = "auth";
-    let token = jwt.sign({_id : user._id, password : user.password, access}, 'secret');
+    let token = jwt.sign({
+        _id : user._id,
+        password : user.password,
+        access},
+        'secret',
+        { expiresIn : remember_me ? '60d' : '1d'}
+        );
     user.tokens = [{ access : "auth", token }];
     return user.save().then(res => {
         return res.tokens[0].token;
     }).catch(err => Promise.reject(err));
-
 }
 
 UserSchema.statics.findByToken = function(token){
@@ -75,6 +80,7 @@ UserSchema.statics.findByToken = function(token){
     return user.findOne({ 'tokens.token' : token},(err, doc) => {
         if(err) Promise.reject(err);
         //verify jwt token before returning promise
+        jwt.verify();
         Promise.resolve(doc);
     });
 }
