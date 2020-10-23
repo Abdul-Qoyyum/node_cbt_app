@@ -36,10 +36,16 @@ db.once('open',() => {
             user.generateAuthToken().then( token => {
               res.header('token',token).status(200).json(user);
             }).catch(err => {
-              res.status(500).json(err);
+              res.status(500).json("Oops something went wrong");
             });
            }).catch(err => {
-              res.status(400).json(err);
+              res.status(400).json({
+                  error : {
+                      email : {
+                          message : "Invalid Credentials"
+                      }
+                  }
+              });
           });
       });
 

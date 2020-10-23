@@ -16,12 +16,13 @@
 
 */
 import React, {useState} from "react";
-import axios from 'axios';
+//import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
 //react hook form
 import { useForm } from "react-hook-form";
 import LoadingButton from "../../components/LoadingButton";
+import { loginUser } from "../../actions/authActions";
 // reactstrap components
 import {
   Button,
@@ -39,12 +40,20 @@ import {
   Col
 } from "reactstrap";
 
-function Login(){
-    const {handleSubmit,register,setError,errors} = useForm();
-    const [ redirect, setRedirect ] = useState(false);
-    const [ loading, setLoading ] = useState(false);
+import { connect } from 'react-redux';
+
+
+function Login(props){
+    const {handleSubmit,register,errors} = useForm();
+    const { loading, redirect, loginUser, error } = props;
+
+    //const [ redirect, setRedirect ] = useState(false);
+    //const [ loading, setLoading ] = useState(false);
 
     const onSubmit = data => {
+     console.log(props);
+       loginUser(props);
+    /*
       setLoading(true);
       axios.post('/api/login',data).then(res => {
         console.log(res);
@@ -60,7 +69,10 @@ function Login(){
            message : "Invalid Credentials."
          });
       });
+ */
+
     };
+
 
     if(redirect){
       return <Redirect to={"/exam"} />
@@ -118,6 +130,7 @@ function Login(){
                         />
                       </InputGroup>
                         <FormText color={"danger"}>{errors.email && errors.email.message}</FormText>
+                        {error.email && (<FormText color={"danger"}>{error.email.message}</FormText>)}
                     </FormGroup>
                     <FormGroup invalid>
                       <InputGroup className="input-group-alternative">
@@ -200,4 +213,16 @@ function Login(){
 
 }
 
-export default Login;
+
+const mapStateToProps = state => {
+  let { loading, redirect, error } = state;
+   return {
+     loading,
+     redirect,
+     error
+   }
+}
+
+export default connect(mapStateToProps,{
+  loginUser
+})(Login);
