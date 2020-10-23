@@ -18,7 +18,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-//import axios from 'axios';
 
 import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -27,25 +26,19 @@ import "assets/scss/argon-dashboard-react.scss";
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import ExamLayout from "./layouts/Exam";
+import ProtectedRoute from "./layouts/Protected";
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={props => <AdminLayout {...props} />} />
       <Route path="/auth" render={props => <AuthLayout {...props} />} />
-      <Route path={"/exam"}  render={props => {
-          let token = localStorage.getItem("D-token");
-          return token ? <ExamLayout {...props}/> : <AuthLayout {...props}/>;
- /*
-          if (!token) return  <AuthLayout {...props}/>;
-           axios.get(`/api/user/${token}`)
-               .then(user => <ExamLayout {...props} />)
-               .catch(err => <AuthLayout {...props}/>);
-   */
-      }} />
+
+      <ProtectedRoute path={"/exam"}  component={ExamLayout}/>
       <Redirect from="/" to="/auth/login" />
 {/*      <Redirect from="/" to="/admin/index" /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
 );
+

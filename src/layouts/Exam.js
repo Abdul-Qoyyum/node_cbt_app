@@ -6,6 +6,8 @@ import {
     Card
 } from 'reactstrap';
 
+//import Protected from './Protected';
+
 function Exam() {
     return(
         <>
@@ -44,4 +46,5 @@ function Exam() {
     )
 }
 
+//export default Protected(Exam);
 export default Exam;

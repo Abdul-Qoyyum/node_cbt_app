@@ -59,15 +59,14 @@ UserSchema.methods.toJSON = function(){
 }
 
 
-UserSchema.methods.generateAuthToken = function(remember_me){
+UserSchema.methods.generateAuthToken = function(){
     let user = this;
     let access = "auth";
     let token = jwt.sign({
         _id : user._id,
         password : user.password,
         access},
-        'secret',
-        { expiresIn : remember_me ? '60d' : '1d'}
+        'secret' //remember to change into .env
         );
     user.tokens = [{ access : "auth", token }];
     return user.save().then(res => {
@@ -75,15 +74,17 @@ UserSchema.methods.generateAuthToken = function(remember_me){
     }).catch(err => Promise.reject(err));
 }
 
+
 UserSchema.statics.findByToken = function(token){
     let user = this;
     return user.findOne({ 'tokens.token' : token},(err, doc) => {
         if(err) Promise.reject(err);
         //verify jwt token before returning promise
-        jwt.verify();
+        //jwt.verify();
         Promise.resolve(doc);
     });
 }
+
 
 UserSchema.statics.findByCredentials = function({ email, password}){
   let model = this;
@@ -97,5 +98,6 @@ UserSchema.statics.findByCredentials = function({ email, password}){
      });
    });
 }
+
 
 module.exports = mongoose.model("User",UserSchema);

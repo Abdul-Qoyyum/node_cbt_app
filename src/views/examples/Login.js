@@ -50,7 +50,7 @@ function Login(){
         console.log(res);
         //grab user here for redux...
           //localStorage.setItem('D-user',res.data);
-         localStorage.setItem('D-token', data.remember_me ? `${res.headers.token}` : '');
+         //localStorage.setItem('D-token', data.remember_me ? `${res.headers.token}` : '');
          setLoading(false);
          setRedirect(true);
       }).catch(err => {
@@ -64,7 +64,7 @@ function Login(){
 
     if(redirect){
       return <Redirect to={"/exam"} />
-    }else {
+    }
       return (
           <>
             <Col lg="5" md="7">
@@ -197,7 +197,7 @@ function Login(){
 
           </>
       );
-    }
+
 }
 
 export default Login;
