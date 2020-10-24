@@ -12,7 +12,6 @@ export function loginUser(data) {
            type : FETCH_USER_PENDING
         });
         axios.post('/api/login',data).then(res => {
-         console.log(`res : ${res}`);
           dispatch({
               type: FETCH_USER_FUFILLED,
               payload: res.data
@@ -20,7 +19,11 @@ export function loginUser(data) {
         }).catch(err => {
             dispatch({
                 type : FETCH_USER_REJECTED,
-                payload: err
+                payload: {
+                    email : {
+                        message : "Invalid Credentials"
+                    }
+                }
             })
         })
     }

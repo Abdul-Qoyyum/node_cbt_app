@@ -57,10 +57,9 @@ db.once('open',() => {
             });
         });
 
-    router.route('/api/user/:token')
-        .get((req,res) => {
-            console.log(`token : ${req.params.token}`);
-            res.status(200).json("Successfull");
+    router.route('/api/user')
+        .get(authenticate,(req,res) => {
+            res.status(200).json(req.user);
         });
 
     app.use(router);

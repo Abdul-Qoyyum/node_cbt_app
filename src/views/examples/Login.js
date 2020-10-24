@@ -22,13 +22,14 @@ import { connect } from 'react-redux';
 
 //react hook form
 import { useForm } from "react-hook-form";
+
 import LoadingButton from "../../components/LoadingButton";
-import { loginUser } from "../../actions/authActions";
+//actions
+import { loginUser } from "../../actions";
+
 // reactstrap components
 import {
-  Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -44,36 +45,10 @@ import {
 
 
 
+
 function Login(props){
     const {handleSubmit,register,errors} = useForm();
-    const { loading, redirect, loginUser } = props;
-
-    //const [ redirect, setRedirect ] = useState(false);
-    //const [ loading, setLoading ] = useState(false);
-
-    const onSubmit = data => {
-     console.log(props);
-       loginUser(data);
-    /*
-      setLoading(true);
-      axios.post('/api/login',data).then(res => {
-        console.log(res);
-        //grab user here for redux...
-          //localStorage.setItem('D-user',res.data);
-         //localStorage.setItem('D-token', data.remember_me ? `${res.headers.token}` : '');
-         setLoading(false);
-         setRedirect(true);
-      }).catch(err => {
-         setLoading(false);
-         setError("email",{
-           type : "manual",
-           message : "Invalid Credentials."
-         });
-      });
- */
-
-    };
-
+    const { loading, redirect, loginUser, error } = props;
 
     if(redirect){
       return <Redirect to={"/exam"} />
@@ -82,32 +57,13 @@ function Login(props){
           <>
             <Col lg="5" md="7">
               <Card className="bg-secondary shadow border-0">
-                <CardHeader className="bg-transparent pb-5">
-                  <div className="text-muted text-center mt-2 mb-3">
-                    <small>Sign in with</small>
-                  </div>
-                  <div className="btn-wrapper text-center">
-                    <Button
-                        className="btn-neutral btn-icon"
-                        color="default"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                    >
-                  <span className="btn-inner--icon">
-                    <img
-                        alt="..."
-                        src={require("assets/img/icons/common/google.svg")}
-                    />
-                  </span>
-                      <span className="btn-inner--text">Google</span>
-                    </Button>
-                  </div>
-                </CardHeader>
                 <CardBody className="px-lg-5 py-lg-5">
+
                   <div className="text-center text-muted mb-4">
-                    <small>Or sign in with credentials</small>
+                    <small>Sign in with credentials</small>
                   </div>
-                  <Form role="form" onSubmit={handleSubmit(onSubmit)}>
+
+                  <Form role="form" onSubmit={handleSubmit(loginUser)}>
                     <FormGroup className="mb-3">
                       <InputGroup className="input-group-alternative">
                         <InputGroupAddon addonType="prepend">
@@ -127,11 +83,10 @@ function Login(props){
                                  }
                                })}
                                autoComplete="new-email"
-                               invalid={errors.email ?? true}
                         />
                       </InputGroup>
-                        <FormText color={"danger"}>{errors.email && errors.email.message}</FormText>
-                        {/* error.email && (<FormText color={"danger"}>{error.email.message}</FormText>) */}
+                        {errors.email && (<FormText color={"danger"}>{errors.email.message}</FormText>)}
+                        { error.email.message && (<FormText color={"danger"}>{error.email.message}</FormText>) }
                     </FormGroup>
                     <FormGroup invalid>
                       <InputGroup className="input-group-alternative">
@@ -152,10 +107,9 @@ function Login(props){
                                  }
                                })}
                                autoComplete="new-password"
-                               invalid={errors.password ?? true}
                         />
                       </InputGroup>
-                        <FormText color={"danger"}> {errors.password && errors.password.message}</FormText>
+                       {errors.password &&  (<FormText color={"danger"}>{errors.password.message}</FormText>)}
                     </FormGroup>
                     <div className="custom-control custom-control-alternative custom-checkbox">
                       <Input
@@ -175,7 +129,7 @@ function Login(props){
                     <div className="text-center">
                       <LoadingButton
                           className="mt-4"
-                          loading={false || loading}
+                          loading={loading}
                           disabled={false}
                           color={"primary"}
                           block={true}
@@ -216,7 +170,7 @@ function Login(props){
 
 
 const mapStateToProps = state => {
-  let { loading, redirect, error } = state;
+  let { loading, redirect, error } = state.authStore;
    return {
      loading,
      redirect,

@@ -4,7 +4,7 @@ import {
     FETCH_USER_REJECTED
 } from "../types";
 
-const initialState = {
+const defaultState = {
     user : {},
     loading: false,
     redirect : false,
@@ -15,7 +15,7 @@ const initialState = {
     }
 }
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = defaultState, action) => {
     switch (action.type) {
         case FETCH_USER_PENDING:
             return {...state, loading: true, redirect: false};

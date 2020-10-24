@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 const UserSchema = new mongoose.Schema({
@@ -64,9 +65,9 @@ UserSchema.methods.generateAuthToken = function(){
     let access = "auth";
     let token = jwt.sign({
         _id : user._id,
-        password : user.password,
+        email : user.email,
         access},
-        'secret' //remember to change into .env
+        process.env.JWT_SECRET
         );
     user.tokens = [{ access : "auth", token }];
     return user.save().then(res => {
@@ -76,13 +77,12 @@ UserSchema.methods.generateAuthToken = function(){
 
 
 UserSchema.statics.findByToken = function(token){
-    let user = this;
-    return user.findOne({ 'tokens.token' : token},(err, doc) => {
-        if(err) Promise.reject(err);
-        //verify jwt token before returning promise
-        //jwt.verify();
-        Promise.resolve(doc);
-    });
+    return this.findOne({'tokens.token' : token}).then(user => {
+       return jwt.verify(token, process.env.JWT_SECRET,(err, decoded) => {
+           if (err) return Promise.reject(err);
+           return Promise.resolve(decoded);
+       });
+    }).catch(err => Promise.reject(err));
 }
 
 
