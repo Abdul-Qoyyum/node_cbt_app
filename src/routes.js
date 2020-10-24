@@ -23,6 +23,8 @@ import Login from "views/examples/Login.js";
 //import Tables from "views/examples/Tables.js";
 //import Icons from "views/examples/Icons.js";
 
+import Questions from "./views/examples/Questions";
+
 import Exam from "./layouts/Exam";
 
 var routes = [
@@ -36,6 +38,7 @@ var routes = [
   {
     path: "/session",
     name: "Exam",
+    icon: "ni ni-planet text-blue",
     component: Exam,
     layout: "/exam"
   },
@@ -70,7 +73,8 @@ var routes = [
     component: Tables,
     layout: "/admin"
   },
-*/
+
+ */
   {
     path: "/login",
     name: "Login",
@@ -84,6 +88,15 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth"
+  },
+
+
+  {
+    path: "/question",
+    name: "Set Questions",
+    icon: "ni ni-tv-2 text-primary",
+    component: Questions,
+    layout: "/admin"
   }
 ];
 export default routes;

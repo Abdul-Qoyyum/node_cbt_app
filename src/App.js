@@ -37,6 +37,7 @@ class App extends Component{
                         component={ExamLayout}
                         isAuthenticated={this.state.auth}
                     />
+
                     <Redirect from="/" to="/auth/login" />
                     {/*      <Redirect from="/" to="/admin/index" /> */}
                 </Switch>

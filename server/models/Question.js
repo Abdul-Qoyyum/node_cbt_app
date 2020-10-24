@@ -16,4 +16,9 @@ const QuestionSchema =  new mongoose.Schema({
     }
 });
 
+QuestionSchema.statics.createOption = function(option){
+   let question = this;
+
+}
+
 module.exports =  mongoose.model('Question',QuestionSchema);
