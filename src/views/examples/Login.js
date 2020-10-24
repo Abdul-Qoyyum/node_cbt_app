@@ -15,9 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {useState} from "react";
+import React from "react";
 //import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 //react hook form
 import { useForm } from "react-hook-form";
@@ -40,19 +41,19 @@ import {
   Col
 } from "reactstrap";
 
-import { connect } from 'react-redux';
+
 
 
 function Login(props){
     const {handleSubmit,register,errors} = useForm();
-    const { loading, redirect, loginUser, error } = props;
+    const { loading, redirect, loginUser } = props;
 
     //const [ redirect, setRedirect ] = useState(false);
     //const [ loading, setLoading ] = useState(false);
 
     const onSubmit = data => {
      console.log(props);
-       loginUser(props);
+       loginUser(data);
     /*
       setLoading(true);
       axios.post('/api/login',data).then(res => {
@@ -130,7 +131,7 @@ function Login(props){
                         />
                       </InputGroup>
                         <FormText color={"danger"}>{errors.email && errors.email.message}</FormText>
-                        {error.email && (<FormText color={"danger"}>{error.email.message}</FormText>)}
+                        {/* error.email && (<FormText color={"danger"}>{error.email.message}</FormText>) */}
                     </FormGroup>
                     <FormGroup invalid>
                       <InputGroup className="input-group-alternative">

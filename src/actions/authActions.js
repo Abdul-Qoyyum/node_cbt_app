@@ -6,13 +6,13 @@ import {
     FETCH_USER_REJECTED
 } from "../types";
 
-export function loginUser(setError, data) {
+export function loginUser(data) {
     return dispatch => {
         dispatch({
            type : FETCH_USER_PENDING
         });
         axios.post('/api/login',data).then(res => {
-            console.log(`res : ${res}`);
+         console.log(`res : ${res}`);
           dispatch({
               type: FETCH_USER_FUFILLED,
               payload: res.data

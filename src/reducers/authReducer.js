@@ -9,7 +9,9 @@ const initialState = {
     loading: false,
     redirect : false,
     error : {
-        email : { }
+      email : {
+       message : ""
+      }
     }
 }
 
