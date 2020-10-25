@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import {
   Container,
@@ -10,11 +11,14 @@ import {
   Input
  } from 'reactstrap';
 
-function Questions() {
+import { setOption } from "../../actions";
+
+function Questions(props) {
+    const { setOption, A, B, C, D } = props;
+
     return(
      <Container fluid>
       <div className={"mt-7"}>
-
        <Row>
          <Col md={"6"}>
          <Card>
@@ -22,10 +26,10 @@ function Questions() {
            <h2>Set Options</h2>
           </CardHeader>
           <CardBody>
-           <Input className={"mb-2"} type={"text"} name={"A"} />
-           <Input className={"mb-2"} type={"text"} name={"B"} />
-           <Input className={"mb-2"} type={"text"} name={"C"} />
-           <Input className={"mb-2"} type={"text"} name={"D"} />
+           <Input className={"mb-2"} type={"text"}  name={"A"} onChange={setOption} />
+           <Input className={"mb-2"} type={"text"} name={"B"} onChange={setOption} />
+           <Input className={"mb-2"} type={"text"} name={"C"} onChange={setOption} />
+           <Input className={"mb-2"} type={"text"} name={"D"} onChange={setOption} />
           </CardBody>
          </Card>
         </Col>
@@ -46,4 +50,10 @@ function Questions() {
     );
 }
 
-export default Questions;
+
+const mapStateToProps = state => {
+    const { options, answer } = state.questionStore;
+    const { A, B, C, D} = options;
+    return { A, B, C, D, answer}
+}
+export default connect(mapStateToProps,{ setOption })(Questions);

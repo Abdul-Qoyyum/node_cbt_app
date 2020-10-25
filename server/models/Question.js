@@ -17,7 +17,7 @@ const QuestionSchema =  new mongoose.Schema({
 });
 
 QuestionSchema.statics.createOption = function(option){
-   let question = this;
+  // let question = this;
 
 }
 
