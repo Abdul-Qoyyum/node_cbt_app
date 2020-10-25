@@ -10,7 +10,7 @@ const initialState = {
     loading : false
 }
 
-export const examReducer = (state = initialState, action) => {
+export const examSessionReducer = (state = initialState, action) => {
    switch (action.type) {
        case FETCH_QUESTIONS_PENDING:
            return {...state, loading: true};

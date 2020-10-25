@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
-import { examReducer } from "./examReducer";
+import { examSessionReducer } from "./examSessionReducer";
 import { authReducer } from "./authReducer";
 
 const rootReducer = combineReducers({
    authStore : authReducer,
-   examStore : examReducer
+   examSessionStore : examSessionReducer
 });
 
 export default rootReducer;
