@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 import { examSessionReducer } from "./examSessionReducer";
 import { authReducer } from "./authReducer";
-import { QuestionReducer } from "./QuestionReducer";
+import { questionReducer } from "./questionReducer";
 
 const rootReducer = combineReducers({
    authStore : authReducer,
-   questionStore : QuestionReducer,
+   questionStore : questionReducer,
    examSessionStore : examSessionReducer
 });
 

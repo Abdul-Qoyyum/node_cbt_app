@@ -1,5 +1,10 @@
 import React from 'react';
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { connect } from 'react-redux';
+
+//My customised adapter for CKEditor...
+import { MyCustomAdapter } from '../../plugins';
 
 import {
   Container,
@@ -8,52 +13,136 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Input
+  Input,
+  Form,
+  FormGroup,
+  Button
  } from 'reactstrap';
 
-import { setOption } from "../../actions";
+
+
+import {
+     setQuestion,
+     setOption,
+     setAnswer,
+     uploadQuestion
+       } from "../../actions";
 
 function Questions(props) {
-    const { setOption, A, B, C, D } = props;
+    const {
+       A,
+       B,
+       C,
+       D,
+       body,
+       answer,
+       setQuestion,
+       setOption,
+       setAnswer,
+       uploadQuestion
+         } = props;
+
+    handleSubmit = (data) => {
+     console.log(`Data : ${data}`);
+//upload All Questions....
+     uploadQuestion(question);
+
+    }
 
     return(
-     <Container fluid>
-      <div className={"mt-7"}>
+     <>
+     <div style={{
+        minHeight : "80px",
+        backgroundColor: "green"
+     }}>
+     </div>
+
+    {/* Page Content */}
+     <Container className={"header pb-8 pt-5 pt-lg-8 d-flex align-items-center"}  fluid>
+
+       <Card className={"bg-secondary shadow"}>
+       <Form onSubmit={handleSubmit}  enctype="multipart/form-data">
+        <CKEditor
+          editor={ClassicEditor}
+          data={body}
+          onInit ={editor => {
+            editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+               return new MyCustomAdapter(loader);
+             }
+           }}
+          onChange={(event, editor) => {
+            let data = editor.getData();
+            setQuestion(data);
+          }}
+        />
+
        <Row>
          <Col md={"6"}>
-         <Card>
-          <CardHeader>
-           <h2>Set Options</h2>
-          </CardHeader>
+
+{/*          <CardHeader className={"bg-white border-0"}> */}
+           <h2>Options</h2>
+{/*          </CardHeader> */}
           <CardBody>
-           <Input className={"mb-2"} type={"text"}  name={"A"} onChange={setOption} />
-           <Input className={"mb-2"} type={"text"} name={"B"} onChange={setOption} />
-           <Input className={"mb-2"} type={"text"} name={"C"} onChange={setOption} />
-           <Input className={"mb-2"} type={"text"} name={"D"} onChange={setOption} />
+
+           <FormGroup>
+            <Input type={"text"}  className={"form-control-alternative mb-2"}  name={"A"} onChange={setOption}  value={A} />
+            <Input type={"radio"} name={"answer"}  onClick={setAnswer}  value={A}  />
+           </FormGroup>
+
+           <FormGroup>
+            <Input className={"form-control-alternative mb-2"} type={"text"} name={"B"} onChange={setOption}  value={B} />
+            <Input type={"radio"} name={"answer"} onClick={setAnswer}  value={B}  />
+           </FormGroup>
+
+           <FormGroup>
+            <Input  className={"form-control-alternative mb-2"}  type={"text"} name={"C"} onChange={setOption} value={C}  />
+            <Input type={"radio"} name={"answer"} onClick={setAnswer}  value={C}  />
+           </FormGroup>
+
+           <FormGroup>
+            <Input className={"form-control-alternative mb-2"} type={"text"} name={"D"} onChange={setOption} value={D} />
+            <Input type={"radio"} name={"answer"} onClick={setAnswer} value={D} />
+           </FormGroup>
+
           </CardBody>
-         </Card>
+
         </Col>
+
+
         <Col md={"6"}>
-         <Card>
-           <CardHeader>
-             <h2>Choosen Answer</h2>
-           </CardHeader>
+         <Card className={"bg-secondary shadow"}>
+{/*           <CardHeader className={"bg-white border-0"}> */}
+             <h2>Answer</h2>
+{/*           </CardHeader> */}
            <CardBody>
-           <Input type={"text"} name={"answer"} />
+           <Input type={"text"} className={"form-control-alternative mb-2"}   name={"answer"} value={answer} disabled />
            </CardBody>
          </Card>
         </Col>
+         <hr />
        </Row>
 
-      </div>
+    <div className={"d-flex justify-content-end"}>
+         <Button className={"btn btn-primary"}>Save</Button>
+    </div>
+       </Form>
+       </Card>
      </Container>
+     </>
     );
 }
 
 
 const mapStateToProps = state => {
-    const { options, answer } = state.questionStore;
+    const { question } = state.questionStore;
+    const { body, options, answer } = question;
     const { A, B, C, D} = options;
-    return { A, B, C, D, answer}
+    return { A, B, C, D, question, body, answer}
 }
-export default connect(mapStateToProps,{ setOption })(Questions);
+
+export default connect(mapStateToProps,{
+       setQuestion,
+       setOption,
+       setAnswer,
+       uploadQuestion
+ })(Questions);
