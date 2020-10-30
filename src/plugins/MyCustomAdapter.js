@@ -13,11 +13,11 @@ export class MyCustomAdapter{
             axios({
                 url : '/api/ques/img/save',
                 method : 'post',
-                data,
-                headers : {
-                    'Content-type' : 'multipart/form-data'
+                data
+              /*  headers : {
+                    'Content-Type' : 'multipart/form-data'
                 },
-                withCredentials : false
+                withCredentials : true */
             })
                 .then(res => {
                     console.log(res);

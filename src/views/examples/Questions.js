@@ -61,7 +61,7 @@ function Questions(props) {
      <Container className={"header pb-8 pt-5 pt-lg-8 d-flex align-items-center"}  fluid>
 
        <Card className={"bg-secondary shadow"}>
-       <Form onSubmit={handleSubmit}  enctype="multipart/form-data">
+       <Form onSubmit={handleSubmit}  encType="multipart/form-data">
         <CKEditor
           editor={ClassicEditor}
           data={body}

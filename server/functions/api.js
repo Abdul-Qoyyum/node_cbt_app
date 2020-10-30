@@ -32,9 +32,8 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'EMS/questions',
-//    format: ['png','jpeg'] // supports promises as well
-//    resource_type : 'image'
-  },
+    allowedFormats: ['png','jpg']
+  }
 });
 
 const parser = multer({storage : storage});
@@ -90,16 +89,16 @@ db.once('open',() => {
             res.status(200).json(req.user);
         });
 
-    router.route('/api/ques/img/save')
-        .post(parser.any(),(req,res) => {
-/*
+    //router.route('/api/ques/img/save')
+        app.post('/api/ques/img/save',parser.single('upload'),function(err,req,res,next){
+
         console.log(`The unexpected field is ${err.field}`);
         console.log(`file : ${req.file}`);
         console.log(`Upload : ${req.upload}`);
-  */
-        console.log(`file : ${req.file}`);
+
+//        console.log(`file : ${req.file}`);
         res.status(200).json({
-            url : req.file.path
+            url : req.file
           });
 
 
