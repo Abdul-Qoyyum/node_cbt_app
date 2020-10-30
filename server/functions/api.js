@@ -2,8 +2,10 @@ const express = require('express');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
 //const Busboy = require('busboy');
-const multiparty = require('multiparty');
+//const multiparty = require('multiparty');
 
 require("dotenv").config();
 
@@ -25,6 +27,17 @@ cloudinary.config({
   api_secret : process.env.CLOUDINARY_API_SECRET
 });
 
+//Parser
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'EMS/questions',
+//    format: ['png','jpeg'] // supports promises as well
+//    resource_type : 'image'
+  },
+});
+
+const parser = multer({storage : storage});
 
 
 db.on('error',console.error.bind(console, 'Connection Error'));
@@ -78,8 +91,19 @@ db.once('open',() => {
         });
 
     router.route('/api/ques/img/save')
-        .post((req,res,next) => {
+        .post(parser.any(),(req,res) => {
+/*
+        console.log(`The unexpected field is ${err.field}`);
+        console.log(`file : ${req.file}`);
+        console.log(`Upload : ${req.upload}`);
+  */
+        console.log(`file : ${req.file}`);
+        res.status(200).json({
+            url : req.file.path
+          });
 
+
+/*
             const form = new multiparty.Form();
             form.parse(req, (err, fields, files) => {
                 if (err) {
@@ -88,7 +112,8 @@ db.once('open',() => {
                 }
                 console.log(files);
                 cloudinary.uploader.upload(files.upload[0].path,{
-                    folder : 'EMS/questions'
+                    folder : 'EMS/questions',
+                    resource_type : 'image'
                 },function(error,result){
                     console.log(error);
                     if(error) return res.status(500).json(error);
@@ -98,6 +123,9 @@ db.once('open',() => {
                     });
                 });
             });
+
+*/
+
 
 /*
           const busboy = new Busboy({headers : req.headers});

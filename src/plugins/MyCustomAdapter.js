@@ -10,7 +10,6 @@ export class MyCustomAdapter{
         return new Promise( (resolve,reject) => {
             const data = new FormData();
             data.append('upload',uploadedFile);
-            console.log(`Data : ${JSON.stringify(data)}`);
             axios({
                 url : '/api/ques/img/save',
                 method : 'post',
