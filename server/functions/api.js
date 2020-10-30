@@ -2,6 +2,8 @@ const express = require('express');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
+//const Busboy = require('busboy');
+const multiparty = require('multiparty');
 
 require("dotenv").config();
 
@@ -76,18 +78,46 @@ db.once('open',() => {
         });
 
     router.route('/api/ques/img/save')
-        .post((req,res) => {
-         console.log(req.body);
-         cloudinary.uploader.upload(req.body.file,{
-           folder : 'EMS/questions'
-         },function(error,result){
-          if(error) return res.status(500).json(error);
-          let { secure_url } = result;
-          res.status(200).json({
-             url : secure_url
+        .post((req,res,next) => {
+
+            const form = new multiparty.Form();
+            form.parse(req, (err, fields, files) => {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                console.log(files);
+                cloudinary.uploader.upload(files.upload[0].path,{
+                    folder : 'EMS/questions'
+                },function(error,result){
+                    console.log(error);
+                    if(error) return res.status(500).json(error);
+                    let { secure_url } = result;
+                    res.status(200).json({
+                        url : secure_url
+                    });
+                });
             });
+
+/*
+          const busboy = new Busboy({headers : req.headers});
+          busboy.on('file',function(fieldname,file,filename,encoding,mimetype){
+
+              cloudinary.uploader.upload(file,{
+                  folder : 'EMS/questions'
+              },function(error,result){
+                  console.log(error);
+                  if(error) return res.status(500).json(error);
+                  let { secure_url } = result;
+                  res.status(200).json({
+                      url : secure_url
+                  });
+              });
+
+
           });
-         });
+*/
+        });
 
     app.use(router);
 

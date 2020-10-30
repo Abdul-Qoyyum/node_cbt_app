@@ -11,7 +11,7 @@ import {
   Row,
   Col,
   Card,
-  CardHeader,
+ // CardHeader,
   CardBody,
   Input,
   Form,
@@ -36,17 +36,17 @@ function Questions(props) {
        D,
        body,
        answer,
+       question,
        setQuestion,
        setOption,
        setAnswer,
        uploadQuestion
          } = props;
 
-    handleSubmit = (data) => {
+    let handleSubmit = (data) => {
      console.log(`Data : ${data}`);
-//upload All Questions....
+     //upload Question...
      uploadQuestion(question);
-
     }
 
     return(

@@ -6,18 +6,37 @@ export class MyCustomAdapter{
   }
 
   upload(){
-    let data = new FormData();
-    data.append('file',this.loader.file);
+    return this.loader.file.then(uploadedFile => {
+        return new Promise( (resolve,reject) => {
+            const data = new FormData();
+            data.append('upload',uploadedFile);
+            console.log(`Data : ${JSON.stringify(data)}`);
+            axios({
+                url : '/api/ques/img/save',
+                method : 'post',
+                data,
+                headers : {
+                    'Content-type' : 'multipart/form-data'
+                },
+                withCredentials : false
+            })
+                .then(res => {
+                    console.log(res);
+                    if(res.data.result === 'success'){
+                        resolve({
+                            default : res.data.url
+                        })
+                    }else{
+                        reject(res.data.message);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    reject("Unable to upload file");
+                });
 
-    return axios.post('/api/ques/img/save',data)
-           .then(res => {
-             console.log(res);
-             return res.data;
-           })
-           .catch(err => {
-            console.log(err);
-            return err;
-          });
+        });
+    });
    }
 
 

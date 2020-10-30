@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/cbt',{
+require("dotenv").config();
+
+mongoose.connect(process.env.MONGO_URI,{
   useNewUrlParser : true,
   useUnifiedTopology: true });
 module.exports = mongoose.connection;
