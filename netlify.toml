@@ -7,3 +7,6 @@
  from = "/api/*"
  to = "/.netlify/functions/api"
  status = 301
+
+[[plugins]]
+ package = "serverless-apigw-binary"

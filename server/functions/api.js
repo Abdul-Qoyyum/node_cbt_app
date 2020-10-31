@@ -2,10 +2,8 @@ const express = require('express');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const multer = require('multer');
-//const Busboy = require('busboy');
-//const multiparty = require('multiparty');
+//const { CloudinaryStorage } = require('multer-storage-cloudinary');
+//const multer = require('multer');
 
 require("dotenv").config();
 
@@ -17,27 +15,35 @@ const { authenticate,
 
 const app = express();
 const router = express.Router();
-router.use(bodyParser.urlencoded({extended : false}));
+
+router.use(bodyParser.urlencoded({
+   extended : false,
+   type : 'multipart/form-data'
+}));
+
 router.use(bodyParser.json());
 
 //Cloudinary Configurations
+/*
 cloudinary.config({
   cloud_name : process.env.CLOUDINARY_CLOUD_NAME,
   api_key :  process.env.CLOUDINARY_API_KEY,
   api_secret : process.env.CLOUDINARY_API_SECRET
 });
 
-//Parser
+
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary,
   params: {
     folder: 'EMS/questions',
-    allowedFormats: ['png','jpg']
+    allowedFormats: ['png','jpg'],
+    resource_type : 'image'
   }
 });
 
-const parser = multer({storage : storage});
 
+const parser = multer({storage});
+*/
 
 db.on('error',console.error.bind(console, 'Connection Error'));
 db.once('open',() => {
@@ -54,6 +60,7 @@ db.once('open',() => {
          res.status(500).json(err);
        });
      });
+
 
     router.route('/api/login')
         .post(validate,(req,res) => {
@@ -75,6 +82,7 @@ db.once('open',() => {
           });
       });
 
+
     router.route('/api/users')
         .get(authenticate,(req, res) => {
             User.find({},(err,docs)=>{
@@ -83,68 +91,47 @@ db.once('open',() => {
             });
         });
 
-//user route
+
     router.route('/api/user')
         .get(authenticate,(req,res) => {
             res.status(200).json(req.user);
         });
 
-    //router.route('/api/ques/img/save')
-        app.post('/api/ques/img/save',parser.single('upload'),function(err,req,res,next){
 
-        console.log(`The unexpected field is ${err.field}`);
-        console.log(`file : ${req.file}`);
-        console.log(`Upload : ${req.upload}`);
-
-//        console.log(`file : ${req.file}`);
+/*
+    router.route('/api/ques/img/save')
+     .post(parser.single("upload"),function(req,res){
+        console.log(`file : ${JSON.stringify(req.file)}`);;
         res.status(200).json({
-            url : req.file
+            url : req.file.path
           });
-
-
-/*
-            const form = new multiparty.Form();
-            form.parse(req, (err, fields, files) => {
-                if (err) {
-                    next(err);
-                    return;
-                }
-                console.log(files);
-                cloudinary.uploader.upload(files.upload[0].path,{
-                    folder : 'EMS/questions',
-                    resource_type : 'image'
-                },function(error,result){
-                    console.log(error);
-                    if(error) return res.status(500).json(error);
-                    let { secure_url } = result;
-                    res.status(200).json({
-                        url : secure_url
-                    });
-                });
-            });
-
-*/
-
-
-/*
-          const busboy = new Busboy({headers : req.headers});
-          busboy.on('file',function(fieldname,file,filename,encoding,mimetype){
-
-              cloudinary.uploader.upload(file,{
-                  folder : 'EMS/questions'
-              },function(error,result){
-                  console.log(error);
-                  if(error) return res.status(500).json(error);
-                  let { secure_url } = result;
-                  res.status(200).json({
-                      url : secure_url
-                  });
-              });
-
-
-          });
-*/
         });
+*/
+
+//route for signing cloudinary
+//image upload credentials
+    router.route('/api/cloud/sign')
+      .get((req,res) => {
+    try{
+      // Get the timestamp in seconds
+       let timestamp = Math.round((new Date).getTime()/1000);
+      //Get the upload_preset
+       let upload_preset = process.env.CLOUDINARY_UPLOAD_PRESET; 
+      // Get the signature
+       const signature = cloudinary.utils.api_sign_request({
+         timestamp,
+         upload_preset
+        },process.env.CLOUDINARY_API_SECRET);
+        res.status(200).json({
+          timestamp,
+          upload_preset,
+          signature
+         });
+       }catch(e){
+         res.status(500).json(e);
+       }
+
+      });
 
     app.use(router);
 
@@ -152,6 +139,8 @@ db.once('open',() => {
 
 
 
-//app.listen(3000,() => console.log("App is listening on port 3000"));
+//app.listen(9000,() => console.log("App is listening on port 9000"));
 
-exports.handler =  serverless(app);
+exports.handler =  serverless(app,{
+   binary : ["application/json","multipart/form-data","image/*"]
+});
