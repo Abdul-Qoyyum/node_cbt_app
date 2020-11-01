@@ -8,7 +8,11 @@ const cloudinary = require('cloudinary').v2;
 require("dotenv").config();
 
 const db = require('../db');
-const { User } = require('../models');
+const {
+        User,
+        Question
+       } = require('../models');
+
 const { authenticate,
         validate
        } = require('../middlewares');
@@ -16,11 +20,7 @@ const { authenticate,
 const app = express();
 const router = express.Router();
 
-router.use(bodyParser.urlencoded({
-   extended : false,
-   type : 'multipart/form-data'
-}));
-
+router.use(bodyParser.urlencoded({extended : false}));
 router.use(bodyParser.json());
 
 //Cloudinary Configurations
@@ -130,8 +130,17 @@ db.once('open',() => {
        }catch(e){
          res.status(500).json(e);
        }
-
       });
+
+
+
+    router.route('/api/ques/upload')
+        .post((req,res) => {
+           console.log(`Req : ${JSON.stringify(req.body)}`);
+           //const question = new Question();
+            res.status(200).json({});
+        });
+
 
     app.use(router);
 

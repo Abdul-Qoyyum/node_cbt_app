@@ -1,24 +1,20 @@
 const mongoose = require("mongoose");
 
 const QuestionSchema =  new mongoose.Schema({
-   question : {
+   body : {
        type : String,
        required : true,
    },
-    options : [],
+    options : Object,
     answer : {
        type : String,
        required : true
     },
     _creator : {
-       type: String,
-        required : true
+       type: mongoose.Schema.Types.ObjectId,
+       ref : "User",
+       required : true
     }
 });
-
-QuestionSchema.statics.createOption = function(option){
-  // let question = this;
-
-}
 
 module.exports =  mongoose.model('Question',QuestionSchema);

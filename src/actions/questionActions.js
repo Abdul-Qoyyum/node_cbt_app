@@ -3,8 +3,10 @@ import axios from 'axios';
 import {
     SET_QUESTION,
     SET_OPTION,
-    SET_ANSWER
-
+    SET_ANSWER,
+    UPLOAD_QUESTION_SUCCESS,
+    UPLOAD_QUESTION_PENDING,
+    UPLOAD_QUESTION_FAILED
     } from "../types";
 
 export const setQuestion = (data) => {
@@ -38,10 +40,19 @@ export const setAnswer = (e) => {
 
 export const uploadQuestion = question => {
    return dispatch => {
-       axios.post('/api/ques/save',question).then(res => {
-
+       dispatch({ type : UPLOAD_QUESTION_PENDING });
+       axios.post('/api/ques/upload',question).then(res => {
+         console.log(`Saved : ${res.data}`);
+         dispatch({
+            type : UPLOAD_QUESTION_SUCCESS,
+            payload : res.data
+         });
        }).catch(err => {
-
+         console.log(err);
+         dispatch({
+             type : UPLOAD_QUESTION_FAILED,
+             payload : err
+         });
        });
     }
 }

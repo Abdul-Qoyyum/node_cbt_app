@@ -15,7 +15,6 @@
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
     "cloudinary": "^1.23.0",
-    "cloudinary-core": "^2.11.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.6",
@@ -64,6 +63,7 @@
     "start:lambda": "netlify-lambda serve server/functions",
     "build:lambda": "netlify-lambda build server/functions",
     "server": "node server/functions/api",
+    "seed": "node server/seed",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

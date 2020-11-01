@@ -32,8 +32,6 @@ export class MyCustomAdapter{
          }).catch(err => {
             reject("Unable to upload file");
          });
-
-
        }).catch(err => {
           reject('Unable to upload file');
        });

@@ -58,7 +58,7 @@ function Questions(props) {
      </div>
 
     {/* Page Content */}
-     <Container className={"header pb-8 pt-5 pt-lg-8 d-flex align-items-center"}  fluid>
+     <Container className={"header pb-8 pt-5 pt-lg-8"}  fluid>
 
        <Card className={"bg-secondary shadow"}>
        <Form onSubmit={handleSubmit}  encType="multipart/form-data">

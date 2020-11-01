@@ -2,7 +2,9 @@ import {
      SET_QUESTION,
      SET_OPTION,
      SET_ANSWER,
-     UPDATE_QUESTIONS
+     UPLOAD_QUESTION_SUCCESS,
+     UPLOAD_QUESTION_PENDING,
+     UPLOAD_QUESTION_FAILED
      } from "../types";
 
 const defaultState = {
@@ -16,7 +18,8 @@ const defaultState = {
         D : null
      },
      answer : null
-    }
+    },
+    loading : false
 }
 
 export const questionReducer = (state = defaultState, action) => {
@@ -26,9 +29,12 @@ export const questionReducer = (state = defaultState, action) => {
         case SET_OPTION:
             return {...state, question  : {  ...state.question , options : {...state.question.options, ...action.payload } } };
         case SET_ANSWER:
-            return {...state, question : {...state.question,  answer : action.payload } }
-        case UPDATE_QUESTIONS:
-            //to be updated soon
+            return {...state, question : {...state.question,  answer : action.payload } };
+        case UPLOAD_QUESTION_PENDING:
+            return {...state, loading: true};
+        case UPLOAD_QUESTION_SUCCESS:
+            return state;
+        case UPLOAD_QUESTION_FAILED:
             return state;
         default :
             return state;
