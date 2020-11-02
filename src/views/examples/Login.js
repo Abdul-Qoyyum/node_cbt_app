@@ -24,8 +24,12 @@ import { connect } from 'react-redux';
 import { useForm } from "react-hook-form";
 
 import LoadingButton from "../../components/LoadingButton";
+
 //actions
-import { loginUser } from "../../actions";
+import {
+        loginUser,
+        clearError
+       } from "../../actions";
 
 // reactstrap components
 import {
@@ -48,10 +52,17 @@ import {
 
 function Login(props){
     const {handleSubmit,register,errors} = useForm();
-    const { loading, redirect, loginUser, error } = props;
+    const {
+      loading,
+      redirect,
+      loginUser,
+      clearError,
+      disabled,
+      error
+       } = props;
 
     if(redirect){
-      return <Redirect to={"/exam"} />
+      return <Redirect to={"/admin"} />
     }
       return (
           <>
@@ -83,6 +94,7 @@ function Login(props){
                                  }
                                })}
                                autoComplete="new-email"
+                               onChange={clearError}
                         />
                       </InputGroup>
                         {errors.email && (<FormText color={"danger"}>{errors.email.message}</FormText>)}
@@ -130,7 +142,7 @@ function Login(props){
                       <LoadingButton
                           className="mt-4"
                           loading={loading}
-                          disabled={false}
+                          disabled={disabled}
                           color={"primary"}
                           block={true}
                           outline={false}
@@ -170,14 +182,16 @@ function Login(props){
 
 
 const mapStateToProps = state => {
-  let { loading, redirect, error } = state.authStore;
+  let { loading, redirect, error, disabled } = state.authStore;
    return {
      loading,
      redirect,
-     error
+     error,
+     disabled
    }
 }
 
 export default connect(mapStateToProps,{
-  loginUser
+  loginUser,
+  clearError
 })(Login);

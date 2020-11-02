@@ -38,7 +38,7 @@ export const setAnswer = (e) => {
     }
 }
 
-export const uploadQuestion = question => {
+export const uploadQuestion = (token, question) => {
    return dispatch => {
        dispatch({ type : UPLOAD_QUESTION_PENDING });
        axios.post('/api/ques/upload',question).then(res => {

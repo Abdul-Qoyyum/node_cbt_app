@@ -67,7 +67,7 @@ db.once('open',() => {
           let { email, password } = req.body;
           User.findByCredentials({email, password}).then(user => {
             user.generateAuthToken().then( token => {
-              res.header('token',token).status(200).json(user);
+              res.header('emstoken',token).status(200).json(user);
             }).catch(err => {
               res.status(500).json("Oops something went wrong");
             });
@@ -108,6 +108,7 @@ db.once('open',() => {
         });
 */
 
+
 //route for signing cloudinary
 //image upload credentials
     router.route('/api/cloud/sign')
@@ -135,10 +136,19 @@ db.once('open',() => {
 
 
     router.route('/api/ques/upload')
-        .post((req,res) => {
+        .post(authenticate,(req,res) => {
            console.log(`Req : ${JSON.stringify(req.body)}`);
-           //const question = new Question();
-            res.status(200).json({});
+
+           const question = new Question({
+              ...req.body, _creator : req.user._id
+            });
+
+           question.save().then(data => {
+             res.status(200).json(data);
+           }).catch(err => {
+             res.status(500).json(err);
+           });
+
         });
 
 
@@ -153,3 +163,4 @@ db.once('open',() => {
 exports.handler =  serverless(app,{
    binary : ["application/json","multipart/form-data","image/*"]
 });
+

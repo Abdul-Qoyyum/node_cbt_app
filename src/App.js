@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
-
+import { connect } from 'react-redux';
 
 import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -14,28 +14,20 @@ import ProtectedRoute from "./layouts/Protected";
 import './App.css';
 
 class App extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            auth : true
-        }
-    }
-
-    componentDidMount() {
-        this.setState({
-            auth : true
-        })
-    }
-
     render() {
         return (
                 <Switch>
-                    <Route path="/admin" render={props => <AdminLayout {...props} />} />
+{/*                    <Route path="/admin" render={props => <AdminLayout {...props} />} /> */}
+                    <ProtectedRoute
+                      path="/admin"
+                      component={AdminLayout}
+                      isAuthenticated={this.props.isAuthenticated}
+                    />
                     <Route path="/auth" render={props => <AuthLayout {...props} />} />
                     <ProtectedRoute
                         path={"/exam"}
                         component={ExamLayout}
-                        isAuthenticated={this.state.auth}
+                        isAuthenticated={this.props.isAuthenticated}
                     />
 
                     <Redirect from="/" to="/auth/login" />
@@ -45,4 +37,9 @@ class App extends Component{
     }
 }
 
-export default App;
+const mapStateToProps = state => {
+ let { isAuthenticated } = state.authStore;
+ return { isAuthenticated };
+}
+
+export default connect(mapStateToProps,null)(App);

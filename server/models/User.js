@@ -69,6 +69,7 @@ UserSchema.methods.generateAuthToken = function(){
         access},
         process.env.JWT_SECRET
         );
+   //change this line in case of multiple devices
     user.tokens = [{ access : "auth", token }];
     return user.save().then(res => {
         return res.tokens[0].token;
