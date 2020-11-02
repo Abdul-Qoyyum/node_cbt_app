@@ -11,9 +11,21 @@ import AuthLayout from "layouts/Auth.js";
 import ExamLayout from "./layouts/Exam";
 import ProtectedRoute from "./layouts/Protected";
 
+import {
+    verifyToken
+} from "./actions";
+
 import './App.css';
 
 class App extends Component{
+
+    componentDidMount(){
+        let emstoken = localStorage.getItem('emstoken');
+        if (emstoken){
+           this.props.verifyToken(emstoken);
+        }
+    }
+
     render() {
         return (
                 <Switch>
@@ -42,4 +54,4 @@ const mapStateToProps = state => {
  return { isAuthenticated };
 }
 
-export default connect(mapStateToProps,null)(App);
+export default connect(mapStateToProps,{ verifyToken })(App);

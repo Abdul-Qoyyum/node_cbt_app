@@ -92,9 +92,9 @@ db.once('open',() => {
         });
 
 
-    router.route('/api/user')
+    router.route('/api/token/verify')
         .get(authenticate,(req,res) => {
-            res.status(200).json(req.user);
+            res.header('emstoken', req.token).status(200).json(req.user);
         });
 
 

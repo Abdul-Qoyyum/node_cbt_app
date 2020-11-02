@@ -39,6 +39,7 @@
     "react-scripts": "3.4.3",
     "reactstrap": "8.4.1",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-promise-middleware": "^6.1.2",
     "redux-thunk": "^2.3.0",
     "serverless-apigw-binary": "^0.4.4",

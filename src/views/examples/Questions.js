@@ -134,11 +134,11 @@ function Questions(props) {
 }
 
 
-const mapStateToProps = state =>t {
+const mapStateToProps = state => {
     const { token } = state.authStore;
     const { question } = state.questionStore;
     const { body, options, answer } = question;
-    const { A, B, C, D} = optionl;
+    const { A, B, C, D} = options;
     return {
      A,
      B,

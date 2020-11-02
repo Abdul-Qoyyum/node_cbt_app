@@ -11,7 +11,7 @@ function Protected({
         <Route
             {...rest}
             render={props => (
-                isAuthenticated ? <Component/> : <AuthLayout />
+                isAuthenticated ? <Component {...rest}/> : <AuthLayout {...rest}/>
             )}
         />
     );

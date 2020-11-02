@@ -5,7 +5,9 @@ import {
     FETCH_USER_FUFILLED,
     FETCH_USER_REJECTED,
     SET_ACTIVE_TOKEN,
-    CLEAR_LOGIN_ERROR
+    CLEAR_LOGIN_ERROR,
+    VERIFY_TOKEN_SUCCESS,
+    VERIFY_TOKEN_FAILED
 } from "../types";
 
 export function clearError(){
@@ -17,23 +19,53 @@ export function clearError(){
     }
 }
 
+export function verifyToken(emstoken){
+    let token;
+    return dispatch => {
+        axios.get('/api/token/verify',{
+            headers : {
+                emstoken : token
+            }
+        })
+            .then(res => {
+                dispatch({
+                   type : SET_ACTIVE_TOKEN,
+                   payload : res.headers['emstoken']
+                });
+            })
+            .then(res => {
+           dispatch({
+               type : VERIFY_TOKEN_SUCCESS,
+               payload : res.data
+           });
+        }).catch(err => {
+            dispatch({
+                type : VERIFY_TOKEN_FAILED,
+                payload : err
+            })
+        })
+    }
+}
+
+
 export function loginUser(data) {
+    let { remember_me } = data;
+    let token;
     return dispatch => {
         dispatch({
            type : FETCH_USER_PENDING
         });
         axios.post('/api/login',data)
         .then(res => {
-          dispatch({
-              type: FETCH_USER_FUFILLED,
-              payload: res.data
+            token = res.headers['emstoken'];
+            //store response token to localstorage
+            if (remember_me) {
+                localStorage.setItem('emstoken',token);
+            }
+            dispatch({
+                type: FETCH_USER_FUFILLED,
+                payload: res.data
           })
-        })
-        .then(res => {
-         dispatch({
-             type : SET_ACTIVE_TOKEN,
-             payload : res.headers['emstoken']
-          });
         })
         .catch(err => {
             dispatch({
@@ -44,6 +76,12 @@ export function loginUser(data) {
                     }
                 }
             })
+        })
+        .then(() => {
+                dispatch({
+                    type : SET_ACTIVE_TOKEN,
+                    payload : token
+                });
         })
     }
 }
