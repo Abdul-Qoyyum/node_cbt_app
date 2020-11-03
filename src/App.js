@@ -1,6 +1,7 @@
 import React ,{ Component } from 'react';
 import {Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import _ from 'lodash';
 
 import "assets/plugins/nucleo/css/nucleo.css";
@@ -65,4 +66,4 @@ const mapStateToProps = state => {
  return { isAuthenticated, user, token };
 }
 
-export default connect(mapStateToProps,{ verifyToken })(withRouter(App));
+export default compose(withRouter,connect(mapStateToProps,{ verifyToken }))(App);
