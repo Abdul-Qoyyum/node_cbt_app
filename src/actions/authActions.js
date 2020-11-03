@@ -19,21 +19,17 @@ export function clearError(){
     }
 }
 
+
 export function verifyToken(emstoken){
     let token;
     return dispatch => {
         axios.get('/api/token/verify',{
             headers : {
-                emstoken : token
+                emstoken : emstoken
             }
         })
-            .then(res => {
-                dispatch({
-                   type : SET_ACTIVE_TOKEN,
-                   payload : res.headers['emstoken']
-                });
-            })
-            .then(res => {
+        .then(res => {
+            token = res.headers['emstoken'];
            dispatch({
                type : VERIFY_TOKEN_SUCCESS,
                payload : res.data
@@ -43,6 +39,12 @@ export function verifyToken(emstoken){
                 type : VERIFY_TOKEN_FAILED,
                 payload : err
             })
+        })
+        .then(() => {
+            dispatch({
+                type : SET_ACTIVE_TOKEN,
+                payload : token
+            });
         })
     }
 }
