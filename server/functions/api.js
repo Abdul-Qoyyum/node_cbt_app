@@ -109,8 +109,7 @@ db.once('open',() => {
 */
 
 
-//route for signing cloudinary
-//image upload credentials
+//Signature for cloudinary image upload
     router.route('/api/cloud/sign')
       .get((req,res) => {
     try{
@@ -143,12 +142,15 @@ db.once('open',() => {
               ...req.body, _creator : req.user._id
             });
 
+   console.log(`Ques : ${JSON.stringify(question)}`);
+   res.status(200).json({message : "Saved"});
+/*
            question.save().then(data => {
              res.status(200).json(data);
            }).catch(err => {
              res.status(500).json(err);
            });
-
+*/
         });
 
 

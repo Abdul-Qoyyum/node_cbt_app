@@ -38,10 +38,14 @@ export const setAnswer = (e) => {
     }
 }
 
-export const uploadQuestion = (token, question) => {
+export const uploadQuestion = (question) => {
    return dispatch => {
        dispatch({ type : UPLOAD_QUESTION_PENDING });
-       axios.post('/api/ques/upload',question).then(res => {
+       axios.post('/api/ques/upload',question,{
+          headers : {
+           emstoken : localStorage.getItem('emstoken')
+          }
+        }).then(res => {
          console.log(`Saved : ${res.data}`);
          dispatch({
             type : UPLOAD_QUESTION_SUCCESS,

@@ -34,7 +34,6 @@ function Questions(props) {
        B,
        C,
        D,
-       token,
        body,
        answer,
        question,
@@ -47,7 +46,7 @@ function Questions(props) {
     let handleSubmit = (data) => {
      console.log(`Data : ${data}`);
      //upload Question...
-     uploadQuestion(token,question);
+     uploadQuestion(question);
     }
 
     return(
@@ -135,7 +134,6 @@ function Questions(props) {
 
 
 const mapStateToProps = state => {
-    const { token } = state.authStore;
     const { question } = state.questionStore;
     const { body, options, answer } = question;
     const { A, B, C, D} = options;
@@ -146,8 +144,7 @@ const mapStateToProps = state => {
      D,
      question,
      body,
-     answer,
-     token
+     answer
      }
 }
 

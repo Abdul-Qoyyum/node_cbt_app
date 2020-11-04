@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 require('dotenv').config();
 
 
@@ -24,7 +25,10 @@ const UserSchema = new mongoose.Schema({
   },
   tokens : [
    {
-    access : String,
+    access : {
+     type : String,
+     default : "auth"
+    },
     token : {
      type : String,
      validate : {
@@ -55,27 +59,30 @@ UserSchema.pre('save',function(next){
 
 UserSchema.methods.toJSON = function(){
     let user = this.toObject();
-    delete user.password;
-    return user;
+    let credentials = _.pick(user,['_id','email']);
+    return credentials;
 }
 
 
 UserSchema.methods.generateAuthToken = function(){
     let user = this;
-    let access = "auth";
     let token = jwt.sign({
         _id : user._id,
-        email : user.email,
-        access},
+        email : user.email
+        },
         process.env.JWT_SECRET
         );
-   //change this line in case of multiple devices
-    user.tokens = [{ access : "auth", token }];
+    user.tokens.push({token});
     return user.save().then(res => {
-        return res.tokens[0].token;
+        let { tokens } = res;
+    // return the lastly inserted token
+        return tokens[tokens.length - 1].token;
     }).catch(err => Promise.reject(err));
 }
 
+//Sign your token to expire after 30 days
+//Create a function to delete expired tokens
+//When the app loads
 
 UserSchema.statics.findByToken = function(token){
     return this.findOne({'tokens.token' : token}).then(user => {

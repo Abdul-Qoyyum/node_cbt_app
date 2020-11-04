@@ -4,10 +4,7 @@ import {
     FETCH_USER_PENDING,
     FETCH_USER_FUFILLED,
     FETCH_USER_REJECTED,
-    SET_ACTIVE_TOKEN,
     CLEAR_LOGIN_ERROR,
-    VERIFY_TOKEN_SUCCESS,
-    VERIFY_TOKEN_FAILED
 } from "../types";
 
 export function clearError(){
@@ -19,50 +16,17 @@ export function clearError(){
     }
 }
 
-
-export function verifyToken(emstoken){
-    let token;
-    return dispatch => {
-        axios.get('/api/token/verify',{
-            headers : {
-                emstoken : emstoken
-            }
-        })
-        .then(res => {
-            token = res.headers['emstoken'];
-           dispatch({
-               type : VERIFY_TOKEN_SUCCESS,
-               payload : res.data
-           });
-        }).catch(err => {
-            dispatch({
-                type : VERIFY_TOKEN_FAILED,
-                payload : err
-            })
-        })
-        .then(() => {
-            dispatch({
-                type : SET_ACTIVE_TOKEN,
-                payload : token
-            });
-        })
-    }
-}
-
-
 export function loginUser(data) {
     let { remember_me } = data;
-    let token;
     return dispatch => {
         dispatch({
            type : FETCH_USER_PENDING
         });
         axios.post('/api/login',data)
         .then(res => {
-            token = res.headers['emstoken'];
             //store response token to localstorage
             if (remember_me) {
-                localStorage.setItem('emstoken',token);
+                localStorage.setItem('emstoken',res.headers['emstoken']);
             }
             dispatch({
                 type: FETCH_USER_FUFILLED,
@@ -78,12 +42,6 @@ export function loginUser(data) {
                     }
                 }
             })
-        })
-        .then(() => {
-                dispatch({
-                    type : SET_ACTIVE_TOKEN,
-                    payload : token
-                });
         })
     }
 }

@@ -23,6 +23,7 @@ import { Provider } from 'react-redux';
 import store from "./store";
 
 import App from "./App";
+//import Ems from "./Ems";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -33,3 +34,13 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
+/*
+ReactDOM.render(
+  <BrowserRouter>
+      <Provider store={store}>
+          <Ems />
+      </Provider>
+  </BrowserRouter>,
+  document.getElementById("root")
+);
+*/

@@ -4,17 +4,18 @@ import AuthLayout from "./Auth";
 
 function Protected({
     component : Component,
-    isAuthenticated,
     ...rest}){
 
     return (
         <Route
             {...rest}
             render={props => (
-                isAuthenticated ? <Component {...rest}/> : <AuthLayout {...rest}/>
+                localStorage.getItem("emstoken") ? <Component {...rest} {...props}/> : <AuthLayout {...rest} {...props} />
             )}
         />
     );
+
+
 }
 
 export default Protected;
