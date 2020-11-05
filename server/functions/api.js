@@ -136,21 +136,21 @@ db.once('open',() => {
 
     router.route('/api/ques/upload')
         .post(authenticate,(req,res) => {
-           console.log(`Req : ${JSON.stringify(req.body)}`);
+//           console.log(`Req : ${JSON.stringify(req.body)}`);
 
            const question = new Question({
               ...req.body, _creator : req.user._id
             });
 
-   console.log(`Ques : ${JSON.stringify(question)}`);
-   res.status(200).json({message : "Saved"});
-/*
+  // console.log(`Ques : ${JSON.stringify(question)}`);
+  // res.status(200).json({message : "Saved"});
+
            question.save().then(data => {
              res.status(200).json(data);
            }).catch(err => {
              res.status(500).json(err);
            });
-*/
+
         });
 
 

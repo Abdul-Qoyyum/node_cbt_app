@@ -2,6 +2,7 @@ import React from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { connect } from 'react-redux';
+import { useForm } from "react-hook-form";
 
 //My customised adapter for CKEditor...
 import { MyCustomAdapter } from '../../plugins';
@@ -29,6 +30,7 @@ import {
        } from "../../actions";
 
 function Questions(props) {
+    const { handleSubmit, register, errors } = useForm();
     const {
        A,
        B,
@@ -43,11 +45,11 @@ function Questions(props) {
        uploadQuestion
          } = props;
 
-    let handleSubmit = (data) => {
+    let onSubmit = (data) => {
      console.log(`Data : ${data}`);
      //upload Question...
      uploadQuestion(question);
-    }
+    };
 
     return(
      <>
@@ -61,7 +63,7 @@ function Questions(props) {
      <Container className={"header pb-8 pt-5 pt-lg-8"}  fluid>
 
        <Card className={"bg-secondary shadow"}>
-       <Form onSubmit={handleSubmit}  encType="multipart/form-data">
+       <Form role={"form"} onSubmit={handleSubmit(onSubmit)}  encType="multipart/form-data">
         <CKEditor
           editor={ClassicEditor}
           data={body}
@@ -85,22 +87,55 @@ function Questions(props) {
           <CardBody>
 
            <FormGroup>
-            <Input type={"text"}  className={"form-control-alternative mb-2"}  name={"A"} onChange={setOption}  value={A} />
+            <Input
+                type={"text"}
+                innerRef={register({
+                    required : true
+                })}
+                className={"form-control-alternative mb-2"}
+                name={"A"} onChange={setOption}
+                value={A} />
             <Input type={"radio"} name={"answer"}  onClick={setAnswer}  value={A}  />
            </FormGroup>
 
            <FormGroup>
-            <Input className={"form-control-alternative mb-2"} type={"text"} name={"B"} onChange={setOption}  value={B} />
+            <Input
+                className={"form-control-alternative mb-2"}
+                innerRef={register({
+                    required: true
+                })}
+                type={"text"}
+                name={"B"}
+                onChange={setOption}
+                value={B} />
             <Input type={"radio"} name={"answer"} onClick={setAnswer}  value={B}  />
            </FormGroup>
 
            <FormGroup>
-            <Input  className={"form-control-alternative mb-2"}  type={"text"} name={"C"} onChange={setOption} value={C}  />
+            <Input
+                className={"form-control-alternative mb-2"}
+                innerRef={register({
+                    required : true
+                })}
+                type={"text"}
+                name={"C"}
+                onChange={setOption}
+                value={C}
+            />
             <Input type={"radio"} name={"answer"} onClick={setAnswer}  value={C}  />
            </FormGroup>
 
            <FormGroup>
-            <Input className={"form-control-alternative mb-2"} type={"text"} name={"D"} onChange={setOption} value={D} />
+            <Input
+                className={"form-control-alternative mb-2"}
+                innerRef={register({
+                    required : true
+                })}
+                type={"text"}
+                name={"D"}
+                onChange={setOption}
+                value={D}
+            />
             <Input type={"radio"} name={"answer"} onClick={setAnswer} value={D} />
            </FormGroup>
 
@@ -115,7 +150,15 @@ function Questions(props) {
              <h2>Answer</h2>
 {/*           </CardHeader> */}
            <CardBody>
-           <Input type={"text"} className={"form-control-alternative mb-2"}   name={"answer"} value={answer} disabled />
+           <Input
+               type={"text"}
+               className={"form-control-alternative mb-2"}
+               innerRef={register({
+                   required : true
+               })}
+               name={"answer"}
+               value={answer}
+               disabled />
            </CardBody>
          </Card>
         </Col>
