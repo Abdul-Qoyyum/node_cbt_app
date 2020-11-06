@@ -43,7 +43,7 @@ export const questionReducer = (state = defaultState, action) => {
         case UPLOAD_QUESTION_FAILED:
             return state;
         case UPLOAD_QUESTION_ERROR:
-            return {...state, error : {...state.error , ...action.payload } }
+            return {...state, error : {...state.error , ...action.payload } };
         default :
             return state;
     }

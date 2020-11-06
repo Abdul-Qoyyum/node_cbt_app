@@ -12,7 +12,6 @@ import {
   Row,
   Col,
   Card,
- // CardHeader,
   CardBody,
   Input,
   Form,
@@ -35,7 +34,6 @@ function Questions(props) {
         handleSubmit,
         register,
         errors
-    //    setValue
            } = useForm();
 
     const {
@@ -52,11 +50,7 @@ function Questions(props) {
        setAnswer,
        uploadQuestion
          } = props;
-/*
-    useEffect(() =>{
-     register('ques'); //custom register ques input
-    },[register]);
-*/
+
 
     let onSubmit = (data) => {
      console.log(`Data : ${data}`);
@@ -75,7 +69,7 @@ function Questions(props) {
     {/* Page Content */}
      <Container className={"header pb-8 pt-5 pt-lg-8"}  fluid>
 
-       <Card className={"bg-secondary shadow"}>
+       {/*<Card className={"bg-secondary shadow"}>*/}
        <Form role={"form"} onSubmit={handleSubmit(onSubmit)}  encType={"multipart/form-data"}>
         <CKEditor
           editor={ClassicEditor}
@@ -87,24 +81,19 @@ function Questions(props) {
            }}
           onChange={(event, editor) => {
             let data = editor.getData();
-           //react-hook-form
-  //          setValue('ques',data);
-           //action creator
+            //action creator
             setQuestion(data);
           }}
         />
-{/*        {errors.ques && <FormText>{errors.ques.message}</FormText>} */}
-        {error.body && <FormText>{error.body.message}</FormText>}
-       <Row>
+        {error.body && <FormText color={"danger"}>{error.body.message}</FormText>}
+
+        <Row className={"mt-3"}>
+
          <Col md={"6"}>
-
-{/*          <CardHeader className={"bg-white border-0"}> */}
-           <h2>Options</h2>
-{/*          </CardHeader> */}
           <CardBody>
-
            <FormGroup>
-            <Input
+               <h2>Options</h2>
+               <Input
                 type={"text"}
                 innerRef={register({
                     required : {
@@ -179,11 +168,9 @@ function Questions(props) {
 
 
         <Col md={"6"}>
-         <Card className={"bg-secondary shadow"}>
-{/*           <CardHeader className={"bg-white border-0"}> */}
-             <h2>Answer</h2>
-{/*           </CardHeader> */}
+
            <CardBody>
+               <h2>Answer</h2>
            <Input
                type={"text"}
                className={"form-control-alternative mb-2"}
@@ -198,7 +185,6 @@ function Questions(props) {
                disabled/>
              {errors.ans && (<FormText color={"danger"}>{errors.ans.message}</FormText>)}
            </CardBody>
-         </Card>
         </Col>
          <hr />
        </Row>
@@ -207,7 +193,7 @@ function Questions(props) {
          <Button className={"btn btn-primary"}>Save</Button>
     </div>
        </Form>
-       </Card>
+       {/*</Card>*/}
      </Container>
      </>
     );
