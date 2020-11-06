@@ -4,7 +4,8 @@ import {
      SET_ANSWER,
      UPLOAD_QUESTION_SUCCESS,
      UPLOAD_QUESTION_PENDING,
-     UPLOAD_QUESTION_FAILED
+     UPLOAD_QUESTION_FAILED,
+     UPLOAD_QUESTION_ERROR
      } from "../types";
 
 const defaultState = {
@@ -19,7 +20,12 @@ const defaultState = {
      },
      answer : null
     },
-    loading : false
+    loading : false,
+    error : {
+      body : {
+       message : null
+      }
+    }
 }
 
 export const questionReducer = (state = defaultState, action) => {
@@ -36,6 +42,8 @@ export const questionReducer = (state = defaultState, action) => {
             return state;
         case UPLOAD_QUESTION_FAILED:
             return state;
+        case UPLOAD_QUESTION_ERROR:
+            return {...state, error : {...state.error , ...action.payload } }
         default :
             return state;
     }

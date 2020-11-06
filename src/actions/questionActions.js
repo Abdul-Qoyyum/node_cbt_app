@@ -6,7 +6,8 @@ import {
     SET_ANSWER,
     UPLOAD_QUESTION_SUCCESS,
     UPLOAD_QUESTION_PENDING,
-    UPLOAD_QUESTION_FAILED
+    UPLOAD_QUESTION_FAILED,
+    UPLOAD_QUESTION_ERROR
     } from "../types";
 
 export const setQuestion = (data) => {
@@ -40,6 +41,19 @@ export const setAnswer = (e) => {
 
 export const uploadQuestion = (question) => {
    return dispatch => {
+//stop execution if the question
+//body is not filled
+     if(question.body === null){
+        return dispatch({
+          type : UPLOAD_QUESTION_ERROR,
+          payload : {
+           body : {
+            message : "Please enter question"
+           }
+          }
+        });
+      }
+
        dispatch({ type : UPLOAD_QUESTION_PENDING });
        axios.post('/api/ques/upload',question,{
           headers : {

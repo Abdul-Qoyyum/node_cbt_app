@@ -17,6 +17,7 @@ import {
   Input,
   Form,
   FormGroup,
+  FormText,
   Button
  } from 'reactstrap';
 
@@ -30,13 +31,20 @@ import {
        } from "../../actions";
 
 function Questions(props) {
-    const { handleSubmit, register, errors } = useForm();
+    const {
+        handleSubmit,
+        register,
+        errors
+    //    setValue
+           } = useForm();
+
     const {
        A,
        B,
        C,
        D,
        body,
+       error,
        answer,
        question,
        setQuestion,
@@ -44,6 +52,11 @@ function Questions(props) {
        setAnswer,
        uploadQuestion
          } = props;
+/*
+    useEffect(() =>{
+     register('ques'); //custom register ques input
+    },[register]);
+*/
 
     let onSubmit = (data) => {
      console.log(`Data : ${data}`);
@@ -63,7 +76,7 @@ function Questions(props) {
      <Container className={"header pb-8 pt-5 pt-lg-8"}  fluid>
 
        <Card className={"bg-secondary shadow"}>
-       <Form role={"form"} onSubmit={handleSubmit(onSubmit)}  encType="multipart/form-data">
+       <Form role={"form"} onSubmit={handleSubmit(onSubmit)}  encType={"multipart/form-data"}>
         <CKEditor
           editor={ClassicEditor}
           data={body}
@@ -74,10 +87,14 @@ function Questions(props) {
            }}
           onChange={(event, editor) => {
             let data = editor.getData();
+           //react-hook-form
+  //          setValue('ques',data);
+           //action creator
             setQuestion(data);
           }}
         />
-
+{/*        {errors.ques && <FormText>{errors.ques.message}</FormText>} */}
+        {error.body && <FormText>{error.body.message}</FormText>}
        <Row>
          <Col md={"6"}>
 
@@ -90,32 +107,44 @@ function Questions(props) {
             <Input
                 type={"text"}
                 innerRef={register({
-                    required : true
+                    required : {
+                     value : true,
+                     message : "Please specify option"
+                    }
                 })}
                 className={"form-control-alternative mb-2"}
-                name={"A"} onChange={setOption}
-                value={A} />
+                name={"A"}
+                onChange={setOption}
+                value={A}/>
             <Input type={"radio"} name={"answer"}  onClick={setAnswer}  value={A}  />
+              {errors.A && (<FormText color={"danger"}>{errors.A.message}</FormText>)}
            </FormGroup>
 
            <FormGroup>
             <Input
                 className={"form-control-alternative mb-2"}
                 innerRef={register({
-                    required: true
+                    required: {
+                     value : true,
+                     message : "Please specify option"
+                  }
                 })}
                 type={"text"}
                 name={"B"}
                 onChange={setOption}
                 value={B} />
             <Input type={"radio"} name={"answer"} onClick={setAnswer}  value={B}  />
+             {errors.B && (<FormText color={"danger"}>{errors.B.message}</FormText>)}
            </FormGroup>
 
            <FormGroup>
             <Input
                 className={"form-control-alternative mb-2"}
                 innerRef={register({
-                    required : true
+                    required : {
+                     value : true,
+                     message : "Please specify option"
+                    }
                 })}
                 type={"text"}
                 name={"C"}
@@ -123,13 +152,17 @@ function Questions(props) {
                 value={C}
             />
             <Input type={"radio"} name={"answer"} onClick={setAnswer}  value={C}  />
+             {errors.C && (<FormText color={"danger"}>{errors.C.message}</FormText>)}
            </FormGroup>
 
            <FormGroup>
             <Input
                 className={"form-control-alternative mb-2"}
                 innerRef={register({
-                    required : true
+                    required :{
+                     value :true,
+                     message : "Please specify option"
+                    }
                 })}
                 type={"text"}
                 name={"D"}
@@ -137,6 +170,7 @@ function Questions(props) {
                 value={D}
             />
             <Input type={"radio"} name={"answer"} onClick={setAnswer} value={D} />
+               {errors.D && (<FormText color={"danger"}>{errors.D.message}</FormText>)}
            </FormGroup>
 
           </CardBody>
@@ -154,11 +188,15 @@ function Questions(props) {
                type={"text"}
                className={"form-control-alternative mb-2"}
                innerRef={register({
-                   required : true
+                   required : {
+                    value : true,
+                    message : "Please check a box next to an option to set answer"
+                   }
                })}
-               name={"answer"}
+               name={"ans"}
                value={answer}
-               disabled />
+               disabled/>
+             {errors.ans && (<FormText color={"danger"}>{errors.ans.message}</FormText>)}
            </CardBody>
          </Card>
         </Col>
@@ -177,7 +215,7 @@ function Questions(props) {
 
 
 const mapStateToProps = state => {
-    const { question } = state.questionStore;
+    const { error, question } = state.questionStore;
     const { body, options, answer } = question;
     const { A, B, C, D} = options;
     return {
@@ -187,7 +225,8 @@ const mapStateToProps = state => {
      D,
      question,
      body,
-     answer
+     answer,
+     error
      }
 }
 
