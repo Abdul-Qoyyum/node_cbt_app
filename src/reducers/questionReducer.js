@@ -5,7 +5,8 @@ import {
      UPLOAD_QUESTION_SUCCESS,
      UPLOAD_QUESTION_PENDING,
      UPLOAD_QUESTION_FAILED,
-     UPLOAD_QUESTION_ERROR
+     UPLOAD_QUESTION_ERROR,
+     CLEAR_QUESTION__ERROR
      } from "../types";
 
 const defaultState = {
@@ -44,6 +45,8 @@ export const questionReducer = (state = defaultState, action) => {
             return state;
         case UPLOAD_QUESTION_ERROR:
             return {...state, error : {...state.error , ...action.payload } };
+        case CLEAR_QUESTION__ERROR:
+            return {...state, error: {...state.error, ...action.payload}}
         default :
             return state;
     }

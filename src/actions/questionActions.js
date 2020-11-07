@@ -7,12 +7,22 @@ import {
     UPLOAD_QUESTION_SUCCESS,
     UPLOAD_QUESTION_PENDING,
     UPLOAD_QUESTION_FAILED,
-    UPLOAD_QUESTION_ERROR
+    UPLOAD_QUESTION_ERROR,
+    CLEAR_QUESTION__ERROR
     } from "../types";
 
 export const setQuestion = (data) => {
    return dispatch => {
-     dispatch({
+       dispatch({
+           type : CLEAR_QUESTION__ERROR,
+           payload : {
+               body : {
+                 message : null
+               }
+           }
+       });
+
+     return  dispatch({
       type : SET_QUESTION,
       payload : data
      });
