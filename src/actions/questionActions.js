@@ -48,7 +48,7 @@ export const uploadQuestion = (question) => {
           type : UPLOAD_QUESTION_ERROR,
           payload : {
            body : {
-            message : "Please enter question"
+            message : "Question is required"
            }
           }
         });

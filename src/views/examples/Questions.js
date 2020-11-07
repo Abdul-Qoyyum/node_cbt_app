@@ -16,6 +16,7 @@ import {
   Input,
   Form,
   FormGroup,
+  Label,
   FormText,
   Button
  } from 'reactstrap';
@@ -69,7 +70,6 @@ function Questions(props) {
     {/* Page Content */}
      <Container className={"header pb-8 pt-5 pt-lg-8"}  fluid>
 
-       {/*<Card className={"bg-secondary shadow"}>*/}
        <Form role={"form"} onSubmit={handleSubmit(onSubmit)}  encType={"multipart/form-data"}>
         <CKEditor
           editor={ClassicEditor}
@@ -87,24 +87,25 @@ function Questions(props) {
         />
         {error.body && <FormText color={"danger"}>{error.body.message}</FormText>}
 
+        <Card>
         <Row className={"mt-3"}>
 
          <Col md={"6"}>
           <CardBody>
-               <h2>Options</h2>
+               <h3>Options</h3>
            <FormGroup>
-             <Row className={'my-auto'}>
+             <Row>
               <Col>
                <Input
                 type={"text"}
                 innerRef={register({
                     required : {
                      value : true,
-                     message : "Please specify option"
+                     message : "Option is required"
                     }
                 })}
-                className={"form-control-alternative mb-2"}
                 name={"A"}
+                invalid={errors.A ? true : false}
                 onChange={setOption}
                 value={A}/>
                </Col>
@@ -116,56 +117,74 @@ function Questions(props) {
             </FormGroup>
 
            <FormGroup>
+            <Row>
+                <Col>
             <Input
-                className={"form-control-alternative mb-2"}
                 innerRef={register({
                     required: {
                      value : true,
-                     message : "Please specify option"
+                     message : "Option is required"
                   }
                 })}
                 type={"text"}
                 name={"B"}
+                invalid={errors.B ? true : false}
                 onChange={setOption}
                 value={B} />
-            <Input type={"radio"} name={"answer"} onClick={setAnswer}  value={B}  />
+                </Col>
+                <Col xs={"1"}>
+                  <Input type={"radio"} name={"answer"} onClick={setAnswer}  className={"mt-3"} value={B}  />
+                </Col>
+            </Row>
              {errors.B && (<FormText color={"danger"}>{errors.B.message}</FormText>)}
            </FormGroup>
 
            <FormGroup>
+               <Row>
+                   <Col>
             <Input
-                className={"form-control-alternative mb-2"}
                 innerRef={register({
                     required : {
                      value : true,
-                     message : "Please specify option"
+                     message : "Option is required"
                     }
                 })}
                 type={"text"}
                 name={"C"}
+                invalid={errors.C ? true : false}
                 onChange={setOption}
                 value={C}
             />
-            <Input type={"radio"} name={"answer"} onClick={setAnswer}  value={C}  />
-             {errors.C && (<FormText color={"danger"}>{errors.C.message}</FormText>)}
+                   </Col>
+                   <Col xs={"1"}>
+            <Input type={"radio"} name={"answer"} onClick={setAnswer} className={"mt-3"}  value={C}  />
+                   </Col>
+               </Row>
+            {errors.C && (<FormText color={"danger"}>{errors.C.message}</FormText>)}
            </FormGroup>
 
            <FormGroup>
+               <Row>
+                   <Col>
             <Input
-                className={"form-control-alternative mb-2"}
                 innerRef={register({
                     required :{
                      value :true,
-                     message : "Please specify option"
+                     message : "Option is required"
                     }
                 })}
                 type={"text"}
+                invalid={errors.D ? true : false}
                 name={"D"}
                 onChange={setOption}
                 value={D}
             />
-            <Input type={"radio"} name={"answer"} onClick={setAnswer} value={D} />
-               {errors.D && (<FormText color={"danger"}>{errors.D.message}</FormText>)}
+                   </Col>
+                   <Col xs={"1"}>
+            <Input type={"radio"} name={"answer"} onClick={setAnswer} className={'mt-3'} value={D} />
+                   </Col>
+               </Row>
+            {errors.D && (<FormText color={"danger"}>{errors.D.message}</FormText>)}
            </FormGroup>
 
           </CardBody>
@@ -175,9 +194,10 @@ function Questions(props) {
 
         <Col md={"6"}>
 
-           <CardBody>
-               <h2>Answer</h2>
-           <Input
+         <CardBody>
+           <h3>Answer</h3>
+             <FormGroup>
+              <Input
                type={"text"}
                className={"form-control-alternative mb-2"}
                innerRef={register({
@@ -190,16 +210,41 @@ function Questions(props) {
                value={answer}
                disabled/>
              {errors.ans && (<FormText color={"danger"}>{errors.ans.message}</FormText>)}
+             </FormGroup>
+
+
+             <FormGroup>
+                 <Label for="exampleSelect"><h3>Class</h3></Label>
+                 <Input
+                     type="select"
+                     name="level"
+                     onChange={(e) => console.log(`Clicked ${e.target.value}`)}
+                     id="level"
+                     innerRef={register({
+                         required : {
+                             value : true,
+                             message : "Class is required"
+                         }
+                     })}
+                 >
+                     <option></option>
+                     <option>JSS 2</option>
+                     <option>3</option>
+                     <option>4</option>
+                     <option>5</option>
+                 </Input>
+                 {errors.level && <FormText color={"danger"}>{errors.level.message}</FormText> }
+             </FormGroup>
+
            </CardBody>
         </Col>
          <hr />
        </Row>
-
-    <div className={"d-flex justify-content-end"}>
-         <Button className={"btn btn-primary"}>Save</Button>
-    </div>
+            <div className={"d-flex justify-content-end pr-4 pb-4"}>
+                <Button className={"btn btn-primary"}>Upload</Button>
+            </div>
+        </Card>
        </Form>
-       {/*</Card>*/}
      </Container>
      </>
     );

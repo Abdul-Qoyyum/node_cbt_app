@@ -93,6 +93,7 @@ function Login(props){
                                    message: "Invalid email address"
                                  }
                                })}
+                               invalid={errors.email || error.email ? true : false}
                                autoComplete="new-email"
                                onChange={clearError}
                         />
@@ -112,12 +113,9 @@ function Login(props){
                                  required: {
                                    value: true,
                                    message: "Password is required"
-                                 },
-                                 minLength: {
-                                   value: 6,
-                                   message: "Minimum of six (6) characters is required"
                                  }
                                })}
+                               invalid={errors.password ? true : false}
                                autoComplete="new-password"
                         />
                       </InputGroup>
