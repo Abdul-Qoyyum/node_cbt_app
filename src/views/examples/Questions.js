@@ -91,8 +91,10 @@ function Questions(props) {
 
          <Col md={"6"}>
           <CardBody>
-           <FormGroup>
                <h2>Options</h2>
+           <FormGroup>
+             <Row className={'my-auto'}>
+              <Col>
                <Input
                 type={"text"}
                 innerRef={register({
@@ -105,9 +107,13 @@ function Questions(props) {
                 name={"A"}
                 onChange={setOption}
                 value={A}/>
-            <Input type={"radio"} name={"answer"}  onClick={setAnswer}  value={A}  />
+               </Col>
+               <Col xs={"1"}>
+                 <Input type={"radio"} name={"answer"}  onClick={setAnswer}  className={"mt-3"} value={A}  />
+               </Col>
+             </Row>
               {errors.A && (<FormText color={"danger"}>{errors.A.message}</FormText>)}
-           </FormGroup>
+            </FormGroup>
 
            <FormGroup>
             <Input

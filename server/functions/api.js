@@ -160,10 +160,10 @@ db.once('open',() => {
 
 
 
-app.listen(9000,() => console.log("Server is listening on port 9000"));
+//app.listen(9000,() => console.log("Server is listening on port 9000"));
 
-/*
+
 exports.handler =  serverless(app,{
    binary : ["application/json","multipart/form-data","image/*"]
 });
-*/
+
