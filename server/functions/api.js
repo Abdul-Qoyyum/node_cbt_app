@@ -2,18 +2,22 @@ const express = require('express');
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
+const { body, validationResult } = require('express-validator');
 //const { CloudinaryStorage } = require('multer-storage-cloudinary');
 //const multer = require('multer');
+
 
 require("dotenv").config();
 
 const db = require('../db');
 const {
         User,
-        Question
+        Question,
+        Level
        } = require('../models');
 
-const { authenticate,
+const {
+        authorize,
         validate
        } = require('../middlewares');
 
@@ -63,28 +67,38 @@ db.once('open',() => {
 
 
     router.route('/api/login')
-        .post(validate,(req,res) => {
+        .post([
+           body('email').isEmail().withMessage("Invalid Email"),
+           body('email').not().isEmpty().withMessage("Email is required"),
+           body('password').not().isEmpty().withMessage("Password is required")
+          ],(req,res) => {
+ // Finds the validation errors in this request and wraps them in an object with handy functions
+         const errors = validationResult(req);
+         if (!errors.isEmpty()) {
+         return res.status(400).json({ errors: errors.array() });
+       }
+
           let { email, password } = req.body;
           User.findByCredentials({email, password}).then(user => {
             user.generateAuthToken().then( token => {
               res.header('emstoken',token).status(200).json(user);
             }).catch(err => {
-              res.status(500).json("Oops something went wrong");
+              res.status(500).json({
+                 msg : "Oops something went wrong"
+              });
             });
            }).catch(err => {
               res.status(400).json({
-                  error : {
-                      email : {
-                          message : "Invalid Credentials"
-                      }
-                  }
+                 error : {
+                    msg : "Invalid Credentials"
+                 }
               });
           });
       });
 
 
     router.route('/api/users')
-        .get(authenticate,(req, res) => {
+        .get(authorize,(req, res) => {
             User.find({},(err,docs)=>{
                if (err) return res.status(500).json();
                res.status(200).json(docs);
@@ -93,7 +107,7 @@ db.once('open',() => {
 
 
     router.route('/api/token/verify')
-        .get(authenticate,(req,res) => {
+        .get(authorize,(req,res) => {
             res.header('emstoken', req.token).status(200).json(req.user);
         });
 
@@ -112,7 +126,7 @@ db.once('open',() => {
 //Signature for cloudinary image upload
     router.route('/api/cloud/sign')
       .get((req,res) => {
-    try{
+     try{
       // Get the timestamp in seconds
        let timestamp = Math.round((new Date).getTime()/1000);
       //Get the upload_preset
@@ -135,8 +149,19 @@ db.once('open',() => {
 
 
     router.route('/api/ques/upload')
-        .post(authenticate,(req,res) => {
-//           console.log(`Req : ${JSON.stringify(req.body)}`);
+        .post(authorize,[
+          body('body').not().isEmpty().withMessage("body is required"),
+          body('options.A').not().isEmpty().withMessage('Option A is required'),
+          body('options.B').not().isEmpty().withMessage('Option B is required'),
+          body('options.C').not().isEmpty().withMessage('Option C is required'),
+          body('options.D').not().isEmpty().withMessage('Option D is required'),
+          body('answer').not().isEmpty().withMessage('Answer is required')
+          ],(req,res) => {
+// Finds the validation errors in this request and wraps them in an object with handy functions
+         const errors = validationResult(req);
+         if (!errors.isEmpty()) {
+         return res.status(400).json({ errors: errors.array() });
+       }
 
            const question = new Question({
               ...req.body, _creator : req.user._id
@@ -153,6 +178,28 @@ db.once('open',() => {
 
         });
 
+//Remember to use express-validator middleware
+    router.route('/api/level')
+      .get(authorize,(req,res)=>{
+       //fetch all levels or routes
+         Level.find({},(err,docs) => {
+           if(err)return res.status(500).json(err);
+            res.status(200).json(docs);
+         });
+       })
+      .post(authorize,[
+         body('name').exists().not().isEmpty().withMessage("Invalid Class")
+        ],(req,res) => {
+// Finds the validation errors in this request and wraps them in an object with handy functions
+         const errors = validationResult(req);
+         if (!errors.isEmpty()) {
+         return res.status(400).json({ errors: errors.array() });
+       }
+
+        console.log(`Req : ${JSON.stringify(req.body)}`);
+        res.status(200).json({message : "success"});
+
+       });
 
     app.use(router);
 

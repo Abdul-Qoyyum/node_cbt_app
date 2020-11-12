@@ -40,7 +40,22 @@ export const questionReducer = (state = defaultState, action) => {
         case UPLOAD_QUESTION_PENDING:
             return {...state, loading: true};
         case UPLOAD_QUESTION_SUCCESS:
-            return state;
+            return {
+              ...state,
+              loading : false,
+              question : {
+               ...state.question,
+               body : null,
+               options : {
+                ...state.question.options,
+                A : null,
+                B : null,
+                C : null,
+                D : null
+               },
+              answer : null
+              }
+            };
         case UPLOAD_QUESTION_FAILED:
             return state;
         case UPLOAD_QUESTION_ERROR:

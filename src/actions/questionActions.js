@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
 
 import {
     SET_QUESTION,
@@ -11,8 +12,11 @@ import {
     CLEAR_QUESTION__ERROR
     } from "../types";
 
+
+
 export const setQuestion = (data) => {
    return dispatch => {
+    if(data !== null){
        dispatch({
            type : CLEAR_QUESTION__ERROR,
            payload : {
@@ -21,6 +25,7 @@ export const setQuestion = (data) => {
                }
            }
        });
+     }
 
      return  dispatch({
       type : SET_QUESTION,
@@ -49,7 +54,7 @@ export const setAnswer = (e) => {
     }
 }
 
-export const uploadQuestion = (question) => {
+export const uploadQuestion = (question, e, editor) => {
    return dispatch => {
 //stop execution if the question
 //body is not filled
@@ -71,6 +76,11 @@ export const uploadQuestion = (question) => {
           }
         }).then(res => {
          console.log(`Saved : ${res.data}`);
+         NotificationManager.success('Saved');
+         //reset the form with the event object
+         e.target.reset();
+         //clear the editor's data
+         editor.setData('');
          dispatch({
             type : UPLOAD_QUESTION_SUCCESS,
             payload : res.data

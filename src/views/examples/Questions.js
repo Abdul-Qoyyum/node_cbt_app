@@ -1,8 +1,10 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { connect } from 'react-redux';
 import { useForm } from "react-hook-form";
+import { NotificationContainer } from 'react-notifications';
+
 
 //My customised adapter for CKEditor...
 import { MyCustomAdapter } from '../../plugins';
@@ -31,6 +33,9 @@ import {
        } from "../../actions";
 
 function Questions(props) {
+    //declare CKEditor instance
+    const [editor, setEditor] = useState(null);
+
     const {
         handleSubmit,
         register,
@@ -42,7 +47,6 @@ function Questions(props) {
        B,
        C,
        D,
-       body,
        error,
        answer,
        question,
@@ -53,17 +57,17 @@ function Questions(props) {
          } = props;
 
 
-    let onSubmit = (data) => {
-     console.log(`Data : ${data}`);
+    let onSubmit = (data, e) => {
      //upload Question...
-     uploadQuestion(question);
+//takes
+     uploadQuestion(question, e, editor);
+
     };
 
     return(
      <>
-     <div style={{
+     <div className={"d-none d-md-block bg-success"}  style={{
         minHeight : "80px",
-        backgroundColor: "green"
      }}>
      </div>
 
@@ -73,8 +77,10 @@ function Questions(props) {
        <Form role={"form"} onSubmit={handleSubmit(onSubmit)}  encType={"multipart/form-data"}>
         <CKEditor
           editor={ClassicEditor}
-          data={body}
+          config={{placeholder : "Use me to type question"}}
           onInit ={editor => {
+          //grab CKEditor instance with hook
+            setEditor(editor);
             editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
                return new MyCustomAdapter(loader);
              }
@@ -120,13 +126,13 @@ function Questions(props) {
             <Row>
                 <Col>
             <Input
+                type={"text"}
                 innerRef={register({
                     required: {
                      value : true,
                      message : "Option is required"
                   }
                 })}
-                type={"text"}
                 name={"B"}
                 invalid={errors.B ? true : false}
                 onChange={setOption}
@@ -246,6 +252,7 @@ function Questions(props) {
         </Card>
        </Form>
      </Container>
+     <NotificationContainer/>
      </>
     );
 }

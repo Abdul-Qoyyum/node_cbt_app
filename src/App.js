@@ -15,6 +15,7 @@ import ProtectedRoute from "./layouts/ProtectedRoute";
 
 
 import './App.css';
+import 'react-notifications/lib/notifications.css';
 
  class App extends Component {
 

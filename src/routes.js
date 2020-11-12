@@ -20,6 +20,7 @@ import Profile from "views/examples/Profile.js";
 //import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
+import Preview from "views/examples/Preview.js";
 //import Tables from "views/examples/Tables.js";
 //import Icons from "views/examples/Icons.js";
 
@@ -89,11 +90,16 @@ var routes = [
     component: Register,
     layout: "/auth"
   },
-
-
+  {
+    path: "/subjects",
+    name: "Subjects",
+    icon: "ni ni-circle-08 text-pink",
+    component: Preview,
+    layout: "/admin"
+  },
   {
     path: "/question",
-    name: "Set Questions",
+    name: "Upload",
     icon: "ni ni-tv-2 text-primary",
     component: Questions,
     layout: "/admin"
