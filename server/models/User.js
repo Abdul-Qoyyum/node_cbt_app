@@ -64,19 +64,24 @@ UserSchema.methods.toJSON = function(){
 }
 
 
-UserSchema.methods.generateAuthToken = function(){
+UserSchema.methods.generateAuthToken = function(remember_me = false){
     let user = this;
+    let access = 'auth';
+
     let token = jwt.sign({
         _id : user._id,
         email : user.email
         },
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET,
+        //set a token that expires in 60 days if remember_me is true
+        //token expires in 2 days by default if remember_me is false
+        { expiresIn: remember_me ? '60d' : '2d' }
         );
-    user.tokens.push({token});
+
+    user.tokens = [{ access, token}];
     return user.save().then(res => {
-        let { tokens } = res;
-    // return the lastly inserted token
-        return tokens[tokens.length - 1].token;
+        //return the saved token
+        return res.tokens[0].token;
     }).catch(err => Promise.reject(err));
 }
 

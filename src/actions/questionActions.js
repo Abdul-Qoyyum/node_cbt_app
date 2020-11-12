@@ -93,4 +93,4 @@ export const uploadQuestion = (question, e, editor) => {
          });
        });
     }
-}
+};

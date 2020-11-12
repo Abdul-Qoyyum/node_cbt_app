@@ -47,9 +47,6 @@ import {
 } from "reactstrap";
 
 
-
-
-
 function Login(props){
     const {handleSubmit,register,errors} = useForm();
     const {

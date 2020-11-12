@@ -27,17 +27,17 @@ const defaultState = {
 export const levelReducer = (state = defaultState, action) => {
    switch(action.type){
     case TOGGLE_MODAL:
-     return {...state, modal : !state.modal }
+     return {...state, modal : !state.modal };
     case TOGGLE_NESTED_MODAL:
-     return {...state, nestedModal : !state.nestedModal }
+     return {...state, nestedModal : !state.nestedModal };
     case UPLOAD_LEVEL_PENDING:
-     return {...state, loading : true, nestedDisabled: true }
+     return {...state, loading : true, nestedDisabled: true };
     case UPLOAD_LEVEL_FUFILLED:
-     return {...state, levels : [...state.levels, action.payload], loading : false, nestedDisabled : false }
+     return {...state, levels : [...state.levels, action.payload], loading : false, nestedDisabled : false };
     case UPLOAD_LEVEL_REJECTED:
-     return {...state, loading : false, nestedDisabled : false, error : action.payload }
+     return {...state, loading : false, nestedDisabled : false, error : action.payload };
     case FETCH_LEVEL_PENDING:
-     return {...state, loading : true }
+     return {...state, loading : true };
     case FETCH_LEVEL_FUFILLED:
      return {...state, levels : action.payload, loading : false};
     case FETCH_LEVEL_REJECTED:

@@ -50,11 +50,16 @@ function Preview(props){
         nestedDisabled
        } = props;
 
- useEffect(fetchLevel,[]);
+ useEffect(fetchLevel,[levels]);
 
  const onLevelSubmit = (data, e) => {
 //call the action creator to upload class
    uploadLevel(data, e);
+ }
+
+
+ const onSubmit = (data, e) => {
+     console.log(`Data : ${data}`);
  }
 
  return (
@@ -70,7 +75,7 @@ function Preview(props){
       <Button color={"primary"} onClick={toggle}>Create Exam</Button>
 
       <Modal isOpen={modal} toggle={toggle}>
-       <Form>
+       <Form role={"form"} onSubmit={handleSubmit(onSubmit)}>
         <ModalHeader toggle={toggle}>Create Exam</ModalHeader>
         <ModalBody>
 
@@ -126,7 +131,7 @@ function Preview(props){
                  <Label for={"level"}>Class</Label>
                  <Input
                    type={"text"}
-                   name={"level"}
+                   name={"name"}
                    innerRef={register({
                      required : {
                        value : true,
@@ -134,19 +139,20 @@ function Preview(props){
                      }
                    })}
                    placeholder={"e.g SS 3"}
-                   invalid={errors.level ? true : false}
+                   invalid={errors.name ? true : false}
                  />
-                {errors.level && <FormText color={"danger"}>{errors.level.message}</FormText>}
+                {errors.name && <FormText color={"danger"}>{errors.name.message}</FormText>}
                </FormGroup>
              </ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={toggleNested}>Cancel</Button>{' '}
 {/*              <Button color="primary" >Save</Button> */}
                       <LoadingButton
+                          className={"text-center"}
                           loading={nestedLoading}
                           disabled={nestedDisabled}
                           color={"primary"}
-                          block={true}
+                          block={false}
                           outline={false}
                       >
                         Save
@@ -160,7 +166,10 @@ function Preview(props){
 
         <ModalFooter>
           <Button color="secondary" onClick={toggle}>Cancel</Button>{' '}
-          <Button color="primary" onClick={toggle}>Save</Button>
+
+            {/*<Button color="primary" onClick={toggle}>Save</Button>*/}
+            <Button color="primary">Save</Button>
+
         </ModalFooter>
 
        </Form>

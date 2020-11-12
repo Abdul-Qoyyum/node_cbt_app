@@ -78,9 +78,10 @@ db.once('open',() => {
          return res.status(400).json({ errors: errors.array() });
        }
 
-          let { email, password } = req.body;
+          let { email, password, remember_me } = req.body;
+         console.log(`Remember : ${remember_me}`);
           User.findByCredentials({email, password}).then(user => {
-            user.generateAuthToken().then( token => {
+            user.generateAuthToken(remember_me).then( token => {
               res.header('emstoken',token).status(200).json(user);
             }).catch(err => {
               res.status(500).json({

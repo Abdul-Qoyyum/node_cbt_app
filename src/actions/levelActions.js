@@ -14,7 +14,7 @@ import {
   } from '../types';
 
 
-export const setLevel = () => {
+export const setLevel = (e) => {
 
 
 }
@@ -23,7 +23,11 @@ export const setLevel = () => {
 export const fetchLevel = () => {
   return dispatch => {
     dispatch({ type : FETCH_LEVEL_PENDING });
-    axios.get('/api/level').then(res => {
+    axios.get('/api/level',{
+        headers : {
+            emstoken : localStorage.getItem('emstoken')
+        }
+    }).then(res => {
       dispatch({
        type : FETCH_LEVEL_FUFILLED,
        payload : res.data
@@ -35,7 +39,7 @@ export const fetchLevel = () => {
       });
     });
   }
-}
+};
 
 export const uploadLevel = (data, e) => {
    return dispatch => {
