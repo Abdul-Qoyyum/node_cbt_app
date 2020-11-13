@@ -13,7 +13,8 @@ const db = require('../db');
 const {
         User,
         Question,
-        Level
+        Level,
+        Subject
        } = require('../models');
 
 const {
@@ -189,18 +190,44 @@ db.once('open',() => {
          });
        })
       .post(authorize,[
-         body('name').exists().not().isEmpty().withMessage("Invalid Class")
+         body('name').not().isEmpty().withMessage("Invalid Class")
         ],(req,res) => {
 // Finds the validation errors in this request and wraps them in an object with handy functions
          const errors = validationResult(req);
          if (!errors.isEmpty()) {
          return res.status(400).json({ errors: errors.array() });
        }
-
-        console.log(`Req : ${JSON.stringify(req.body)}`);
-        res.status(200).json({message : "success"});
-
+//Save the level record
+        const level = new Level(req.body);
+         level.save().then(function (doc) {
+             res.status(200).json(doc);
+         }).catch(function (err) {
+             res.status(500).json(err);
+         });
        });
+
+    //Subjects routes
+    router.route('/api/subject')
+        .post(authorize,[
+            body('_level').not().isEmpty().withMessage('Level id is required'),
+            body('title').not().isEmpty().withMessage('Title is required'),
+            body('duration').not().isEmpty().withMessage('Duration is required')
+        ],(req, res) => {
+            // Finds the validation errors in this request and wraps them in an object with handy functions
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            //save the level / class record if validation is successfull
+            const subject = new Subject(req.body);
+            subject.save().then(function (doc) {
+               res.status(200).json(doc);
+            }).catch(function (err) {
+                res.status(500).json(err);
+            });
+        });
+
 
     app.use(router);
 
