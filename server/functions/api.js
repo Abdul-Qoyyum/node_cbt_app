@@ -159,7 +159,7 @@ db.once('open',() => {
           body('options.D').not().isEmpty().withMessage('Option D is required'),
           body('answer').not().isEmpty().withMessage('Answer is required')
           ],(req,res) => {
-// Finds the validation errors in this request and wraps them in an object with handy functions
+  // Finds the validation errors in this request and wraps them in an object with handy functions
          const errors = validationResult(req);
          if (!errors.isEmpty()) {
          return res.status(400).json({ errors: errors.array() });
@@ -207,7 +207,13 @@ db.once('open',() => {
        });
 
     //Subjects routes
-    router.route('/api/subject')
+   router.route('/api/subject')
+        .get(authorize,(req,res) => {
+           Subject.find({ _creator : req.user._id },function(err, docs){
+             if(err) return res.status(500).json(err);
+             res.status(200).json(docs);
+           });
+        })
         .post(authorize,[
             body('_level').not().isEmpty().withMessage('Level id is required'),
             body('title').not().isEmpty().withMessage('Title is required'),
@@ -220,9 +226,13 @@ db.once('open',() => {
             }
 
             //save the level / class record if validation is successfull
-            const subject = new Subject(req.body);
+            const subject = new Subject({ ...req.body, _creator : req.user._id });
             subject.save().then(function (doc) {
+             doc.populate('_level').populate('_creator').execPopulate().then(doc => {
                res.status(200).json(doc);
+             }).catch(err => {
+               res.status(500).json({});
+              });
             }).catch(function (err) {
                 res.status(500).json(err);
             });

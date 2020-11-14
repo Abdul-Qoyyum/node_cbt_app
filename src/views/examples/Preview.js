@@ -6,6 +6,11 @@ import { NotificationContainer } from 'react-notifications';
 import LoadingButton from "../../components/LoadingButton";
 
 import {
+        RenderList,
+        SubjectList
+       } from "../../components";
+
+import {
   Container,
   FormGroup,
   Label,
@@ -15,7 +20,6 @@ import {
   Card,
   Row,
   Col,
-
   Button,
   Modal,
   ModalHeader,
@@ -27,11 +31,13 @@ import {
    fetchLevel,
    toggle,
    toggleNested,
-   uploadLevel
+   uploadLevel,
+   uploadSubject
    } from '../../actions';
 
 
 function Preview(props){
+
  const {
         register,
         errors,
@@ -43,19 +49,22 @@ function Preview(props){
      register : registerNest,
      errors : errorsNest,
      handleSubmit : handleSubmitNest
- } = useForm();
+  } = useForm();
 
  const {
         levels,
         fetchLevel,
-        modal,
         nestedModal,
-        loading,
         nestedLoading,
         toggle,
         toggleNested,
         uploadLevel,
-        nestedDisabled
+        uploadSubject,
+        nestedDisabled,
+        modal,
+        loading,
+        disabled,
+        subjects
        } = props;
 
  useEffect(fetchLevel,[]);
@@ -68,6 +77,7 @@ function Preview(props){
 
  const onSubmit = (data, e) => {
      console.log(`Data : ${data}`);
+     uploadSubject(data, e);
  }
 
  return (
@@ -107,7 +117,7 @@ function Preview(props){
                      <option value={""} disabled selected>Select Class</option>
                     {
                      levels.map(level => (
-                      <option id={level._id} >{level.name}</option>
+                      <option id={level._id} value={level._id}>{level.name}</option>
                      ))
                     }
                  </Input>
@@ -162,10 +172,26 @@ function Preview(props){
         </ModalBody>
 
         <ModalFooter>
-          <Button color="secondary" onClick={toggle}>Cancel</Button>{' '}
+         <Row>
+          <Col>
+           <Button color="secondary" onClick={toggle}>Cancel</Button>{' '}
+          </Col>
+          <Col>
+             <LoadingButton
+               className={"text-center"}
+               loading={loading}
+               disabled={disabled}
+               color={"primary"}
+               block={true}
+               outline={false}
+              >
+                Save
+             </LoadingButton>
+           </Col>
+         </Row>
 
             {/*<Button color="primary" onClick={toggle}>Save</Button>*/}
-            <Button color="primary">Save</Button>
+            {/*<Button color="primary">Save</Button>*/}
         </ModalFooter>
        </Form>
       </Modal>
@@ -218,13 +244,20 @@ function Preview(props){
       </Modal>
 
 
-
+{/*
       <Card style={{ minHeight : '60vh'}} className={'d-flex justify-content-center align-items-center'}>
         <div>
             <h4 className={"text-primary"}>Empty</h4>
             <p className={"text-center text-primary"}  style={{fontSize : 30 }}><i className="fa fa-folder-open" aria-hidden="true"></i> </p>
         </div>
-     </Card>
+      </Card>
+*/}
+
+  <RenderList
+   isLoading={false}
+   list={[1,2,3]}
+   component={SubjectList}
+  />
 
   </Container>
 
@@ -238,22 +271,29 @@ function Preview(props){
 
 
 const mapStateToProps = state => {
-    const {
+   const {
         levels,
-        modal,
         nestedModal,
-        loading,
         nestedLoading,
         nestedDisabled
     } = state.levelStore;
 
+   const {
+      modal,
+      loading,
+      disabled,
+      subjects
+   } = state.subjectStore;
+
   return {
           levels,
-          modal,
           nestedModal,
-          loading,
           nestedLoading,
-          nestedDisabled
+          nestedDisabled,
+          modal,
+          loading,
+          disabled,
+          subjects
          };
 };
 
@@ -264,6 +304,7 @@ export default connect(
         fetchLevel,
         toggle,
         toggleNested,
-        uploadLevel
+        uploadLevel,
+        uploadSubject
        }
        )(Preview);

@@ -5,19 +5,11 @@ import {
   FETCH_LEVEL_PENDING,
   FETCH_LEVEL_FUFILLED,
   FETCH_LEVEL_REJECTED,
-  SET_LEVEL,
   UPLOAD_LEVEL_PENDING,
   UPLOAD_LEVEL_FUFILLED,
   UPLOAD_LEVEL_REJECTED,
-  TOGGLE_MODAL,
   TOGGLE_NESTED_MODAL
   } from '../types';
-
-
-export const setLevel = (e) => {
-
-
-}
 
 
 export const fetchLevel = () => {
@@ -49,7 +41,6 @@ export const uploadLevel = (data, e) => {
            emstoken : localStorage.getItem('emstoken')
          }
        }).then(res => {
-
          dispatch({
           type : UPLOAD_LEVEL_FUFILLED,
           payload : res.data
@@ -63,19 +54,12 @@ export const uploadLevel = (data, e) => {
           type : UPLOAD_LEVEL_REJECTED,
           payload : err
          });
-       
       });
    }
 }
 
 
-//used to toggle modal
-export const toggle = () => {
-  return dispatch => {
-    dispatch({ type : TOGGLE_MODAL });
-  }
-}
-
+//Toggle Nested Modal
 export const toggleNested = () => {
   return dispatch => {
    dispatch({ type : TOGGLE_NESTED_MODAL });
