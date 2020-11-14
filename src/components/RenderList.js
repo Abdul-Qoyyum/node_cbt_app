@@ -10,10 +10,10 @@ import Empty from "./Empty";
 export class RenderList extends Component{
 
  render(){
-  const { isLoading, list, component : Component } = this.props;
+  const { isLoading, lists, component : Component } = this.props;
   return (
     <StyledContentLoader isLoading={isLoading}>
-    { _.isEmpty(list) ? <Empty /> : <Component {...list} /> }
+    { _.isEmpty(lists) ? <Empty /> : <Component lists={lists} /> }
     </StyledContentLoader>
   );
  }

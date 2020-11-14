@@ -1,13 +1,29 @@
 import React from 'react';
 
 import {
-   Card
+   Card,
+   Row,
+   Col
   } from 'reactstrap';
 
-export function SubjectList(props){
+export function SubjectList({lists}){
  return (
-  <Card style={{minHeight : '60vh'}} className={"d-flex justify-content-center align-items-center"}>
-   <h3>Hello from Subject List</h3>
-  </Card>
+   <>
+
+         <Row>
+             {
+                 lists.map(function(list, index){
+                     return (
+                       <Col key={index}>
+                          <Card>
+                              <p>Hello world</p>
+                          </Card>
+                       </Col>
+                     )
+                 })
+             }
+        </Row>
+
+   </>
  )
 }

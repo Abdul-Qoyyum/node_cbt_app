@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { NotificationContainer } from 'react-notifications';
-
+import StyledContentLoader from 'styled-content-loader';
 import LoadingButton from "../../components/LoadingButton";
 
 import {
@@ -102,9 +102,11 @@ function Preview(props){
 
   <Container fluid>
     <div className={"py-3"}>
-      <div className={"d-flex justify-content-end"}>
-          <Button color={"primary"} onClick={toggle}>Create Exam</Button>
-      </div>
+     <StyledContentLoader isLoading={isLoading}>
+            <div className={"d-flex justify-content-end"}>
+             <Button color={"primary"} onClick={toggle}>Create Exam</Button>
+            </div>
+     </StyledContentLoader>
       <Modal isOpen={modal} toggle={toggle}>
        <Form  key={1} role={"form"} onSubmit={handleSubmit(onSubmit)}>
         <ModalHeader toggle={toggle}>Create Exam</ModalHeader>
@@ -271,10 +273,9 @@ function Preview(props){
 
   <RenderList
    isLoading={isLoading}
-   list={subjects}
+   lists={subjects}
    component={SubjectList}
   />
-
   </Container>
 
 
