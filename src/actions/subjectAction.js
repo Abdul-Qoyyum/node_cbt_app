@@ -12,14 +12,27 @@ import {
   FETCH_SUBJECT_REJECTED
  } from '../types'
 
-/*
-export const fetchLevels = () => {
+
+export const fetchSubjects = () => {
    return dispatch => {
      dispatch({ type : FETCH_SUBJECT_PENDING });
-     axios.get()
-
+     axios.get('/api/subject',{
+        headers : {
+            emstoken : localStorage.getItem('emstoken')
+        }
+     }).then(res => {
+         dispatch({
+             type : FETCH_SUBJECT_FUFILLED,
+             payload : res.data
+         });
+     }).catch(err => {
+         dispatch({
+            type : FETCH_SUBJECT_REJECTED,
+            payload : err
+         });
+     });
    }
-}*/
+};
 
 export function uploadSubject(data, e){
    return dispatch => {

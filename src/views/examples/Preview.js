@@ -32,7 +32,8 @@ import {
    toggle,
    toggleNested,
    uploadLevel,
-   uploadSubject
+   uploadSubject,
+   fetchSubjects
    } from '../../actions';
 
 
@@ -64,19 +65,23 @@ function Preview(props){
         modal,
         loading,
         disabled,
-        subjects
+        subjects,
+        isLoading,
+        fetchSubjects
        } = props;
 
- useEffect(fetchLevel,[]);
+ useEffect((fetchLevel,fetchSubjects) => {
+     //invoke functions to fetch all levels and Subjects
+     fetchLevel();
+     fetchSubjects();
+ },[]);
 
  const onLevelSubmit = (data, e) => {
-//call the action creator to upload class
    uploadLevel(data, e);
  }
 
 
  const onSubmit = (data, e) => {
-     console.log(`Data : ${data}`);
      uploadSubject(data, e);
  }
 
@@ -159,6 +164,10 @@ function Preview(props){
                       required : {
                           value : true,
                           message : "Duration is required"
+                      },
+                      min : {
+                          value : 1,
+                          message : "Must be greater than 1 minute"
                       }
                   })}
                   invalid={errors.duration ? true : false }
@@ -254,8 +263,8 @@ function Preview(props){
 */}
 
   <RenderList
-   isLoading={false}
-   list={[1,2,3]}
+   isLoading={isLoading}
+   list={subjects}
    component={SubjectList}
   />
 
@@ -282,7 +291,8 @@ const mapStateToProps = state => {
       modal,
       loading,
       disabled,
-      subjects
+      subjects,
+      isLoading
    } = state.subjectStore;
 
   return {
@@ -305,6 +315,7 @@ export default connect(
         toggle,
         toggleNested,
         uploadLevel,
-        uploadSubject
+        uploadSubject,
+        fetchSubjects
        }
        )(Preview);

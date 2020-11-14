@@ -225,7 +225,7 @@ db.once('open',() => {
                 return res.status(400).json({ errors: errors.array() });
             }
 
-            //save the level / class record if validation is successfull
+            //save the subject resource if validation is successfull
             const subject = new Subject({ ...req.body, _creator : req.user._id });
             subject.save().then(function (doc) {
              doc.populate('_level').populate('_creator').execPopulate().then(doc => {

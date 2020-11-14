@@ -23,4 +23,4 @@ RenderList.propTypes = {
  isLoading : PropTypes.bool,
  list : PropTypes.array,
  component : PropTypes.element
-}
+};

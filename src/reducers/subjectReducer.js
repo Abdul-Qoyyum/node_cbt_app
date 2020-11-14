@@ -2,7 +2,10 @@ import {
       TOGGLE_MODAL,
       UPLOAD_SUBJECT_PENDING,
       UPLOAD_SUBJECT_FUFILLED,
-      UPLOAD_LEVEL_REJECTED
+      UPLOAD_LEVEL_REJECTED,
+      FETCH_SUBJECT_PENDING,
+      FETCH_SUBJECT_FUFILLED,
+      FETCH_SUBJECT_REJECTED
        } from '../types';
 
 
@@ -10,6 +13,7 @@ const defaultState = {
   modal : false,
   loading : false,
   disabled : false,
+  isLoading : false,
   subjects : []
 }
 
@@ -40,7 +44,17 @@ export const subjectReducer = (state = defaultState, action) => {
              ...state,
              loading : false,
              disabled : false
-            }
+            };
+     case FETCH_SUBJECT_PENDING:
+      return { ...state, isLoading: true };
+     case FETCH_SUBJECT_FUFILLED:
+      return {
+          ...state,
+          subjects: action.payload,
+          isLoading: false
+      };
+     case FETCH_SUBJECT_REJECTED:
+         return { ...state, isLoading: false };
   default:
     return state;
   }
