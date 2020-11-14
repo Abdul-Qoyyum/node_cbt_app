@@ -7,7 +7,6 @@ import {
   UPLOAD_SUBJECT_PENDING,
   UPLOAD_SUBJECT_FUFILLED,
   UPLOAD_LEVEL_REJECTED,
-  FETCH_SUBJECT_PENDING,
   FETCH_SUBJECT_FUFILLED,
   FETCH_SUBJECT_REJECTED
  } from '../types'
@@ -15,7 +14,6 @@ import {
 
 export const fetchSubjects = () => {
    return dispatch => {
-     dispatch({ type : FETCH_SUBJECT_PENDING });
      axios.get('/api/subject',{
         headers : {
             emstoken : localStorage.getItem('emstoken')

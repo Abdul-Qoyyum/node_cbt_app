@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { NotificationContainer } from 'react-notifications';
@@ -52,6 +52,9 @@ function Preview(props){
      handleSubmit : handleSubmitNest
   } = useForm();
 
+
+
+
  const {
         levels,
         fetchLevel,
@@ -70,11 +73,15 @@ function Preview(props){
         fetchSubjects
        } = props;
 
- useEffect((fetchLevel,fetchSubjects) => {
+    const levelCallback = useCallback(fetchLevel,[]);
+
+    const subjectsCallback = useCallback(fetchSubjects,[]);
+
+    useEffect(() => {
      //invoke functions to fetch all levels and Subjects
-     fetchLevel();
-     fetchSubjects();
- },[]);
+     levelCallback();
+     subjectsCallback();
+ },[levelCallback, subjectsCallback]);
 
  const onLevelSubmit = (data, e) => {
    uploadLevel(data, e);
@@ -303,7 +310,8 @@ const mapStateToProps = state => {
           modal,
           loading,
           disabled,
-          subjects
+          subjects,
+          isLoading
          };
 };
 
