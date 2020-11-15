@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { NotificationContainer } from 'react-notifications';
@@ -17,7 +17,6 @@ import {
   Input,
   FormText,
   Form,
-  Card,
   Row,
   Col,
   Button,

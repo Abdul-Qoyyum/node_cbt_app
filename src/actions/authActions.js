@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-//manage route with history
-import history from '../history';
 
 import {
     FETCH_USER_PENDING,
@@ -21,9 +19,9 @@ export function clearError(){
     }
 }
 
-export function verifyToken(){
+export function verifyToken(history){
   return dispatch => {
-    axios.get('api/token/verify',{
+    axios.get('/api/token/verify',{
      headers : {
       emstoken : localStorage.getItem("emstoken")
      }
@@ -40,13 +38,14 @@ export function verifyToken(){
 }
 
 
-export function loginUser(data) {
+export function loginUser(data, history) {
     return dispatch => {
         dispatch({
            type : FETCH_USER_PENDING
         });
         axios.post('/api/login',data)
         .then(res => {
+            console.log(`Header : ${res.headers['emstoken']}`)
             //store response token to localstorage
             localStorage.setItem('emstoken',res.headers['emstoken']);
 

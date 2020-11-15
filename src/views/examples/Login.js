@@ -17,9 +17,8 @@
 */
 import React from "react";
 //import axios from 'axios';
-//import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import { useHistory } from 'react-router-dom';
 //react hook form
 import { useForm } from "react-hook-form";
 
@@ -49,6 +48,8 @@ import {
 
 function Login(props){
     const {handleSubmit,register,errors} = useForm();
+    const history = useHistory();
+
     const {
       loading,
       redirect,
@@ -57,11 +58,11 @@ function Login(props){
       disabled,
       error
        } = props;
-/*
-    if(redirect){
-      return <Redirect to={"/admin"} />
+
+    const onSubmit = (data) => {
+      loginUser(data, history);
     }
-*/
+
       return (
           <>
             <Col lg="5" md="7">
@@ -72,7 +73,7 @@ function Login(props){
                     <small>Sign in with credentials</small>
                   </div>
 
-                  <Form role="form" onSubmit={handleSubmit(loginUser)}>
+                  <Form role="form" onSubmit={handleSubmit(onSubmit)}>
                     <FormGroup className="mb-3">
                       <InputGroup className="input-group-alternative">
                         <InputGroupAddon addonType="prepend">
