@@ -17,7 +17,7 @@
 */
 import React from "react";
 //import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+//import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 //react hook form
@@ -57,10 +57,11 @@ function Login(props){
       disabled,
       error
        } = props;
-
+/*
     if(redirect){
       return <Redirect to={"/admin"} />
     }
+*/
       return (
           <>
             <Col lg="5" md="7">

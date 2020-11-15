@@ -107,7 +107,7 @@ db.once('open',() => {
             });
         });
 
-
+//verify token on app start
     router.route('/api/token/verify')
         .get(authorize,(req,res) => {
             res.header('emstoken', req.token).status(200).json(req.user);
