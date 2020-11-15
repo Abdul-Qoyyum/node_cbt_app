@@ -26,6 +26,7 @@ export function verifyToken(history){
       emstoken : localStorage.getItem("emstoken")
      }
     }).then(res => {
+    //save current user with this dispatch function
      dispatch({ type : VERIFY_JWT_TOKEN_SUCCESS });
      history.push("/admin/index");
     }).catch(err => {

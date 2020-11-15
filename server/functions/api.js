@@ -80,7 +80,6 @@ db.once('open',() => {
        }
 
           let { email, password, remember_me } = req.body;
-         console.log(`Remember : ${remember_me}`);
           User.findByCredentials({email, password}).then(user => {
             user.generateAuthToken(remember_me).then( token => {
               res.header('emstoken',token).status(200).json(user);
@@ -209,9 +208,15 @@ db.once('open',() => {
     //Subjects routes
    router.route('/api/subject')
         .get(authorize,(req,res) => {
+         /*
            Subject.find({ _creator : req.user._id },function(err, docs){
              if(err) return res.status(500).json(err);
              res.status(200).json(docs);
+           });
+         */
+           Subject.find({ _creator : req.user._id}).populate('_level').populate('_creator').exec(function(err, docs){
+               if (err) return res.status(500).json(err);
+               res.status(200).json(docs);
            });
         })
         .post(authorize,[

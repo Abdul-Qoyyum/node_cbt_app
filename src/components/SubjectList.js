@@ -3,7 +3,10 @@ import React from 'react';
 import {
    Card,
    Row,
-   Col
+   Col,
+    CardBody,
+    CardLink,
+    CardFooter
   } from 'reactstrap';
 
 export function SubjectList({lists}){
@@ -14,9 +17,16 @@ export function SubjectList({lists}){
              {
                  lists.map(function(list, index){
                      return (
-                       <Col key={index}>
+                       <Col key={index} xs={12} sm={6} md={4} className={'mb-3'}>
                           <Card>
-                              <p>Hello world</p>
+                              <CardBody>
+                                  <p><strong>Subject Name : </strong> {list.title}</p>
+                                  <p><strong>Class : </strong> {list._level.name}</p>
+                                  <p><strong>Duration : </strong> {list.duration} (mins)</p>
+                              </CardBody>
+                              <CardFooter>
+                                  <CardLink>Preview</CardLink>
+                              </CardFooter>
                           </Card>
                        </Col>
                      )
