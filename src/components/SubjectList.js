@@ -1,15 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
    Card,
    Row,
    Col,
-    CardBody,
-    CardLink,
-    CardFooter
+   CardBody,
+   CardLink,
+   CardFooter
   } from 'reactstrap';
 
-export function SubjectList({lists}){
+export function SubjectList({lists,path}){
  return (
    <>
 
@@ -25,7 +26,7 @@ export function SubjectList({lists}){
                                   <p><strong>Duration : </strong> {list.duration} (mins)</p>
                               </CardBody>
                               <CardFooter>
-                                  <CardLink>Preview</CardLink>
+                                  <CardLink className={"text-center"}><Link to={`${path}/${list._id}`}>Select</Link></CardLink>
                               </CardFooter>
                           </Card>
                        </Col>

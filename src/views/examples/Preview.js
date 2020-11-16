@@ -274,6 +274,7 @@ function Preview(props){
    isLoading={isLoading}
    lists={subjects}
    component={SubjectList}
+   path={"yet to be passed in"}
   />
   </Container>
 

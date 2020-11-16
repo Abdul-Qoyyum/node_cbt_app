@@ -24,7 +24,7 @@ import Preview from "views/examples/Preview.js";
 //import Tables from "views/examples/Tables.js";
 //import Icons from "views/examples/Icons.js";
 
-import Questions from "./views/examples/Questions";
+import Upload from "./views/examples/Upload";
 
 import Exam from "./layouts/Exam";
 
@@ -98,10 +98,10 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/question",
+    path: "/upload",
     name: "Upload",
     icon: "ni ni-tv-2 text-primary",
-    component: Questions,
+    component: Upload,
     layout: "/admin"
   }
 ];

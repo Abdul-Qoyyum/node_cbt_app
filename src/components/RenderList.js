@@ -10,18 +10,25 @@ import Empty from "./Empty";
 export class RenderList extends Component{
 
  render(){
-  const { isLoading, lists, component : Component } = this.props;
+  const {
+         isLoading,
+         lists,
+         component : Component,
+         path
+        } = this.props;
   return (
     <StyledContentLoader isLoading={isLoading}>
-    { _.isEmpty(lists) ? <Empty /> : <Component lists={lists} /> }
+      { _.isEmpty(lists) ? <Empty /> : <Component lists={lists} path={path} /> }
     </StyledContentLoader>
   );
  }
 
 }
 
+
 RenderList.propTypes = {
  isLoading : PropTypes.bool,
  list : PropTypes.array,
- component : PropTypes.element
+ component : PropTypes.element,
+ path : PropTypes.string
 };
