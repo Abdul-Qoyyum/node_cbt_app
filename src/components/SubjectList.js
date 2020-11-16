@@ -1,16 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import {
    Card,
    Row,
    Col,
-   CardBody,
-   CardLink,
-   CardFooter
+   CardText,
+   Button
   } from 'reactstrap';
 
-export function SubjectList({lists,path}){
+import {
+    showQuestionOrPreview
+} from "../actions";
+
+
+function SubjectList({lists, path, showQuestionOrPreview }){
+
+    const history = useHistory();
+
  return (
    <>
 
@@ -19,15 +28,13 @@ export function SubjectList({lists,path}){
                  lists.map(function(list, index){
                      return (
                        <Col key={index} xs={12} sm={6} md={4} className={'mb-3'}>
-                          <Card>
-                              <CardBody>
-                                  <p><strong>Subject Name : </strong> {list.title}</p>
-                                  <p><strong>Class : </strong> {list._level.name}</p>
-                                  <p><strong>Duration : </strong> {list.duration} (mins)</p>
-                              </CardBody>
-                              <CardFooter>
-                                  <CardLink><Link to={`${path}/${list._id}`} className={"text-center"}>Select</Link></CardLink>
-                              </CardFooter>
+                          <Card body>
+                                <CardText>
+                                    <p><strong>Subject Name : </strong> {list.title}</p>
+                                    <p><strong>Class : </strong> {list._level.name}</p>
+                                    <p><strong>Duration : </strong> {list.duration} (mins)</p>
+                                </CardText>
+                              <Button className={'bg-primary text-white'}  onClick={() => showQuestionOrPreview(list._id, path, history)}>Select</Button>
                           </Card>
                        </Col>
                      )
@@ -38,3 +45,5 @@ export function SubjectList({lists,path}){
    </>
  )
 }
+
+export default connect(null,{ showQuestionOrPreview })(SubjectList);

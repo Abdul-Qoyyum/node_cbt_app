@@ -10,6 +10,11 @@ const QuestionSchema =  new mongoose.Schema({
        type : String,
        required : true
     },
+    _subject : {
+       type : mongoose.Schema.Types.ObjectId,
+       ref : "Subject",
+       required : true
+    },
     _creator : {
        type: mongoose.Schema.Types.ObjectId,
        ref : "User",

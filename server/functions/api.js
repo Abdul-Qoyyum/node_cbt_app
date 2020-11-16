@@ -109,7 +109,7 @@ db.once('open',() => {
 //verify token on app start
     router.route('/api/token/verify')
         .get(authorize,(req,res) => {
-            res.header('emstoken', req.token).status(200).json(req.user);
+            res.status(200).header('emstoken', req.token).json(req.user);
         });
 
 
@@ -149,7 +149,7 @@ db.once('open',() => {
 
 
 
-    router.route('/api/ques/upload')
+    router.route('/api/ques')
         .post(authorize,[
           body('body').not().isEmpty().withMessage("body is required"),
           body('options.A').not().isEmpty().withMessage('Option A is required'),
@@ -176,7 +176,19 @@ db.once('open',() => {
            }).catch(err => {
              res.status(500).json(err);
            });
+        });
 
+//fetch all questions that belongs to a particular subject
+//at param _subject (i.e subject id)
+     router.route('/api/ques/:id')
+        .get(authorize,(req,res) => {
+            Question.find({
+                _creator : req.user._id,
+                _subject : req.params.id
+            },(err, docs) => {
+              if (err) return res.status(500).json(err);
+              res.status(200).json(docs);
+            });
         });
 
 //Remember to use express-validator middleware

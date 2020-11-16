@@ -79,7 +79,7 @@ class Admin extends React.Component {
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>
-            <Route path={"/admin/upload/:id"} component={Questions} />
+            <Route path={"/admin/upload/ques"} component={Questions} />
             {this.getRoutes(routes)}
             <Redirect from="*" to="/admin/index" />
           </Switch>

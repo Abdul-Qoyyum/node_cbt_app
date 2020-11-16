@@ -6,9 +6,10 @@ import StyledContentLoader from 'styled-content-loader';
 import LoadingButton from "../../components/LoadingButton";
 
 import {
-        RenderList,
-        SubjectList
+        RenderList
        } from "../../components";
+
+import SubjectList from "../../components";
 
 import {
   Container,

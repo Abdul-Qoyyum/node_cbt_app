@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import { Container } from 'reactstrap';
 
 import {
-        SubjectList,
         RenderList
        } from "../../components";
+
+import SubjectList from "../../components";
 
 import {
     fetchSubjects
 } from "../../actions";
 
 function Upload(props){
-    const { subjects, isLoading } = props;
+    const { subjects, isLoading, fetchSubjects } = props;
 
     const subjectsCallback = useCallback(fetchSubjects,[]);
 
@@ -24,15 +25,15 @@ function Upload(props){
         <>
             <div className={"d-none d-md-block bg-success"}  style={{ minHeight : "80px" }}>
             </div>
-            <Container>
+            <Container className={"pt-6"}>
                 <RenderList
                     isLoading={isLoading}
                     lists={subjects}
                     component={SubjectList}
-                    path={"/admin/upload"}
+                    path={"/admin/upload/ques"}
                 />
             </Container>
-            </>
+        </>
         )
 
 }
@@ -51,4 +52,4 @@ const mapStateToProps = state => {
 
 export default connect(
           mapStateToProps,
-          null)(Upload)
+         {fetchSubjects})(Upload)

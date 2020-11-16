@@ -1,10 +1,13 @@
-import React,{ useState } from 'react';
+import React,{ useState, useCallback, useEffect } from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { connect } from 'react-redux';
 import { useForm } from "react-hook-form";
+import _ from 'lodash';
 import { NotificationContainer } from 'react-notifications';
-
+import {
+        fetchQuestions
+       } from "../../actions";
 
 //My customised adapter for CKEditor...
 import { MyCustomAdapter } from '../../plugins';
@@ -18,9 +21,9 @@ import {
   Input,
   Form,
   FormGroup,
-  Label,
   FormText,
-  Button
+  Button,
+    CardHeader
  } from 'reactstrap';
 
 
@@ -50,17 +53,27 @@ function Questions(props) {
        error,
        answer,
        question,
+       _subject,
        setQuestion,
        setOption,
        setAnswer,
-       uploadQuestion
+       uploadQuestion,
+       fetchQuestions
          } = props;
 
+    const fetchQuestionsCallback = useCallback(() => {
+        fetchQuestions(_subject);
+    },[ _subject ]);
 
-    let onSubmit = (data, e) => {
-     //upload Question...
-//takes
-     uploadQuestion(question, e, editor);
+    useEffect(() => {
+        fetchQuestionsCallback();
+    },[ fetchQuestionsCallback ]);
+
+    const onSubmit = (data, e) => {
+    //add subject id to question before upload
+      let questionWithSubjectId = {...question, _subject};
+
+     uploadQuestion(questionWithSubjectId, e, editor);
 
     };
 
@@ -72,8 +85,15 @@ function Questions(props) {
      </div>
 
     {/* Page Content */}
-     <Container className={"header pb-8 pt-5 pt-lg-8"}  fluid>
-
+     <Container className={"header pb-8 pt-5"}  fluid>
+      <Card className={"mb-2"}>
+          <CardHeader><h3><strong>Details : </strong></h3> </CardHeader>
+          <CardBody>
+              <p><strong>Subject : </strong> </p>
+              <p><strong>Class : </strong> </p>
+              <p><strong>Total Questions : </strong></p>
+          </CardBody>
+      </Card>
        <Form role={"form"} onSubmit={handleSubmit(onSubmit)}  encType={"multipart/form-data"}>
         <CKEditor
           editor={ClassicEditor}
@@ -218,31 +238,7 @@ function Questions(props) {
              {errors.ans && (<FormText color={"danger"}>{errors.ans.message}</FormText>)}
              </FormGroup>
 
-
-             <FormGroup>
-                 <Label for="exampleSelect"><h3>Class</h3></Label>
-                 <Input
-                     type="select"
-                     name="level"
-                     onChange={(e) => console.log(`Clicked ${e.target.value}`)}
-                     id="level"
-                     innerRef={register({
-                         required : {
-                             value : true,
-                             message : "Class is required"
-                         }
-                     })}
-                 >
-                     <option></option>
-                     <option>JSS 2</option>
-                     <option>3</option>
-                     <option>4</option>
-                     <option>5</option>
-                 </Input>
-                 {errors.level && <FormText color={"danger"}>{errors.level.message}</FormText> }
-             </FormGroup>
-
-           </CardBody>
+          </CardBody>
         </Col>
          <hr />
        </Row>
@@ -259,7 +255,7 @@ function Questions(props) {
 
 
 const mapStateToProps = state => {
-    const { error, question } = state.questionStore;
+    const { error, question, _subject } = state.questionStore;
     const { body, options, answer } = question;
     const { A, B, C, D} = options;
     return {
@@ -270,7 +266,8 @@ const mapStateToProps = state => {
      question,
      body,
      answer,
-     error
+     error,
+    _subject
      }
 }
 
@@ -278,5 +275,6 @@ export default connect(mapStateToProps,{
        setQuestion,
        setOption,
        setAnswer,
-       uploadQuestion
+       uploadQuestion,
+       fetchQuestions
  })(Questions);

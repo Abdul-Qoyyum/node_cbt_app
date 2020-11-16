@@ -52,7 +52,6 @@ function Login(props){
 
     const {
       loading,
-      redirect,
       loginUser,
       clearError,
       disabled,
@@ -179,10 +178,9 @@ function Login(props){
 
 
 const mapStateToProps = state => {
-  let { loading, redirect, error, disabled } = state.authStore;
+  let { loading, error, disabled } = state.authStore;
    return {
      loading,
-     redirect,
      error,
      disabled
    }

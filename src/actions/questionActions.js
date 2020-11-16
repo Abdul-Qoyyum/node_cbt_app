@@ -9,10 +9,35 @@ import {
     UPLOAD_QUESTION_PENDING,
     UPLOAD_QUESTION_FAILED,
     UPLOAD_QUESTION_ERROR,
-    CLEAR_QUESTION__ERROR
-    } from "../types";
+    CLEAR_QUESTION__ERROR,
+    SET_SUBJECT_ID,
+    FETCH_QUESTIONS_PENDING,
+    FETCH_QUESTIONS_FUFILLED,
+    FETCH_QUESTIONS_REJECTED
+} from "../types";
 
-
+//fetch all questions attributed to a subject
+//at parameter _subject (i.e subject id)
+export const fetchQuestions = (_subject) => {
+  return dispatch => {
+      dispatch({ type : FETCH_QUESTIONS_PENDING });
+       axios.get(`/api/ques/${_subject}`,{
+           headers : {
+               emstoken : localStorage.getItem('emstoken')
+           }
+       }).then(res => {
+          dispatch({
+             type : FETCH_QUESTIONS_FUFILLED,
+             payload : res.data
+          });
+       }).catch(err => {
+           dispatch({
+               type : FETCH_QUESTIONS_REJECTED,
+               payload : err
+           })
+       });
+  }
+};
 
 export const setQuestion = (data) => {
    return dispatch => {
@@ -32,7 +57,7 @@ export const setQuestion = (data) => {
       payload : data
      });
    }
-}
+};
 
 export const setOption = (e) => {
     return dispatch => {
@@ -70,7 +95,7 @@ export const uploadQuestion = (question, e, editor) => {
       }
 
        dispatch({ type : UPLOAD_QUESTION_PENDING });
-       axios.post('/api/ques/upload',question,{
+       axios.post('/api/ques',question,{
           headers : {
            emstoken : localStorage.getItem('emstoken')
           }
@@ -86,7 +111,6 @@ export const uploadQuestion = (question, e, editor) => {
             payload : res.data
          });
        }).catch(err => {
-         console.log(err);
          dispatch({
              type : UPLOAD_QUESTION_FAILED,
              payload : err
@@ -94,3 +118,16 @@ export const uploadQuestion = (question, e, editor) => {
        });
     }
 };
+
+//sets subjectId for the question to upload
+//redirects to the page for the upload question
+export const showQuestionOrPreview = (_id, path, history) => {
+    return dispatch => {
+        dispatch({
+            type : SET_SUBJECT_ID,
+            payload : _id
+        });
+        //renders the question interface
+        history.push(`${path}`);
+    }
+}
