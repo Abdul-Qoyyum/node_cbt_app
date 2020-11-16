@@ -51,9 +51,6 @@ function Preview(props){
      handleSubmit : handleSubmitNest
   } = useForm();
 
-
-
-
  const {
         levels,
         fetchLevel,

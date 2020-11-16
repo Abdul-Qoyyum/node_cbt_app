@@ -26,7 +26,7 @@ export function SubjectList({lists,path}){
                                   <p><strong>Duration : </strong> {list.duration} (mins)</p>
                               </CardBody>
                               <CardFooter>
-                                  <CardLink className={"text-center"}><Link to={`${path}/${list._id}`}>Select</Link></CardLink>
+                                  <CardLink><Link to={`${path}/${list._id}`} className={"text-center"}>Select</Link></CardLink>
                               </CardFooter>
                           </Card>
                        </Col>
