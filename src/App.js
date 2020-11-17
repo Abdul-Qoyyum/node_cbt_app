@@ -29,9 +29,8 @@ import ExamLayout from "./layouts/Exam";
 import ProtectedRoute from "./layouts/ProtectedRoute";
 
 
-import './App.css';
 import 'react-notifications/lib/notifications.css';
-
+import './App.css';
 
  class App extends Component {
 

@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { NotificationContainer } from 'react-notifications';
 import StyledContentLoader from 'styled-content-loader';
+
+
 import LoadingButton from "../../components/LoadingButton";
 
 import {
@@ -84,7 +86,7 @@ function Preview(props){
    uploadLevel(data, e);
  }
 
-
+//handles the upload submit
  const onSubmit = (data, e) => {
      uploadSubject(data, e);
  }
@@ -258,15 +260,6 @@ function Preview(props){
           </Form>
       </Modal>
 
-
-{/*
-      <Card style={{ minHeight : '60vh'}} className={'d-flex justify-content-center align-items-center'}>
-        <div>
-            <h4 className={"text-primary"}>Empty</h4>
-            <p className={"text-center text-primary"}  style={{fontSize : 30 }}><i className="fa fa-folder-open" aria-hidden="true"></i> </p>
-        </div>
-      </Card>
-*/}
 
   <RenderList
    isLoading={isLoading}

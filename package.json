@@ -40,6 +40,7 @@
     "react-google-maps": "9.4.5",
     "react-hook-form": "^6.9.4",
     "react-notifications": "^1.7.2",
+    "react-paginate": "^6.5.0",
     "react-redux": "^7.2.1",
     "react-router-dom": "5.1.2",
     "react-scripts": "3.4.3",

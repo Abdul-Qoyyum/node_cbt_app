@@ -3,7 +3,6 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { connect } from 'react-redux';
 import { useForm } from "react-hook-form";
-import _ from 'lodash';
 import { NotificationContainer } from 'react-notifications';
 import {
         fetchQuestions
