@@ -50,6 +50,7 @@ import './App.css';
                     <Grid />
                   </div>
               ) : (
+
            <Switch>
                <ProtectedRoute
                   path="/admin"
