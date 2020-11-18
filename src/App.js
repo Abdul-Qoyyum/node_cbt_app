@@ -2,6 +2,9 @@ import React ,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
+import "tailwindcss/dist/base.css";
+import "./styles/globalStyles.css";
+import { css } from "styled-components/macro";
 
 import {
         Route,

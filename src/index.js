@@ -22,7 +22,9 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux';
 import store from "./store";
 import App from "./App";
+import Modal from "react-modal";
 
+Modal.setAppElement("#root");
 
 ReactDOM.render(
   <BrowserRouter>

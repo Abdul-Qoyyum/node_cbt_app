@@ -4,12 +4,12 @@ import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { SectionHeading, Subheading as SubheadingBase } from "components/misc/Headings.js";
-import { Container, ContentWithPaddingXl } from "components/misc/Layouts.js";
-import loveIllustrationImageSrc from "images/love-illustration.svg";
-import { ReactComponent as StarIconBase } from "images/star-icon.svg";
-import { ReactComponent as ArrowLeftIcon } from "images/arrow-left-3-icon.svg";
-import { ReactComponent as ArrowRightIcon } from "images/arrow-right-3-icon.svg";
+import { SectionHeading, Subheading as SubheadingBase } from "../misc/Headings.js";
+import { Container, ContentWithPaddingXl } from "../misc/Layouts.js";
+import loveIllustrationImageSrc from "../../images/love-illustration.svg";
+import { ReactComponent as StarIconBase } from "../../images/star-icon.svg";
+import { ReactComponent as ArrowLeftIcon } from "../../images/arrow-left-3-icon.svg";
+import { ReactComponent as ArrowRightIcon } from "../../images/arrow-right-3-icon.svg";
 
 const Row = tw.div`flex flex-col md:flex-row justify-between items-center`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
