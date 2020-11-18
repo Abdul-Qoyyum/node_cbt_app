@@ -28,12 +28,12 @@ export function verifyToken(history){
     }).then(res => {
     //save current user with this dispatch function
      dispatch({ type : VERIFY_JWT_TOKEN_SUCCESS });
-     history.push("/admin/index");
+     history.push("/");
     }).catch(err => {
      dispatch({ type : VERIFY_JWT_TOKEN_FAIL  });
     //redirect to login page if
     //verification fail
-     history.push("/auth");
+     history.push("/");
     });
   }
 }

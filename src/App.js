@@ -27,9 +27,9 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import ExamLayout from "./layouts/Exam";
 import ProtectedRoute from "./layouts/ProtectedRoute";
-
-
 import 'react-notifications/lib/notifications.css';
+
+import Landing from './views/Landing';
 import './App.css';
 
  class App extends Component {
@@ -61,6 +61,8 @@ import './App.css';
                 path={"/exam"}
                 component={ExamLayout}
               />
+              <Route path="/auth" render={props => <AuthLayout {...props} />}/>
+              <Route path="/" render={props => <Landing {...props} />}/>
               <Redirect from="*" to="/auth/login"/>
             </Switch>)
            }
