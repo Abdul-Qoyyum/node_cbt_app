@@ -26,9 +26,10 @@ import { verifyToken } from './actions';
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/Auth.js";
-import ExamLayout from "./layouts/Exam";
+import AdminLayout from "./layouts/Admin.js";
+import AuthLayout from "./layouts/Auth.js";
+//import ExamLayout from "./layouts/Exam";
+import ExamView from './views/ExamView';
 import ProtectedRoute from "./layouts/ProtectedRoute";
 import 'react-notifications/lib/notifications.css';
 
@@ -60,13 +61,20 @@ import './App.css';
                   component={AdminLayout}
                />
               <Route path="/auth" render={props => <AuthLayout {...props} />}/>
+{/*
               <ProtectedRoute
                 path={"/exam"}
                 component={ExamLayout}
               />
-              <Route path="/auth" render={props => <AuthLayout {...props} />}/>
+*/}
+              <ProtectedRoute
+                path={"/exam"}
+                component={ExamView}
+              />
+{/*              <Route path="/auth" render={props => <AuthLayout {...props} />}/> */}
               <Route path="/" render={props => <Landing {...props} />}/>
-              <Redirect from="*" to="/auth/login"/>
+{/*              <Redirect from="*" to="/auth/login"/>*/}
+              <Redirect from="*" to="/"/>
             </Switch>)
            }
            </>

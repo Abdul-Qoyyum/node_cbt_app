@@ -1,14 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from 'react-redux';
+import _ from 'lodash';
+
 import tw from "twin.macro";
 //eslint-disable-next-line
 import { css } from "styled-components/macro";
-
+import { PrimaryButton as PrimaryButtonBase } from "../misc/Buttons.js";
 import Header from "../Headers/light.js";
 
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";
 import DesignIllustration from "../../images/design-illustration-2.svg";
 import CustomersLogoStripImage from "../../images/customers-logo-strip.png";
+
+
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row lg:items-center max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -20,13 +25,14 @@ const Paragraph = tw.p`my-5 lg:my-8 text-base xl:text-lg`;
 
 const Actions = styled.div`
   ${tw`relative max-w-md text-center mx-auto lg:mx-0`}
-  input {
-    ${tw`sm:pr-48 pl-8 py-4 sm:py-5 rounded-full border-2 w-full font-medium focus:outline-none transition duration-300  focus:border-primary-500 hover:border-gray-500`}
-  }
   button {
     ${tw`w-full sm:absolute right-0 top-0 bottom-0 bg-primary-500 text-gray-100 font-bold mr-2 my-4 sm:my-2 rounded-full py-4 flex items-center justify-center sm:w-40 sm:leading-none focus:outline-none hover:bg-primary-900 transition duration-300`}
   }
 `;
+const PrimaryButton = styled(PrimaryButtonBase)(props => [
+  tw`w-full inline-block mx-auto text-gray-100 sm:absolute left-0 top-0 bottom-0  font-bold md:mx-0 py-4 md:py-6 sm:w-40 flex items-center justify-center`,
+  props.buttonRounded && tw`rounded-full`
+]);
 
 const IllustrationContainer = tw.div`flex justify-center lg:justify-end items-center`;
 
@@ -45,7 +51,12 @@ const CustomersLogoStrip = styled.div`
   }
 `;
 
-export default ({ roundedHeaderButton }) => {
+const mapStateToProps = state => {
+  const { user } = state.authStore;
+  return { user };
+}
+
+export default connect(mapStateToProps,null)(({ user, roundedHeaderButton }) => {
   return (
     <>
       <Header roundedHeaderButton={roundedHeaderButton} />
@@ -56,13 +67,25 @@ export default ({ roundedHeaderButton }) => {
               Exam Management System <span tw="text-primary-500">for you.</span>
             </Heading>
             <Paragraph>
-              Our templates are easy to setup, understand and customize. Fully modular components with a variety of
-              pages and components.
+              Automate your examining process with no stress
             </Paragraph>
             <Actions>
-              {/*<input type="text" placeholder="Your E-mail Address" />*/}
-              <button>Get Started</button>
+{/*              <button>Get Started</button> */}
+
+           { _.isEmpty(user) ? (
+            <PrimaryButton as="a" buttonRounded={roundedHeaderButton}  href={"/auth/register"}>
+              Get Started
+            </PrimaryButton>
+            ) : (
+            <PrimaryButton as="a" buttonRounded={roundedHeaderButton}  href={"/exam"}>
+              Start Exam
+            </PrimaryButton>
+            )
+           }
+
+
             </Actions>
+
             {/*<CustomersLogoStrip>*/}
             {/*  <p>Our TRUSTED Customers</p>*/}
             {/*  <img src={CustomersLogoStripImage} alt="Our Customers" />*/}
@@ -78,4 +101,4 @@ export default ({ roundedHeaderButton }) => {
       </Container>
     </>
   );
-};
+});

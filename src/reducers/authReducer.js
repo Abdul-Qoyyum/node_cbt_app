@@ -23,7 +23,7 @@ const defaultState = {
 export const authReducer = (state = defaultState, action) => {
     switch (action.type) {
         case VERIFY_JWT_TOKEN_SUCCESS:
-            return {...state, isLoading : false };
+            return {...state, isLoading : false, user : action.payload };
         case VERIFY_JWT_TOKEN_FAIL:
             return {...state, isLoading : false };
         case FETCH_USER_PENDING:

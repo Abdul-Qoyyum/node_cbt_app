@@ -2,6 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
+import { connect } from 'react-redux';
+import _ from 'lodash';
 import { css } from "styled-components/macro"; //eslint-disable-line
 
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
@@ -56,7 +58,11 @@ export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
-export default ({ roundedHeaderButton = false, logoLink, links, className, collapseBreakpointClass = "lg" }) => {
+const mapStateToProps = state => {
+  return { user : state.authStore.user };
+}
+
+export default connect(mapStateToProps,null)(({ user, roundedHeaderButton = false, logoLink, links, className, collapseBreakpointClass = "lg" }) => {
   /*
    * This header component accepts an optionals "links" prop that specifies the links to render in the navbar.
    * This links props should be an array of "NavLinks" components which is exported from this file.
@@ -76,11 +82,21 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
       {/*<NavLink href="/#">Blog</NavLink>*/}
       {/*<NavLink href="/#">Pricing</NavLink>*/}
       <NavLink href="/#">Contact Us</NavLink>
-      <NavLink href="/#" tw="lg:ml-12!">
+      { _.isEmpty(user) ? (
+     <>
+      <NavLink href="/auth/login" tw="lg:ml-12!">
         Login
       </NavLink>
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/#">Sign Up</PrimaryLink>
-    </NavLinks>
+      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/auth/register">Sign Up</PrimaryLink>
+     </>
+       ) : (
+     <>
+      <NavLink href="/admin">Dashboard</NavLink>
+      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/auth/logout">Logout</PrimaryLink>
+     </>
+     )
+      }
+      </NavLinks>
   ];
 
   const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
@@ -114,7 +130,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
       </MobileNavLinksContainer>
     </Header>
   );
-};
+});
 
 /* The below code is for generating dynamic break points for navbar.
  * Using this you can specify if you want to switch
