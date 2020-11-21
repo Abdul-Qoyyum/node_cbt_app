@@ -31,12 +31,8 @@ export function verifyToken(history){
         type : VERIFY_JWT_TOKEN_SUCCESS,
         payload : res.data
      });
-//       history.goForward();
     }).catch(err => {
      dispatch({ type : VERIFY_JWT_TOKEN_FAIL  });
-    //redirect to login page if
-    //verification fail
-     history.push("/");
     });
   }
 }
@@ -58,8 +54,8 @@ export function loginUser(data, history) {
                 payload: res.data
           })
 
-           //redirect to dashboard
-           history.push("/admin/index");
+           //redirect to home page
+           history.push("/");
         })
         .catch(err => {
             dispatch({

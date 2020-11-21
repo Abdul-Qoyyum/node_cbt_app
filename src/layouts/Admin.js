@@ -17,6 +17,8 @@
 */
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
+import _ from 'lodash';
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
@@ -79,7 +81,8 @@ class Admin extends React.Component {
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>
-            <Route path={"/admin/upload/ques"} component={Questions} />
+            {/* Render the view for the question upload if only _subject id has been set */}
+            <Route path={"/admin/upload/ques"}  render={props => _.isEmpty(this.props._subject) ? <Redirect to={"/admin/upload"}/> : <Questions {...props}/>} />
             {this.getRoutes(routes)}
             <Redirect from="*" to="/admin/index" />
           </Switch>
@@ -92,4 +95,9 @@ class Admin extends React.Component {
   }
 }
 
-export default Admin;
+const mapStateToProps = state => {
+  let { _subject } = state.questionStore;
+  return { _subject }
+}
+
+export default connect(mapStateToProps,null)(Admin);

@@ -3,6 +3,7 @@ const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const cloudinary = require('cloudinary').v2;
 const { body, validationResult } = require('express-validator');
+const _ = require('lodash');
 //const { CloudinaryStorage } = require('multer-storage-cloudinary');
 //const multer = require('multer');
 
@@ -179,14 +180,13 @@ db.once('open',() => {
         });
 
 //fetch all questions that belongs to a particular subject
-//at param _subject (i.e subject id)
      router.route('/api/ques/:id')
         .get(authorize,(req,res) => {
             Question.find({
-                _creator : req.user._id,
                 _subject : req.params.id
             },(err, docs) => {
               if (err) return res.status(500).json(err);
+              if(_.isEmpty(docs)) return res.status(404).json([]);
               res.status(200).json(docs);
             });
         });
@@ -218,18 +218,23 @@ db.once('open',() => {
        });
 
     //Subjects routes
-   router.route('/api/subject')
-        .get(authorize,(req,res) => {
-         /*
-           Subject.find({ _creator : req.user._id },function(err, docs){
-             if(err) return res.status(500).json(err);
-             res.status(200).json(docs);
-           });
-         */
-           Subject.find({ _creator : req.user._id}).populate('_level').populate('_creator').exec(function(err, docs){
+   router.route('/api/subjects')
+       .get(authorize,(req,res) => {
+         //fetch all subjects
+           Subject.find({}).populate('_level').populate('_creator').exec(function(err, docs){
                if (err) return res.status(500).json(err);
+               if(_.isEmpty(docs)) return res.status(404).json([]); //Remember to handle all 404 cases in order routes
                res.status(200).json(docs);
            });
+       });
+
+   router.route('/api/subject')
+        .get(authorize,(req,res) => {
+            //fetch subject for the currently logged in user based on their id
+            Subject.find({ _creator : req.user._id}).populate('_level').populate('_creator').exec(function(err, docs){
+                if (err) return res.status(500).json(err);
+                res.status(200).json(docs);
+            });
         })
         .post(authorize,[
             body('_level').not().isEmpty().withMessage('Level id is required'),

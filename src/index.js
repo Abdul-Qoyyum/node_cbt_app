@@ -24,6 +24,7 @@ import store from "./store";
 import App from "./App";
 import Modal from "react-modal";
 
+
 Modal.setAppElement("#root");
 
 ReactDOM.render(

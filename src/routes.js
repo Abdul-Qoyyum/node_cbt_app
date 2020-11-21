@@ -15,12 +15,12 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
+import Index from "./views/Index.js";
+import Profile from "./views/examples/Profile.js";
 //import Maps from "views/examples/Maps.js";
-import Register from "views/examples/Register.js";
-import Login from "views/examples/Login.js";
-import Preview from "views/examples/Preview.js";
+import Register from "./views/examples/Register.js";
+import Login from "./views/examples/Login.js";
+import Subject from "./views/examples/Subject.js";
 //import Tables from "views/examples/Tables.js";
 //import Icons from "views/examples/Icons.js";
 
@@ -94,7 +94,7 @@ var routes = [
     path: "/subjects",
     name: "Subjects",
     icon: "ni ni-circle-08 text-pink",
-    component: Preview,
+    component: Subject,
     layout: "/admin"
   },
   {

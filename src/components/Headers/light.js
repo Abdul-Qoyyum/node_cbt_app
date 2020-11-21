@@ -78,6 +78,7 @@ export default connect(mapStateToProps,null)(({ user, roundedHeaderButton = fals
    */
   const defaultLinks = [
     <NavLinks key={1}>
+      <NavLink href={"/"}>Home</NavLink>
       <NavLink href="/#">About</NavLink>
       {/*<NavLink href="/#">Blog</NavLink>*/}
       {/*<NavLink href="/#">Pricing</NavLink>*/}

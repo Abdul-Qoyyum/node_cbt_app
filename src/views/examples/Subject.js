@@ -39,7 +39,7 @@ import {
    } from '../../actions';
 
 
-function Preview(props){
+function Subject(props){
 
  const {
         register,
@@ -318,4 +318,4 @@ export default connect(
         uploadSubject,
         fetchSubjects
        }
-       )(Preview);
+       )(Subject);

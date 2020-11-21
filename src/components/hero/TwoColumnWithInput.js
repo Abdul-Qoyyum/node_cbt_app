@@ -67,7 +67,7 @@ export default connect(mapStateToProps,null)(({ user, roundedHeaderButton }) => 
               Exam Management System <span tw="text-primary-500">for you.</span>
             </Heading>
             <Paragraph>
-              Automate your examining process with no stress
+              Automate your examination screening process without stress
             </Paragraph>
             <Actions>
 {/*              <button>Get Started</button> */}

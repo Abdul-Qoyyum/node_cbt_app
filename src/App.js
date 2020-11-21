@@ -2,8 +2,10 @@ import React ,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
+import _ from 'lodash';
 import "tailwindcss/dist/base.css";
 import "./styles/globalStyles.css";
+// eslint-disable-next-line
 import { css } from "styled-components/macro";
 
 import {
@@ -32,7 +34,7 @@ import AuthLayout from "./layouts/Auth.js";
 import ExamView from './views/ExamView';
 import ProtectedRoute from "./layouts/ProtectedRoute";
 import 'react-notifications/lib/notifications.css';
-
+import ExamSessionView from "./views/ExamSessionView";
 import Landing from './views/Landing';
 import './App.css';
 
@@ -45,7 +47,7 @@ import './App.css';
    }
 
     render(){
-       const { isLoading }= this.props;
+       const { isLoading, _subject }= this.props;
         return (
             <>
             {
@@ -60,20 +62,14 @@ import './App.css';
                   path="/admin"
                   component={AdminLayout}
                />
-              <Route path="/auth" render={props => <AuthLayout {...props} />}/>
-{/*
-              <ProtectedRoute
-                path={"/exam"}
-                component={ExamLayout}
-              />
-*/}
+               <Route path="/auth" render={props => <AuthLayout {...props} />}/>
+               {/* exam session route depends on _subject id, redirect to exam route if _subject id is not set */}
+               <Route path={"/exam/session"}  render={props => _.isEmpty(_subject) ? <Redirect to={"/exam"} /> : <ExamSessionView  { ...props} /> } />
               <ProtectedRoute
                 path={"/exam"}
                 component={ExamView}
               />
-{/*              <Route path="/auth" render={props => <AuthLayout {...props} />}/> */}
               <Route path="/" render={props => <Landing {...props} />}/>
-{/*              <Redirect from="*" to="/auth/login"/>*/}
               <Redirect from="*" to="/"/>
             </Switch>)
            }
@@ -84,7 +80,8 @@ import './App.css';
 
 const mapStateToProps = state => {
   const { isLoading } = state.authStore;
-  return { isLoading };
+  const { _subject } = state.questionStore;
+  return { isLoading , _subject };
 }
 
 export default compose(

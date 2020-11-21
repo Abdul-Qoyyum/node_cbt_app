@@ -11,7 +11,8 @@ export function Pagination(props){
 
 //extract this to higher order component
 useEffect((state) => {
-  axios.get('/api/users').then(res => {
+ // data section
+ axios.get('/api/users').then(res => {
    let { data } = res;
 
    setState(prevState => {
@@ -27,6 +28,7 @@ useEffect((state) => {
   }).catch(err => {
    console.log(err);
   });
+//  data section
 },[]);
 
 

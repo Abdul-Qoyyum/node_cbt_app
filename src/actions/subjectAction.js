@@ -12,26 +12,45 @@ import {
  } from '../types'
 
 
-export const fetchSubjects = () => {
-   return dispatch => {
-     axios.get('/api/subject',{
-        headers : {
-            emstoken : localStorage.getItem('emstoken')
-        }
-     }).then(res => {
-         dispatch({
-             type : FETCH_SUBJECT_FUFILLED,
-             payload : res.data
-         });
-     }).catch(err => {
-         dispatch({
-            type : FETCH_SUBJECT_REJECTED,
-            payload : err
-         });
-     });
-   }
+export const fetchAllSubjects = () => {
+    return dispatch => {
+        axios.get('/api/subjects',{
+            headers : {
+                emstoken : localStorage.getItem('emstoken')
+            }
+        }).then(res => {
+            dispatch({
+                type : FETCH_SUBJECT_FUFILLED,
+                payload : res.data
+            });
+        }).catch(err => {
+            dispatch({
+                type : FETCH_SUBJECT_REJECTED,
+                payload : err
+            });
+        });
+    }
 };
 
+export const fetchSubjects = () => {
+    return dispatch => {
+        axios.get('/api/subject',{
+            headers : {
+                emstoken : localStorage.getItem('emstoken')
+            }
+        }).then(res => {
+            dispatch({
+                type : FETCH_SUBJECT_FUFILLED,
+                payload : res.data
+            });
+        }).catch(err => {
+            dispatch({
+                type : FETCH_SUBJECT_REJECTED,
+                payload : err
+            });
+        });
+    }
+};
 export function uploadSubject(data, e){
    return dispatch => {
     dispatch({ type : UPLOAD_SUBJECT_PENDING });

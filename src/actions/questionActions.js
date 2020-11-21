@@ -100,7 +100,6 @@ export const uploadQuestion = (question, e, editor) => {
            emstoken : localStorage.getItem('emstoken')
           }
         }).then(res => {
-         console.log(`Saved : ${res.data}`);
          NotificationManager.success('Saved');
          //reset the form with the event object
          e.target.reset();
@@ -121,6 +120,7 @@ export const uploadQuestion = (question, e, editor) => {
 
 //sets subjectId for the question to upload
 //redirects to the page for the upload question
+//or exam view page
 export const showQuestionOrPreview = (_id, path, history) => {
     return dispatch => {
         dispatch({

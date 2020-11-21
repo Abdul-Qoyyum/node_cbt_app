@@ -132,7 +132,8 @@ function Questions(props) {
                 name={"A"}
                 invalid={errors.A ? true : false}
                 onChange={setOption}
-                value={A}/>
+                autoComplete={"off"}
+                />
                </Col>
                <Col xs={"1"}>
                  <Input type={"radio"} name={"answer"}  onClick={setAnswer}  className={"mt-3"} value={A}  />
@@ -155,7 +156,8 @@ function Questions(props) {
                 name={"B"}
                 invalid={errors.B ? true : false}
                 onChange={setOption}
-                value={B} />
+                autoComplete={"off"}
+                 />
                 </Col>
                 <Col xs={"1"}>
                   <Input type={"radio"} name={"answer"} onClick={setAnswer}  className={"mt-3"} value={B}  />
@@ -178,7 +180,7 @@ function Questions(props) {
                 name={"C"}
                 invalid={errors.C ? true : false}
                 onChange={setOption}
-                value={C}
+                autoComplete={"off"}
             />
                    </Col>
                    <Col xs={"1"}>
@@ -202,11 +204,11 @@ function Questions(props) {
                 invalid={errors.D ? true : false}
                 name={"D"}
                 onChange={setOption}
-                value={D}
+                autoComplete={"off"}
             />
                    </Col>
                    <Col xs={"1"}>
-            <Input type={"radio"} name={"answer"} onClick={setAnswer} className={'mt-3'} value={D} />
+            <Input type={"radio"} name={"answer"} autoComplete={"off"} onClick={setAnswer} className={'mt-3'} value={D} />
                    </Col>
                </Row>
             {errors.D && (<FormText color={"danger"}>{errors.D.message}</FormText>)}
@@ -233,6 +235,7 @@ function Questions(props) {
                })}
                name={"ans"}
                value={answer}
+               autoComplete={"off"}
                disabled/>
              {errors.ans && (<FormText color={"danger"}>{errors.ans.message}</FormText>)}
              </FormGroup>
