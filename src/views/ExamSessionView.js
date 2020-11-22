@@ -26,7 +26,7 @@ const LeftCard = styled.div`
 `;
 
 const RightCard = styled.div`
-    ${tw`flex flex-col items-center justify-center bg-white p-4 shadow md:w-1/4 rounded-lg`}
+    ${tw`flex flex-col items-center justify-start bg-white p-4 shadow md:w-1/4 rounded-lg`}
     div {
       ${tw`inline-flex shadow-lg border border-gray-200 rounded-full overflow-hidden h-40 w-40`}
     }
