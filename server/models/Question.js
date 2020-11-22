@@ -10,6 +10,7 @@ const QuestionSchema =  new mongoose.Schema({
        type : String,
        required : true
     },
+    selectedAnswer : String,
     _subject : {
        type : mongoose.Schema.Types.ObjectId,
        ref : "Subject",

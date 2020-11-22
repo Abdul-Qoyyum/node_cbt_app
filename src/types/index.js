@@ -39,4 +39,5 @@ export const SET_SUBJECT_ID = 'SET_SUBJECT_ID';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const TOGGLE_NESTED_MODAL = 'TOGGLE_NESTED_MODAL';
 
-
+//select answer types
+export const SELECT_ANSWER = 'SELECT_ANSWER';

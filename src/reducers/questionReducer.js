@@ -10,7 +10,8 @@ import {
      SET_SUBJECT_ID,
      FETCH_QUESTIONS_PENDING,
      FETCH_QUESTIONS_FUFILLED,
-     FETCH_QUESTIONS_REJECTED
+     FETCH_QUESTIONS_REJECTED,
+     SELECT_ANSWER
      } from "../types";
 
 const defaultState = {
@@ -77,6 +78,9 @@ export const questionReducer = (state = defaultState, action) => {
             return {...state, error : {...state.error , ...action.payload } };
         case CLEAR_QUESTION__ERROR:
             return {...state, error: {...state.error, ...action.payload}};
+        case SELECT_ANSWER:
+            state.questions[action.payload.name].selectedAnswer = action.payload.value;
+            return state;
         default :
             return state;
     }

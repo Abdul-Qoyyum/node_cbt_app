@@ -4,11 +4,18 @@ import tw from 'twin.macro';
 import styled from 'styled-components';
 
 import {
-        fetchQuestions
+        fetchQuestions,
+        selectAnswer
        } from "../actions";
 
-import { Input, FormGroup } from 'reactstrap';
-
+import {
+        Input,
+        FormGroup,
+        Form,
+        Pagination,
+        PaginationItem,
+        PaginationLink
+        } from 'reactstrap';
 
 const Container = styled.div`
     ${tw`pt-6 my-4 md:flex  min-h-screen mx-6`}
@@ -28,7 +35,7 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps,{ fetchQuestions })((props) => {
-    let { _subject, questions, fetchQuestions } = props;
+    let { _subject, questions, selectAnswer,fetchQuestions } = props;
     const [ state, setState ] = useState({
         offset : 0,
         end : 1,
@@ -51,54 +58,58 @@ export default connect(mapStateToProps,{ fetchQuestions })((props) => {
     };
 
 
-    const handlePageChange = (e) => {
-        let { value } = e.target;
-        let end = value + 1;
-        alert(`Clicked : ${value}`);
+    const handlePageChange = (e, page) => {
+//     prevent default link reaction
+        e.preventDefault();
+        let value = e.target.id;
+        let end = page;
         let offset = state.dataPerPage * value;
-        setState(prevState => {
-            return {
-                ...prevState,
-                offset,
-                end
-            }
-        });
+        setState({
+          ...state, offset, end
+         });
 
     };
-
 
     return (
         <>
       <Container>
           <LeftCard>
               <hr className={"mt-6"}/>
+           <Form>
               {questions.slice(state.offset, state.end).map((question, index) => {
-                  { console.log(`Sel : ${JSON.stringify(question)}`)}
                   return (
                       <>
-                      <div key={index} dangerouslySetInnerHTML={{ __html : question.body }}>
+                     <div>
+                      <span className={"mr-1"}> { state.end } </span> <div key={index} dangerouslySetInnerHTML={{ __html : question.body }}>
                       </div>
+                     </div>
                       <FormGroup className={"ml-3"}>
-                          <p className={"text-justify"}><Input type={"radio"} name={"answer"} className={"mr-2"} value={question.options.A} /> {question.options.A}</p>
-                          <p className={"text-justify"}><Input type={"radio"} name={"answer"} className={"mr-2"} value={question.options.B} /> {question.options.B}</p>
-                          <p className={"text-justify"}><Input type={"radio"} name={"answer"} className={"mr-2"} value={question.options.C} /> {question.options.C}</p>
-                          <p className={"text-justify"}><Input type={"radio"} name={"answer"} className={"mr-2"} value={question.options.D} /> {question.options.D}</p>
+                          <p className={"text-justify"}><Input type={"radio"} name={index} className={"mr-2"} onClick={() => alert(index)}  value={question.options.A} /> {question.options.A}</p>
+                          <p className={"text-justify"}><Input type={"radio"} name={index} className={"mr-2"} onClick={() => alert(index)}  value={question.options.B} /> {question.options.B}</p>
+                          <p className={"text-justify"}><Input type={"radio"} name={index} className={"mr-2"} onClick={() => alert(index)}  value={question.options.C} /> {question.options.C}</p>
+                          <p className={"text-justify"}><Input type={"radio"} name={index} onClick={selectAnswer} className={"mr-2"} value={question.options.D} /> {question.options.D}</p>
                       </FormGroup>
                       </>
                   )
               })}
+            </Form>
               {/* Pagination buttons */}
-              <p>{ paginate(questions,state.dataPerPage).map((page, index) => (
-                  <button
-                      value={index}
-                      onClick={handlePageChange}
-                      key={index}
-                  >
-                      {page}
-                  </button>
+            <Pagination aria-label="Page navigation example">
+              { paginate(questions,state.dataPerPage).map((page, index) => (
+               <PaginationItem
+                 key={index}
+                 active={questions[index].selectAnswer ? true : false}
+                >
+                 <PaginationLink
+                   href={"#"}
+                   id={index}
+                   onClick={e => handlePageChange(e, page)}
+                 >
+                     { page }
+                 </PaginationLink>
+               </PaginationItem>
               ))}
-              </p>
-
+            </Pagination>
           </LeftCard>
         <RightCard>
               This is a great idea

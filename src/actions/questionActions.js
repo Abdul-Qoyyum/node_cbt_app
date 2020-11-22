@@ -13,8 +13,25 @@ import {
     SET_SUBJECT_ID,
     FETCH_QUESTIONS_PENDING,
     FETCH_QUESTIONS_FUFILLED,
-    FETCH_QUESTIONS_REJECTED
+    FETCH_QUESTIONS_REJECTED,
+    SELECT_ANSWER
 } from "../types";
+
+//select Answer during exam session
+export const selectAnswer = (e) => {
+  let { name, value } = e.target;
+  return dispatch => {
+    dispatch({
+      type : SELECT_ANSWER,
+      payload : {
+       name,
+       value
+      }
+    });
+  }
+}
+
+
 
 //fetch all questions attributed to a subject
 //at parameter _subject (i.e subject id)
