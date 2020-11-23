@@ -7,7 +7,7 @@ import {
      UPLOAD_QUESTION_FAILED,
      UPLOAD_QUESTION_ERROR,
      CLEAR_QUESTION__ERROR,
-     SET_SUBJECT_ID,
+     SET_SUBJECT,
      FETCH_QUESTIONS_PENDING,
      FETCH_QUESTIONS_FUFILLED,
      FETCH_QUESTIONS_REJECTED,
@@ -45,7 +45,7 @@ export const questionReducer = (state = defaultState, action) => {
             return { ...state, isLoading: false, questions: action.payload };
         case FETCH_QUESTIONS_REJECTED:
             return { ...state, error : { ...state.error, msg : action.payload } };
-        case SET_SUBJECT_ID :
+        case SET_SUBJECT :
             return { ...state, _subject: action.payload };
         case SET_QUESTION:
             return {...state, question : {...state.question, body : action.payload }};

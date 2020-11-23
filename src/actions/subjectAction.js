@@ -11,7 +11,7 @@ import {
   FETCH_SUBJECT_REJECTED
  } from '../types'
 
-
+//includes subjects (i.e all subjects by the other user)
 export const fetchAllSubjects = () => {
     return dispatch => {
         axios.get('/api/subjects',{
@@ -31,7 +31,7 @@ export const fetchAllSubjects = () => {
         });
     }
 };
-
+//fetch subjects specific to a user
 export const fetchSubjects = () => {
     return dispatch => {
         axios.get('/api/subject',{

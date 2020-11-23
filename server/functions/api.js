@@ -15,7 +15,8 @@ const {
         User,
         Question,
         Level,
-        Subject
+        Subject,
+        Result
        } = require('../models');
 
 const {
@@ -258,6 +259,30 @@ db.once('open',() => {
             }).catch(function (err) {
                 res.status(500).json(err);
             });
+        });
+
+    router.route('/api/exam/submit')
+        .post(authorize,[
+            body('_subject').not().isEmpty().withMessage("Subject id is required"),
+            body('score').not().isEmpty().withMessage("Score is required")
+        ],(req, res) => {
+            // Finds the validation errors in this request and wraps them in an object with handy functions
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            //save the result if validation is successful
+           const result = new Result({
+            ...req.body, _creator : req.user._id
+           });
+
+            result.save().then(docs => {
+                res.status(200).json(docs);
+            }).catch(err => {
+                res.status(500).json(err);
+            })
+
         });
 
 

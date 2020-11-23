@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { size } from 'lodash';
 import { NotificationManager } from 'react-notifications';
 
 import {
@@ -10,11 +11,14 @@ import {
     UPLOAD_QUESTION_FAILED,
     UPLOAD_QUESTION_ERROR,
     CLEAR_QUESTION__ERROR,
-    SET_SUBJECT_ID,
+    SET_SUBJECT,
     FETCH_QUESTIONS_PENDING,
     FETCH_QUESTIONS_FUFILLED,
     FETCH_QUESTIONS_REJECTED,
-    SELECT_ANSWER
+    SELECT_ANSWER,
+    SUBMIT_EXAM_PENDING,
+    SUBMIT_EXAM_FUFILLED,
+    FETCH_SUBJECT_REJECTED, SUBMIT_EXAM_REJECTED
 } from "../types";
 
 //select Answer during exam session
@@ -94,7 +98,7 @@ export const setAnswer = (e) => {
         payload : e.target.value
      });
     }
-}
+};
 
 export const uploadQuestion = (question, e, editor) => {
    return dispatch => {
@@ -135,16 +139,55 @@ export const uploadQuestion = (question, e, editor) => {
     }
 };
 
-//sets subjectId for the question to upload
+//sets selected subject object for the question to upload
 //redirects to the page for the upload question
 //or exam view page
-export const showQuestionOrPreview = (_id, path, history) => {
+export const showQuestionOrPreview = (subject, path, history) => {
     return dispatch => {
         dispatch({
-            type : SET_SUBJECT_ID,
-            payload : _id
+            type : SET_SUBJECT,
+            payload : subject
         });
         //renders the question interface
         history.push(`${path}`);
+    }
+};
+
+//calculate the user's score and save it
+export function calculateScoreAndSubmitExam(_subject, data, modi, history) {
+    let total = 0;
+    return dispatch => {
+        dispatch({ type : SUBMIT_EXAM_PENDING });
+        data.map((ques, index) => {
+            //increase the total score if the answer is correct
+            if(ques.answer === ques.selectedAnswer){
+                total = total + 1;
+            }
+        });
+        console.log(`modi : ${modi}`);
+        console.log(JSON.stringify(data));
+        console.log(`total : ${total}`);
+        let score = (total / size(data)) * 100;
+        console.log(`LSize : ${size(data)}`);
+        console.log(`size : ${data.length}`)
+        console.log(`Score : ${score}`);
+        axios.post('/api/exam/submit',{
+           _subject, score
+        },{
+            headers : {
+                emstoken : localStorage.getItem('emstoken')
+            }
+        }).then(res => {
+            dispatch({
+                type : SUBMIT_EXAM_FUFILLED,
+                payload : res.data
+            })
+            history.push('/exam');
+        }).catch(err => {
+            dispatch({
+                type : SUBMIT_EXAM_REJECTED,
+                payload : err
+            })
+        });
     }
 }
