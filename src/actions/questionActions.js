@@ -148,13 +148,15 @@ export const showQuestionOrPreview = (subject, path, history) => {
             type : SET_SUBJECT,
             payload : subject
         });
+        //fetch questions for the subject here
+
         //renders the question interface
         history.push(`${path}`);
     }
 };
 
 //calculate the user's score and save it
-export function calculateScoreAndSubmitExam(_subject, data, modi, history) {
+export function calculateScoreAndSubmitExam(_subject, data, history) {
     let total = 0;
     return dispatch => {
         dispatch({ type : SUBMIT_EXAM_PENDING });
@@ -164,13 +166,12 @@ export function calculateScoreAndSubmitExam(_subject, data, modi, history) {
                 total = total + 1;
             }
         });
-        console.log(`modi : ${modi}`);
-        console.log(JSON.stringify(data));
-        console.log(`total : ${total}`);
+        alert(`Subject : ${JSON.stringify(_subject)}`);
+        alert(`total : ${total}`);
         let score = (total / size(data)) * 100;
-        console.log(`LSize : ${size(data)}`);
-        console.log(`size : ${data.length}`)
-        console.log(`Score : ${score}`);
+         alert(`LSize : ${size(data)}`);
+        alert(`size : ${data.length}`)
+        alert(`Score : ${score}`);
         axios.post('/api/exam/submit',{
            _subject, score
         },{

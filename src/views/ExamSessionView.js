@@ -67,11 +67,11 @@ export default connect(mapStateToProps,{ fetchQuestions, selectAnswer, calculate
         end : 1,
         dataPerPage : 1
     });
-    const [totalQuestions, setTotalQuestions ] = useState(0);
     const [duration, setDuration ] = useState("0.00");
-    const [ques, setQues ] = useState({
-        data : []
-    });
+
+    const [totalQuestions, setTotalQuestions ] = useState(0);
+    const [subject, setSubject ] = useState({ ..._subject });
+    const [ques, setQues ] = useState([]);
 
     const fetchQuestionCallback = useCallback( () => {
         fetchQuestions(_subject._id);
@@ -80,14 +80,11 @@ export default connect(mapStateToProps,{ fetchQuestions, selectAnswer, calculate
     const getSubmitData = () => {
         return { ...questions };
     }
+
     const calculateTimeAndSubmitExamCallback = useCallback(() => {
-        //handle exam duration here
-        setTotalQuestions(questions.length);
-        fetchQuestionCallback();
-        console.log(`Total : ${totalQuestions}`);
-        setQues(questions);
-        let end = Date.now() + (parseInt(_subject.duration) * 60 * 1000);
-        let interval = setInterval(function(){
+        //handle exam duration here;
+        const end = Date.now() + (parseInt(_subject.duration) * 60 * 1000);
+        const interval = setInterval(function(){
             let total = end - Date.now();
             let secs = Math.floor((total/1000) % 60);
             let mins = Math.floor((total/1000/60) % 60);
@@ -95,43 +92,50 @@ export default connect(mapStateToProps,{ fetchQuestions, selectAnswer, calculate
             setDuration(`${mins} : ${formattedSecs}`);
             if(total <= 0){
                 //handle submission if time have elapsed
-                setQues({...state, data : () => getSubmitData()});
-                // console.log(ques);
-                calculateScoreAndSubmitExam(_subject._id, ques.data, totalQuestions,history);
+                calculateScoreAndSubmitExam(_subject, ques, history);
                 return clearInterval(interval);
             }
         },1000);
-    },[questions.length]);
+    },[]);
 
 
-    useEffect(calculateTimeAndSubmitExamCallback,[questions.length]);
+    useEffect((totalQuestions) => {
+      fetchQuestionCallback()  //fetch all questions
+      calculateTimeAndSubmitExamCallback();
+      setSubject(_subject);
+      setQues(questions);
+      setTotalQuestions(questions.length);
+      alert(JSON.stringify(totalQuestions));
+    },[]);
 
-    // useEffect(() => {
-    //     fetchQuestionCallback();
-    //     setQues({...state,data : questions});
-    //     setTotalQuestions(questions.length);
-    //     // calculateTimeAndSubmitExamCallback();
-    //     // setTotalQuestions(questions.length);
-    //     console.log(`Total : ${totalQuestions}`);
-    //     // setQues(questions);
-    //     let end = Date.now() + (parseInt(_subject.duration) * 60 * 1000);
-    //     let interval = setInterval(function(){
-    //         let total = end - Date.now();
-    //         let secs = Math.floor((total/1000) % 60);
-    //         let mins = Math.floor((total/1000/60) % 60);
-    //         let formattedSecs = secs < 10 ? `0${secs}` : `${secs}`;
-    //         setDuration(`${mins} : ${formattedSecs}`);
-    //         if(total <= 0){
-    //             //handle submission if time have elapsed
-    //             // setQues({...state, data : questions});
-    //             // console.log(ques);
-    //             calculateScoreAndSubmitExam(_subject._id, ques.data, totalQuestions,history);
-    //             return clearInterval(interval);
-    //         }
-    //     },1000);
-    //
-    // },[_subject._id]);
-    //
+/*
+     useEffect(() => {
+         fetchQuestionCallback();
+         setQues({...state,data : questions});
+         setTotalQuestions(questions.length);
+         // calculateTimeAndSubmitExamCallback();
+         // setTotalQuestions(questions.length);
+         console.log(`Total : ${totalQuestions}`);
+         // setQues(questions);
+         let end = Date.now() + (parseInt(_subject.duration) * 60 * 1000);
+         let interval = setInterval(function(){
+             let total = end - Date.now();
+             let secs = Math.floor((total/1000) % 60);
+             let mins = Math.floor((total/1000/60) % 60);
+             let formattedSecs = secs < 10 ? `0${secs}` : `${secs}`;
+             setDuration(`${mins} : ${formattedSecs}`);
+             if(total <= 0){
+                 //handle submission if time have elapsed
+                 // setQues({...state, data : questions});
+                 // console.log(ques);
+                 calculateScoreAndSubmitExam(_subject._id, ques.data, totalQuestions,history);
+                 return clearInterval(interval);
+             }
+         },1000);
+     },[_subject._id]);
+
+*/
+
     const paginate = (data,dataPerPage) => {
         let totalPages = Math.ceil(data.length / dataPerPage);
         let paginatedPages = [];
