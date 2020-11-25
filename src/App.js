@@ -36,6 +36,7 @@ import ProtectedRoute from "./layouts/ProtectedRoute";
 import 'react-notifications/lib/notifications.css';
 import ExamSessionView2 from "./views/ExamSessionView2";
 import Landing from './views/Landing';
+import ExamInfo from "./views/ExamInfo";
 import './App.css';
 
  class App extends Component {
@@ -63,6 +64,7 @@ import './App.css';
                   component={AdminLayout}
                />
                <Route path="/auth" render={props => <AuthLayout {...props} />}/>
+               <Route path={"/info"} render={props => <ExamInfo {...props} />}/>
                {/* exam session route depends on _subject id, redirect to exam route if _subject id is not set */}
                <Route path={"/exam/session"}  render={props => _.isEmpty(_subject) ? <Redirect to={"/exam"} /> : <ExamSessionView2  { ...props} /> } />
               <ProtectedRoute
