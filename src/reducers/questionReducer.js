@@ -79,8 +79,14 @@ export const questionReducer = (state = defaultState, action) => {
         case CLEAR_QUESTION__ERROR:
             return {...state, error: {...state.error, ...action.payload}};
         case SELECT_ANSWER:
-//            state.questions[action.payload.name].selectedAnswer = action.payload.value;
+            state.questions[action.payload.name].selectedAnswer = action.payload.value;
             return { ...state };
+           //select the modified question
+           // const modifiedQuestion = state.questions[action.payload.name];
+           //set the answer
+           // modifiedQuestion.selectedAnswer = action.payload.value;
+           // const continues = action.payload.name + 1;
+            // return { ...state, questions: [...state.questions.slice(0,action.payload.name), modifiedQuestion, ...state.questions.slice(continues)] };
         default :
             return state;
     }

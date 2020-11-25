@@ -166,12 +166,13 @@ export function calculateScoreAndSubmitExam(_subject, data, history) {
                 total = total + 1;
             }
         });
-        alert(`Subject : ${JSON.stringify(_subject)}`);
-        alert(`total : ${total}`);
+        console.log(`Subject : ${JSON.stringify(_subject)}`);
+        console.log(`Data : ${data}`);
+        console.log(`total : ${total}`);
         let score = (total / size(data)) * 100;
-         alert(`LSize : ${size(data)}`);
-        alert(`size : ${data.length}`)
-        alert(`Score : ${score}`);
+        console.log(`LSize : ${size(data)}`);
+        console.log(`size : ${data.length}`)
+        console.log(`Score : ${score}`);
         axios.post('/api/exam/submit',{
            _subject, score
         },{
