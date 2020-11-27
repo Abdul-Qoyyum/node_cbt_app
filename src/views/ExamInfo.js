@@ -74,16 +74,19 @@ function ExamInfo({ _subject, startExamSession, loading, disabled }){
                         </CardText>
                         <CardFooter>
                             <CancelButton>Back</CancelButton>
+                            <div className={"w-40"}>
                             <LoadingButton
                                 loading={loading}
                                 disabled={disabled}
                                 color={"primary"}
-                                block={false}
+                                block={true}
+                                className={"w-100"}
                                 outline={false}
                                 onClick={() => startExamSession(_subject._id, history)}
                             >
-                                {loading ? <span>Processing</span> : <span className={'mr-3'}>Proceed</span>}
+                                <span className={'mx-3'}>{loading ? "Processing" : "Proceed"}</span>
                             </LoadingButton>
+                            </div>
                         </CardFooter>
                     </Card>
             </Container>

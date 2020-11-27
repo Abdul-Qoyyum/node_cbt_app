@@ -10,17 +10,16 @@ export default ({ children, loading, block, ...rest }) => (
                 className={classnames({
                     "position-relative": true,
                     "button-style": !block,
-                    visible: loading,
-                    invisible: !loading
+                     visible: loading,
+                     invisible: !loading
                 })}
                 size="sm"
                 // type="grow"
             />
-                {loading ?? children}
+                {children}
             </>
         )}
         {!(block && loading) && (
-            <>
             <span
                 className={classnames({
                     invisible: loading,
@@ -30,7 +29,6 @@ export default ({ children, loading, block, ...rest }) => (
             >
         {children}
       </span>
-        </>
         )}
     </Button>
 );

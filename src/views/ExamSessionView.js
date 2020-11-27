@@ -6,6 +6,8 @@ import _ from 'lodash';
 import tw from 'twin.macro';
 import styled from 'styled-components';
 import { PrimaryButton as PrimaryButtonBase } from "../components/misc/Buttons";
+import LoadingMask from "react-loadingmask";
+import "react-loadingmask/dist/react-loadingmask.css";
 import {
     fetchQuestions,
     selectAnswer,
@@ -134,7 +136,7 @@ class ExamSessionView extends Component{
     render(){
         const { questions, selectAnswer } = this.props;
      return (
-        <>
+        <LoadingMask loading={true} text={"Submitting..."}>
             <Container>
                 <LeftCard>
                     <hr className={"mt-3"}/>
@@ -221,7 +223,7 @@ class ExamSessionView extends Component{
                     </p>
                 </RightCard>
             </Container>
-        </>
+        </LoadingMask>
     )}
 }
 

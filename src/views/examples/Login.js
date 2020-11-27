@@ -143,7 +143,7 @@ function Login(props){
                           block={true}
                           outline={false}
                       >
-                        Sign in
+                        <span>{loading ? "" : "Sign in"}</span>
                       </LoadingButton>
                     </div>
                   </Form>
