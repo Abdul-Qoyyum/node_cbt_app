@@ -64,7 +64,7 @@ import './App.css';
                   component={AdminLayout}
                />
                <Route path="/auth" render={props => <AuthLayout {...props} />}/>
-               <Route path={"/exam/info"} exact component={ExamInfo}/>
+               <Route path={"/exam/info"} exact  render={props => _.isEmpty(_subject) ? <Redirect to={"/exam"}/> : <ExamInfo { ...props } />}/>
                {/* exam session route depends on _subject id, redirect to exam route if _subject id is not set */}
                <Route path={"/exam/session"}  render={props => _.isEmpty(_subject) ? <Redirect to={"/exam"} /> : <ExamSessionView  { ...props} /> } />
               <ProtectedRoute

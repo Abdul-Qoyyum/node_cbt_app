@@ -11,7 +11,10 @@ import {
      FETCH_QUESTIONS_PENDING,
      FETCH_QUESTIONS_FUFILLED,
      FETCH_QUESTIONS_REJECTED,
-     SELECT_ANSWER
+     SELECT_ANSWER,
+     START_EXAM_PENDING,
+     START_EXAM_FUFILLED,
+     START_EXAM_REJECTED
      } from "../types";
 
 const defaultState = {
@@ -29,6 +32,7 @@ const defaultState = {
     },
     isLoading : false, //page loading
     loading : false, //button loading
+    disabled : false,
     error : {
       body : {
        message : null
@@ -39,12 +43,18 @@ const defaultState = {
 
 export const questionReducer = (state = defaultState, action) => {
     switch (action.type) {
+        case START_EXAM_PENDING:
+            return { ...state, disabled: true, loading: true };
+        case START_EXAM_FUFILLED:
+            return { ...state, disabled: false, loading: false };
+        case START_EXAM_REJECTED:
+            return  { ...state, loading: false, disabled: false };
         case FETCH_QUESTIONS_PENDING:
             return { ...state, isLoading: true};
         case FETCH_QUESTIONS_FUFILLED:
             return { ...state, isLoading: false, questions: action.payload };
         case FETCH_QUESTIONS_REJECTED:
-            return { ...state, error : { ...state.error, msg : action.payload } };
+            return { ...state, error : { ...state.error, msg : action.payload }, isLoading: false };
         case SET_SUBJECT :
             return { ...state, _subject: action.payload };
         case SET_QUESTION:

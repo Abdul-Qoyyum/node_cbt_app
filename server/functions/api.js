@@ -273,15 +273,39 @@ db.once('open',() => {
             }
 
             //save the result if validation is successful
-           const result = new Result({
-            ...req.body, _creator : req.user._id
-           });
+            //if the result has already been recorded update it
+            //else create a new record for the result
+            Result.find({
+                _creator : req.user._id,
+                _subject: req._subject
+            },function (err, docs) {
+                 if (err) return res.status(500).json(err);
+                 //create a new record if none was found
+                 if (_.isEmpty(docs)){
+                     const result = new Result({
+                         ...req.body, _creator : req.user._id
+                     });
 
-            result.save().then(docs => {
-                res.status(200).json(docs);
-            }).catch(err => {
-                res.status(500).json(err);
-            })
+                     result.save().then(docs => {
+                         res.status(200).json(docs);
+                     }).catch(err => {
+                         res.status(500).json(err);
+                     })
+
+                 }else{
+                     //update the existing record
+                     Result.findOneAndUpdate({
+                         _creator : req.user._id,
+                         _subject : req._subject
+                     },{ ...req.body, _creator : req.user._id }, {
+                         new : true
+                     },(err, docs) => {
+                         if(err) return res.status(500).json(err);
+                         res.status(200).json(docs);
+                     });
+
+                 }
+            });
 
         });
 

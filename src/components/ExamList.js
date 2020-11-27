@@ -92,7 +92,7 @@ export default connect(mapStateToprops,{ fetchAllSubjects, showQuestionOrPreview
                         <H6>Duration : { subject.duration } min(s)</H6>
                         <H6>Examiner : Miss Mosun </H6>
                         <ButtonContainer>
-                            <PrimaryButton onClick={() => showQuestionOrPreview(subject, '/exam/session', history)} buttonRounded={true}>
+                            <PrimaryButton onClick={() => showQuestionOrPreview(subject, '/exam/info', history)} buttonRounded={true}>
                                 Start
                             </PrimaryButton>
                         </ButtonContainer>

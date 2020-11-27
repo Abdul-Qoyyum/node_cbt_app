@@ -18,7 +18,11 @@ import {
     SELECT_ANSWER,
     SUBMIT_EXAM_PENDING,
     SUBMIT_EXAM_FUFILLED,
-    FETCH_SUBJECT_REJECTED, SUBMIT_EXAM_REJECTED
+    FETCH_SUBJECT_REJECTED,
+    SUBMIT_EXAM_REJECTED,
+    START_EXAM_PENDING,
+    START_EXAM_FUFILLED,
+    START_EXAM_REJECTED
 } from "../types";
 
 //select Answer during exam session
@@ -155,6 +159,36 @@ export const showQuestionOrPreview = (subject, path, history) => {
     }
 };
 
+//Initialize the examination process by saving the initial record
+export function startExamSession(_subject, history){
+   return dispatch => {
+       dispatch({
+           type : START_EXAM_PENDING
+       });
+       axios.post('/api/exam/submit',{
+           _subject,
+           score : 0 //initial score defaults to zero
+       }, {
+           headers : {
+               emstoken : localStorage.getItem('emstoken')
+           }
+       }).then(res => {
+           dispatch({
+               type : START_EXAM_FUFILLED,
+               payload : res.data
+           });
+           //redirects to the cbt session
+           history.push('/exam/session');
+       }).catch(err => {
+           dispatch({
+               type :START_EXAM_REJECTED,
+               payload : err
+           })
+       });
+   }
+}
+
+
 //calculate the user's score and save it
 export function calculateScoreAndSubmitExam(_subject, data, history) {
     let total = 0;
@@ -166,13 +200,7 @@ export function calculateScoreAndSubmitExam(_subject, data, history) {
                 total = total + 1;
             }
         });
-        console.log(`Subject : ${JSON.stringify(_subject)}`);
-        console.log(`Data : ${data}`);
-        console.log(`total : ${total}`);
         let score = (total / size(data)) * 100;
-        console.log(`LSize : ${size(data)}`);
-        console.log(`size : ${data.length}`)
-        console.log(`Score : ${score}`);
         axios.post('/api/exam/submit',{
            _subject, score
         },{

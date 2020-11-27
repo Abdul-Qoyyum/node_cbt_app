@@ -12,7 +12,6 @@ module.exports = mongoose.model('Result', new mongoose.Schema({
         ref : 'Subject'
     },
     score : {
-        required : true,
         default : 0,
         type : Number
     },

@@ -5,6 +5,7 @@ import classnames from "classnames";
 export default ({ children, loading, block, ...rest }) => (
     <Button {...rest} block={block}>
         {!(block && !loading) && (
+            <>
             <Spinner
                 className={classnames({
                     "position-relative": true,
@@ -15,8 +16,11 @@ export default ({ children, loading, block, ...rest }) => (
                 size="sm"
                 // type="grow"
             />
+                {loading ?? children}
+            </>
         )}
         {!(block && loading) && (
+            <>
             <span
                 className={classnames({
                     invisible: loading,
@@ -26,6 +30,7 @@ export default ({ children, loading, block, ...rest }) => (
             >
         {children}
       </span>
+        </>
         )}
     </Button>
 );

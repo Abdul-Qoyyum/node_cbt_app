@@ -60,7 +60,7 @@ const mapStateToProps = state => {
     return { _subject, questions };
 };
 
-class ExamSessionView2 extends Component{
+class ExamSessionView extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -84,7 +84,6 @@ class ExamSessionView2 extends Component{
         const { _subject, questions, calculateScoreAndSubmitExam } = this.props;
         //compare the previous props with the new props
         if(!_.isEqual(prevProps.questions, questions)){
-            console.log(`Questions : ${this.props.questions}`);
             //handle exam duration here;
             const end = Date.now() + (parseInt(_subject.duration) * 60 * 1000);
             const interval = setInterval(() => {
@@ -231,4 +230,4 @@ export default compose(
     connect(mapStateToProps,{
     fetchQuestions,
     selectAnswer,
-    calculateScoreAndSubmitExam }))(ExamSessionView2);
+    calculateScoreAndSubmitExam }))(ExamSessionView);
