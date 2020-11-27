@@ -68,9 +68,9 @@ function ExamInfo({ _subject, startExamSession, loading, disabled }){
                             You are about to start <strong>{ _subject.title }</strong> Exam for <strong>{ _subject._level.name }</strong>. You have <strong>{ _subject.duration } min(s)</strong> to answer all question(s).
                             <br />Your Exam will be automatically submitted after your time has elapsed if you do not submit before your time runs out. <br />
                             <strong> You are expected to :</strong> <br/> i) Use the mouse to select the appropriate answer for a question. <br />
-                            <br /> ii) Use the number below the screen to navigate among question(s)
-                            <strong>You are not expected to : </strong><br /> i) Refresh the page during the process of the Exam <br /> ii) Close the broswer when the examination session is on <br />
-                            <strong>Failure to comply will result in automatic zero as your Exam Score.</strong><br /> We wish you the best of luck in your Exam.
+                            <br /> ii) Use the number below the screen to navigate among question(s)<br/>
+                            <strong>You are not expected to : </strong><br/><p> i) Refresh the page during the process of the Exam </p> <p>ii) Close the broswer when the examination session is on </p>
+                            <strong>Failure to comply will result in automatic zero as your Exam Score.</strong><br/> We wish you the best of luck in your Exam.
                         </CardText>
                         <CardFooter>
                             <CancelButton>Back</CancelButton>

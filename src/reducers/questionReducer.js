@@ -14,7 +14,10 @@ import {
      SELECT_ANSWER,
      START_EXAM_PENDING,
      START_EXAM_FUFILLED,
-     START_EXAM_REJECTED
+     START_EXAM_REJECTED,
+     SUBMIT_EXAM_PENDING,
+     SUBMIT_EXAM_FUFILLED,
+     SUBMIT_EXAM_REJECTED
      } from "../types";
 
 const defaultState = {
@@ -32,6 +35,7 @@ const defaultState = {
     },
     isLoading : false, //page loading
     loading : false, //button loading
+    mask : false, //mask submission
     disabled : false,
     error : {
       body : {
@@ -39,7 +43,7 @@ const defaultState = {
       },
     msg : {}
     }
-}
+};
 
 export const questionReducer = (state = defaultState, action) => {
     switch (action.type) {
@@ -49,6 +53,12 @@ export const questionReducer = (state = defaultState, action) => {
             return { ...state, disabled: false, loading: false };
         case START_EXAM_REJECTED:
             return  { ...state, loading: false, disabled: false };
+        case SUBMIT_EXAM_PENDING:
+            return { ...state, mask: true, disabled: true};
+        case SUBMIT_EXAM_FUFILLED:
+            return { ...state, mask: false, disabled: false};
+        case SUBMIT_EXAM_REJECTED:
+            return { ...state, mask: false, disabled: false };
         case FETCH_QUESTIONS_PENDING:
             return { ...state, isLoading: true};
         case FETCH_QUESTIONS_FUFILLED:

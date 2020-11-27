@@ -58,8 +58,8 @@ const PrimaryButton = styled(PrimaryButtonBase)(props => [
 const ButtonContainer = tw.div`flex w-full justify-end`;
 
 const mapStateToProps = state => {
-    let { _subject, questions } = state.questionStore;
-    return { _subject, questions };
+    let { _subject, questions, mask } = state.questionStore;
+    return { _subject, questions, mask };
 };
 
 class ExamSessionView extends Component{
@@ -73,7 +73,7 @@ class ExamSessionView extends Component{
         };
         this.paginate = this.paginate.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
-        this.timeoutSubmit = this.timeoutSubmit.bind(this);
+        this.timeoutOrSubmit = this.timeoutOrSubmit.bind(this);
     }
 
     componentDidMount(){
@@ -95,7 +95,7 @@ class ExamSessionView extends Component{
                 let formattedSecs = secs < 10 ? `0${secs}` : `${secs}`;
                 if(total <= 0){
                     //handle submission if time have elapsed
-                    return this.timeoutSubmit(interval, calculateScoreAndSubmitExam);
+                    return this.timeoutOrSubmit(interval, calculateScoreAndSubmitExam);
                 }else{
                     //update time for rendering
                     this.setState({
@@ -106,7 +106,7 @@ class ExamSessionView extends Component{
         }
     }
 
-    timeoutSubmit(interval, callback){
+    timeoutOrSubmit(interval, callback){
         let { history, _subject, questions } = this.props;
         callback(_subject, questions, history);
         return clearInterval(interval);
@@ -134,9 +134,9 @@ class ExamSessionView extends Component{
     };
 
     render(){
-        const { questions, selectAnswer } = this.props;
+        const { questions, selectAnswer, mask } = this.props;
      return (
-        <LoadingMask loading={true} loadingText={"Submitting..."}>
+        <LoadingMask loading={mask} loadingText={"Submitting..."}>
             <Container>
                 <LeftCard>
                     <hr className={"mt-3"}/>
