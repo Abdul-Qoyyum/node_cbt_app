@@ -136,7 +136,7 @@ class ExamSessionView extends Component{
     render(){
         const { questions, selectAnswer } = this.props;
      return (
-        <LoadingMask loading={true} text={"Submitting..."}>
+        <LoadingMask loading={true} loadingText={"Submitting..."}>
             <Container>
                 <LeftCard>
                     <hr className={"mt-3"}/>
